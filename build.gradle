@@ -1,0 +1,56 @@
+buildscript {
+    ext.kotlin_version = '1.1.50'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+
+    // Sdk and tools
+    configuration = [
+            package          : "io.github.tonnyl.latticify",
+            compileSdkVersion: 26,
+            targetSdkVersion : 26,
+            minSdkVersion    : 23,
+            buildToolsVersion: '26.0.2',
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    // App dependencies
+    libraries = [
+            ankoVersion: '0.10.1',
+            supportLibraryVersion   : '26.1.0',
+            supportWearableVersion  : '11.4.0',
+            constraintLayoutVersion : '1.0.2',
+            rxKotlinVersion         : '2.1.0',
+            rxAndroidVersion        : '2.0.1',
+            retrofitVersion         : '2.3.0',
+            epoxyVersion            : '2.5.0',
+            okhttpLoggingInterceptor: '3.9.0',
+            glideVersion            : '4.1.1',
+            matisseVersion          : '0.4.3',
+            wearableVersion         : '2.0.5',
+            gmsWearableVersion      : '11.4.0',
+            junitVersion            : '4.12',
+            espressoVersion         : '2.2.2'
+    ]
+
+}

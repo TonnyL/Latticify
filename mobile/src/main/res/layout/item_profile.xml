@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profileItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="?selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/icon1ImageView"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:padding="@dimen/avatar_padding"
+        android:tint="@color/colorAccent"
+        tools:src="@drawable/ic_email_black_24dp" />
+
+    <Space
+        android:id="@+id/space1"
+        android:layout_width="16dp"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contentTextView"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/text_body_size"
+            tools:text="Email" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="@dimen/text_body_size"
+            tools:text="my.email@slack.com" />
+
+    </LinearLayout>
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="16dp"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/icon2ImageView"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:padding="@dimen/avatar_padding"
+        android:tint="@color/textColorSecondary"
+        tools:src="@drawable/ic_email_black_24dp" />
+
+
+</LinearLayout>

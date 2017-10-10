@@ -1,0 +1,95 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def configuration = rootProject.ext.configuration
+def libraries = rootProject.ext.libraries
+
+android {
+    compileSdkVersion configuration.compileSdkVersion
+    buildToolsVersion configuration.buildToolsVersion
+    defaultConfig {
+        applicationId configuration.package
+        minSdkVersion configuration.minSdkVersion
+        targetSdkVersion configuration.targetSdkVersion
+        versionCode configuration.versionCode
+        versionName configuration.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(rootProject.file("latticify.properties")))
+        buildConfigField "String", "CLIENT_ID", "\"${properties.CLIENT_ID}\""
+        buildConfigField "String", "CLIENT_SECRET", "\"${properties.CLIENT_SECRET}\""
+        buildConfigField "String", "VERIFICATION_TOKEN", "\"${properties.VERIFICATION_TOKEN}\""
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    wearApp project(':wear')
+
+    // Kotlin stdlib
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+
+    // Android support library
+    implementation "com.android.support:appcompat-v7:${libraries.supportLibraryVersion}"
+    implementation "com.android.support:support-v4:${libraries.supportLibraryVersion}"
+    implementation "com.android.support:design:${libraries.supportLibraryVersion}"
+    implementation "com.android.support:recyclerview-v7:${libraries.supportLibraryVersion}"
+    implementation "com.android.support:preference-v14:${libraries.supportLibraryVersion}"
+    implementation "com.android.support:palette-v7:${libraries.supportLibraryVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${libraries.constraintLayoutVersion}"
+
+    // Network
+    // Retrofit series
+    implementation "com.squareup.retrofit2:retrofit:${libraries.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${libraries.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${libraries.retrofitVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${libraries.okhttpLoggingInterceptor}"
+    // Glide
+    implementation "com.github.bumptech.glide:glide:${libraries.glideVersion}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${libraries.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${libraries.glideVersion}"
+
+    // ReactiveX
+    implementation "io.reactivex.rxjava2:rxkotlin:${libraries.rxKotlinVersion}"
+    implementation "io.reactivex.rxjava2:rxandroid:${libraries.rxAndroidVersion}"
+
+    // UI
+    // Epoxy
+    implementation "com.airbnb.android:epoxy:${libraries.epoxyVersion}"
+    kapt "com.airbnb.android:epoxy-processor:${libraries.epoxyVersion}"
+    // Matisse
+    implementation "com.zhihu.android:matisse:${libraries.matisseVersion}"
+
+    // Common
+    implementation "org.jetbrains.anko:anko-commons:${libraries.ankoVersion}"
+
+    // GMS
+    implementation "com.google.android.gms:play-services-wearable:${libraries.gmsWearableVersion}"
+
+    // Test
+    // JUnit
+    testImplementation "junit:junit:${libraries.junitVersion}"
+    // Espresso
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:${libraries.espressoVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}
