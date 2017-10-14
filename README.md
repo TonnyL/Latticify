@@ -10,7 +10,9 @@ Latticify is an Android app for [Slack](https://slack.com/). It's still in its e
 
 ## Build🛠
 ### Download the source code
-`git clone https://github.com/TonnyL/Latticify.git`
+```
+git clone https://github.com/TonnyL/Latticify.git
+```
 
 ### Setup API keys
 You need to register your application at [Slack API home](https://api.slack.com/). You can find information about how to gain access via the relevant links.

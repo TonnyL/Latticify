@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:text="@string/messages"
+                    android:text="@string/nav_messages"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/textColorPrimary" />
 

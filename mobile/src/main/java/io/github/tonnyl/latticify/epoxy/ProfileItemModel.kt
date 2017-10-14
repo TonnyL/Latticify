@@ -16,7 +16,9 @@ import io.github.tonnyl.latticify.R
 abstract class ProfileItemModel : EpoxyModelWithHolder<ProfileItemModel.ProfileItemHolder>() {
 
     @EpoxyAttribute
-    lateinit var itemPair: Pair<Int, String>
+    lateinit var title: String
+    @EpoxyAttribute
+    var descriptionId: Int = 0
     @EpoxyAttribute
     var icon1ResId: Int = 0
     @EpoxyAttribute
@@ -31,17 +33,21 @@ abstract class ProfileItemModel : EpoxyModelWithHolder<ProfileItemModel.ProfileI
 
         holder?.let {
             with(it) {
-                itemLayout.setOnClickListener(itemClickListener)
+                itemLayout?.setOnClickListener(itemClickListener)
 
-                contentTextView.text = itemPair.second
-                descriptionTextView.text = descriptionTextView.context.getString(itemPair.first)
+                contentTextView?.text = title
+                descriptionTextView?.text = contentTextView?.context?.getString(descriptionId)
 
                 if (icon1ResId != 0) {
-                    icon1ImageView.setImageResource(icon1ResId)
+                    icon1ImageView?.setImageResource(icon1ResId)
+                } else {
+                    icon1ImageView?.visibility = View.GONE
                 }
 
                 if (icon2ResId != 0) {
-                    icon2ImageView.setImageResource(icon2ResId)
+                    icon2ImageView?.setImageResource(icon2ResId)
+                } else {
+                    icon2ImageView?.visibility = View.GONE
                 }
             }
         }
@@ -49,11 +55,11 @@ abstract class ProfileItemModel : EpoxyModelWithHolder<ProfileItemModel.ProfileI
 
     class ProfileItemHolder : EpoxyHolder() {
 
-        lateinit var itemLayout: View
-        lateinit var icon1ImageView: ImageView
-        lateinit var icon2ImageView: ImageView
-        lateinit var contentTextView: TextView
-        lateinit var descriptionTextView: TextView
+        var itemLayout: View? = null
+        var icon1ImageView: ImageView? = null
+        var icon2ImageView: ImageView? = null
+        var contentTextView: TextView? = null
+        var descriptionTextView: TextView? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {

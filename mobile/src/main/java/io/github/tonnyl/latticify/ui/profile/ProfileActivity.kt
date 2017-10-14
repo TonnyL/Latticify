@@ -3,7 +3,7 @@ package io.github.tonnyl.latticify.ui.profile
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.UsersProfile
+import io.github.tonnyl.latticify.data.User
 
 /**
  * Created by lizhaotailang on 08/10/2017.
@@ -18,7 +18,7 @@ class ProfileActivity : AppCompatActivity() {
 
         mProfileFragment = ProfileFragment.newInstance()
 
-        intent.getParcelableExtra<UsersProfile>(ProfilePresenter.KEY_EXTRA_USER_PROFILE)?.let {
+        intent.getParcelableExtra<User>(ProfilePresenter.KEY_EXTRA_USER)?.let {
             ProfilePresenter(mProfileFragment, it)
         } ?: run {
             intent?.getStringExtra(ProfilePresenter.KEY_EXTRA_USER_ID)?.let {

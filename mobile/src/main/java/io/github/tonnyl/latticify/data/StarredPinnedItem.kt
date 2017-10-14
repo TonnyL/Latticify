@@ -43,8 +43,11 @@ data class StarredPinnedItem(
         @SerializedName("comment")
         val comment: FileComment?,
 
-        @SerializedName("date_create")
-        val dateCreate: String
+        @SerializedName("created")
+        val created: Long,
+
+        @SerializedName("created_by")
+        val createdBy: String?
 
 ) : Parcelable {
 
@@ -54,6 +57,7 @@ data class StarredPinnedItem(
             parcel.readParcelable(Message::class.java.classLoader),
             parcel.readParcelable(File::class.java.classLoader),
             parcel.readParcelable(FileComment::class.java.classLoader),
+            parcel.readLong(),
             parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -62,7 +66,8 @@ data class StarredPinnedItem(
         parcel.writeParcelable(message, flags)
         parcel.writeParcelable(file, flags)
         parcel.writeParcelable(comment, flags)
-        parcel.writeString(dateCreate)
+        parcel.writeLong(created)
+        parcel.writeString(createdBy)
     }
 
     override fun describeContents(): Int = 0

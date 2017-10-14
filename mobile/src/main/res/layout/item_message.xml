@@ -61,6 +61,8 @@
             android:id="@+id/messageContentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="24"
             android:textColor="@color/textColorPrimary"
             tools:text="Hello World" />
 
@@ -85,6 +87,6 @@
     <View
         android:id="@+id/placeHolderView"
         android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"/>
+        android:layout_height="@dimen/avatar_size" />
 
 </LinearLayout>

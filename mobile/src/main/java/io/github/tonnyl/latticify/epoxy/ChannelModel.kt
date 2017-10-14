@@ -28,14 +28,16 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
 
         holder?.let {
             with(it) {
-                item.setOnClickListener(itemOnClickListener)
-                username.text = channel.name
+                item?.setOnClickListener(itemOnClickListener)
+                username?.text = channel.name
 
                 if (channel.latest?.type == "message") {
-                    summary.text = summary?.context?.getString(R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
+                    summary?.text = summary?.context?.getString(R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
+                } else {
+                    summary?.text = channel.purpose?.value ?: channel.topic?.value
                 }
 
-                avatar.setImageResource(when {
+                avatar?.setImageResource(when {
                     channel.isPrivate == true -> {
                         R.drawable.ic_lock_black_24dp
                     }
@@ -48,11 +50,11 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
                 })
 
                 if (channel.isPrivate == true) {
-                    avatar.setImageResource(R.drawable.ic_lock_black_24dp)
+                    avatar?.setImageResource(R.drawable.ic_lock_black_24dp)
                 }
 
                 if (channel.isIm == true) {
-                    username.text = channel.user
+                    username?.text = channel.user
                 }
 
                 channel.unreadCountDisplay?.let {
@@ -67,12 +69,12 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
 
     class ChannelHolder : EpoxyHolder() {
 
-        lateinit var item: View
-        lateinit var avatar: ImageView
-        lateinit var username: TextView
-        lateinit var time: TextView
-        lateinit var summary: TextView
-        lateinit var unreadCount: TextView
+        var item: View? = null
+        var avatar: ImageView? = null
+        var username: TextView? = null
+        var time: TextView? = null
+        var summary: TextView? = null
+        var unreadCount: TextView? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {

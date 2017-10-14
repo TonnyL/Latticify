@@ -104,6 +104,6 @@ data class UserListWrapper(
         val cacheTs: Long,
 
         @SerializedName("response_metadata")
-        val responseMetaData: ResponseMetaData
+        val responseMetaData: ResponseMetaData?
 
 )

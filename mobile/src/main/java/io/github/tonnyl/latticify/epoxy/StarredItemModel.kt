@@ -28,20 +28,20 @@ abstract class StarredItemModel : EpoxyModelWithHolder<StarredItemModel.StarredI
 
         holder?.let {
             with(it) {
-                itemLayout.setOnClickListener(itemOnClickListener)
+                itemLayout?.setOnClickListener(itemOnClickListener)
 
                 when {
                     starredItem.message != null -> {
-                        avatarImageView.setImageResource(R.drawable.ic_message_black_24dp)
-                        titleTextView.text = starredItem.message?.text ?: starredItem.message?.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
+                        avatarImageView?.setImageResource(R.drawable.ic_message_black_24dp)
+                        titleTextView?.text = starredItem.message?.text ?: starredItem.message?.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
                     }
                     starredItem.file != null -> {
-                        avatarImageView.setImageResource(R.drawable.ic_folder_black_24dp)
-                        titleTextView.text = starredItem.file?.title
+                        avatarImageView?.setImageResource(R.drawable.ic_folder_black_24dp)
+                        titleTextView?.text = starredItem.file?.title
                     }
                     starredItem.channel != null -> {
-                        avatarImageView.setImageResource(R.drawable.ic_hashtag_black_24dp)
-                        titleTextView.text = starredItem.channel
+                        avatarImageView?.setImageResource(R.drawable.ic_hashtag_black_24dp)
+                        titleTextView?.text = starredItem.channel
                     }
                 }
             }
@@ -50,9 +50,9 @@ abstract class StarredItemModel : EpoxyModelWithHolder<StarredItemModel.StarredI
 
     class StarredItemHolder : EpoxyHolder() {
 
-        lateinit var itemLayout: View
-        lateinit var titleTextView: TextView
-        lateinit var avatarImageView: ImageView
+        var itemLayout: View? = null
+        var titleTextView: TextView? = null
+        var avatarImageView: ImageView? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {

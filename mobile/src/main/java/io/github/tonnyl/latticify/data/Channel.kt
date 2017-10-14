@@ -247,6 +247,9 @@ data class Channel(
         @SerializedName("num_members")
         val numMembers: Int?,
 
+        @SerializedName("members")
+        val members: List<String>?,
+
         @SerializedName("locale")
         val locale: String?
 
@@ -284,6 +287,7 @@ data class Channel(
             parcel.readParcelable(TopicPurpose::class.java.classLoader),
             parcel.createStringArrayList(),
             parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.createStringArrayList(),
             parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -318,6 +322,7 @@ data class Channel(
         parcel.writeParcelable(purpose, flags)
         parcel.writeStringList(previousNames)
         parcel.writeValue(numMembers)
+        parcel.writeStringList(members)
         parcel.writeString(locale)
     }
 

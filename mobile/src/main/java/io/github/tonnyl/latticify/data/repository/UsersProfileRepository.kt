@@ -10,7 +10,7 @@ import io.reactivex.Observable
 /**
  * Created by lizhaotailang on 09/10/2017.
  */
-object UsersProfileRepository : UsersProfileDataSource {
+class UsersProfileRepository : UsersProfileDataSource {
 
     private val mUsersProfileService = RetrofitClient.createService(UsersProfileService::class.java, AccessTokenManager.getAccessToken())
     private val mToken = AccessTokenManager.getAccessToken().accessToken

@@ -1,6 +1,8 @@
 package io.github.tonnyl.latticify.ui.channel
 
 import com.airbnb.epoxy.EpoxyModel
+import io.github.tonnyl.latticify.data.Channel
+import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.mvp.BasePresenter
 import io.github.tonnyl.latticify.mvp.BaseView
 
@@ -27,6 +29,10 @@ interface ChannelContract {
 
         fun showErrorView()
 
+        fun gotoMessageDetails(message: Message)
+
+        fun gotoChannelDetails(channel: Channel)
+
     }
 
     interface Presenter : BasePresenter {
@@ -46,6 +52,8 @@ interface ChannelContract {
         fun connectWebSocket()
 
         fun disconnectWebSocket()
+
+        fun viewDetails()
 
     }
 

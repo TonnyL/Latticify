@@ -34,19 +34,22 @@ data class UsersProfile(
         val image192: String,
 
         @SerializedName("image_512")
-        val image512: String,
+        val image512: String?,
 
         @SerializedName("image_1024")
-        val image1024: String,
+        val image1024: String?,
 
         @SerializedName("image_original")
-        val imageOriginal: String,
+        val imageOriginal: String?,
 
         @SerializedName("status_text")
-        val statusText: String,
+        val statusText: String?,
 
         @SerializedName("status_emoji")
-        val statusEmoji: String,
+        val statusEmoji: String?,
+
+        @SerializedName("title")
+        val title: String?,
 
         @SerializedName("real_name")
         val realName: String,
@@ -61,16 +64,22 @@ data class UsersProfile(
         val displayNameNormalized: String,
 
         @SerializedName("email")
-        val email: String,
+        val email: String?,
 
         @SerializedName("phone")
         val phone: String?,
 
         @SerializedName("skype")
-        val skype: String?
+        val skype: String?,
+
+        @SerializedName("team")
+        val team: String?
 
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -106,6 +115,7 @@ data class UsersProfile(
         parcel.writeString(imageOriginal)
         parcel.writeString(statusText)
         parcel.writeString(statusEmoji)
+        parcel.writeString(title)
         parcel.writeString(realName)
         parcel.writeString(displayName)
         parcel.writeString(realNameNormalized)
@@ -113,6 +123,7 @@ data class UsersProfile(
         parcel.writeString(email)
         parcel.writeString(phone)
         parcel.writeString(skype)
+        parcel.writeString(team)
     }
 
     override fun describeContents(): Int = 0
@@ -126,5 +137,6 @@ data class UsersProfile(
             return arrayOfNulls(size)
         }
     }
+
 
 }

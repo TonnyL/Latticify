@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_invite_members"
-        android:title="Invite members"
+        android:id="@+id/action_view_details"
+        android:title="@string/menu_view_details"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_set_status"
-        android:title="Set status"
+        android:id="@+id/action_invite_members_to_channel"
+        android:title="@string/menu_invite_members_to_channel"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_directory"
-        android:title="Directory"
+    <item
+        android:id="@+id/action_directory"
+        android:title="@string/menu_directory"
         app:showAsAction="never" />
 
 

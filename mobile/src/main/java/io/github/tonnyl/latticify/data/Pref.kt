@@ -23,5 +23,5 @@ data class Pref(
         val channels: ArrayList<Channel>,
 
         @SerializedName("groups")
-        val groups: ArrayList<Group>
+        val groups: ArrayList<Channel>
 )

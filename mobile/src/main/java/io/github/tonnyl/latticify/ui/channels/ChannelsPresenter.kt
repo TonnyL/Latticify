@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.ui.channels
 
+import android.content.Intent
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
@@ -12,7 +13,6 @@ import io.github.tonnyl.latticify.ui.channel.ChannelPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.startActivity
 
 /**
  * Created by lizhaotailang on 24/09/2017.
@@ -38,13 +38,18 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     mView.setLoadingIndicator(false)
-                    with(it.channels) {
-                        if (this.isNotEmpty()) {
-                            mView.showData(generateEpoxyModels(this))
-                        } else {
-                            mView.showEmptyView()
+                    if (it.ok) {
+                        with(it.channels) {
+                            if (this.isNotEmpty()) {
+                                mView.showData(generateEpoxyModels(this))
+                            } else {
+                                mView.showEmptyView()
+                            }
                         }
+                    } else {
+                        mView.showErrorView()
                     }
+
                     it.responseMetaData?.let {
                         mCursor = it.nextCursor
                     }
@@ -65,7 +70,7 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                     .subscribe({
                         mView.showLoadingMore(false)
 
-                        if (it.channels.isNotEmpty()) {
+                        if (it.ok && it.channels.isNotEmpty()) {
                             mView.showDataOfNextPage(generateEpoxyModels(it.channels))
                         }
 
@@ -77,6 +82,8 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         mView.showLoadingMore(false)
                     })
             mCompositeDisposable.add(disposable)
+        } else {
+            mView.showLoadingMore(false)
         }
     }
 
@@ -91,7 +98,8 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         .channel(channel as Channel)
                         .itemOnClickListener(View.OnClickListener {
                             with(it.context) {
-                                startActivity<ChannelActivity>(ChannelPresenter.KEY_EXTRA_CHANNEL to channel)
+                                mView.gotoActivity(Intent(this, ChannelActivity::class.java)
+                                        .apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
                             }
                         })
             }

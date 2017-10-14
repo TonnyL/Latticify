@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="key_mute_channel"
+        android:summary="@string/mute_channel_description"
+        android:title="@string/mute_channel" />
+
+    <SwitchPreference
+        android:key="key_ignore_at"
+        android:title="@string/ignore_at_channel_and_at_here" />
+
+    <ListPreference
+        android:defaultValue="all"
+        android:entries="@array/notification_type_titles"
+        android:entryValues="@array/notification_type_values"
+        android:key="key_notification_types"
+        android:title="@string/notifications_range" />
+
+</PreferenceScreen>

@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.mvp
 
+import android.content.Intent
 import com.airbnb.epoxy.EpoxyModel
 
 /**
@@ -24,6 +25,8 @@ interface ListContract {
         fun showEmptyView()
 
         fun showErrorView()
+
+        fun gotoActivity(intent: Intent)
 
     }
 

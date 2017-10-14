@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fileItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="?selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:background="@drawable/bg_avatar"
+        android:padding="@dimen/avatar_padding"
+        android:src="@drawable/ic_folder_black_24dp"
+        android:tint="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin_half"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fileNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/text_body_size"
+            tools:text="Tonny L" />
+
+        <TextView
+            android:id="@+id/fileDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="@dimen/text_body_size"
+            tools:text="Tonny • Aug 24, 2017" />
+
+    </LinearLayout>
+
+</LinearLayout>

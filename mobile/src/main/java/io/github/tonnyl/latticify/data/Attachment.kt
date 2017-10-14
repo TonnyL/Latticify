@@ -29,6 +29,9 @@ data class Attachment(
         @SerializedName("title")
         val title: String,
 
+        @SerializedName("title_link")
+        val titleLink: String?,
+
         @SerializedName("thumb_url")
         val thumbUrl: String,
 
@@ -55,11 +58,13 @@ data class Attachment(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
             parcel.createStringArrayList())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(thumbUrl)
+        parcel.writeString(titleLink)
         parcel.writeString(thumbWidth)
         parcel.writeString(thumbHeight)
         parcel.writeString(text)

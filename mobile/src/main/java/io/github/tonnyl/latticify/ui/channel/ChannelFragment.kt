@@ -1,15 +1,22 @@
 package io.github.tonnyl.latticify.ui.channel
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.R
+import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
+import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
+import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
+import io.github.tonnyl.latticify.ui.message.MessageActivity
+import io.github.tonnyl.latticify.ui.message.MessagePresenter
 import kotlinx.android.synthetic.main.fragment_list.*
 
 /**
@@ -90,6 +97,15 @@ class ChannelFragment : Fragment(), ChannelContract.View {
             android.R.id.home -> {
                 activity.onBackPressed()
             }
+            R.id.action_view_details -> {
+                mPresenter.viewDetails()
+            }
+            R.id.action_invite_members_to_channel -> {
+
+            }
+            R.id.action_directory -> {
+
+            }
         }
         return true
     }
@@ -99,7 +115,6 @@ class ChannelFragment : Fragment(), ChannelContract.View {
             R.id.action_copy_text -> {
 
             }
-
             R.id.action_share -> {
 
             }
@@ -152,6 +167,16 @@ class ChannelFragment : Fragment(), ChannelContract.View {
 
     override fun showErrorView() {
         errorView.visibility = View.VISIBLE
+    }
+
+    override fun gotoChannelDetails(channel: Channel) {
+        context.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) },
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+    }
+
+    override fun gotoMessageDetails(message: Message) {
+        context.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) },
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
     }
 
 }

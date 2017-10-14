@@ -12,27 +12,26 @@ import io.github.tonnyl.latticify.data.repository.GroupsRepository
 import io.github.tonnyl.latticify.data.repository.IMRepository
 import io.github.tonnyl.latticify.data.repository.RtmRepository
 import io.github.tonnyl.latticify.epoxy.MessageModel_
-import io.github.tonnyl.latticify.ui.message.MessageActivity
-import io.github.tonnyl.latticify.ui.message.MessagePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.*
-import org.jetbrains.anko.startActivity
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 
 /**
  * Created by lizhaotailang on 06/10/2017.
  *
  */
-class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelContract.Presenter {
+class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelContract.Presenter {
 
     override var mOldestMessageTs: String = ""
     override var mHasMore: Boolean = false
 
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
     private val mView = view
-    private var mChannelId = channel.id
-    private val mChannel = channel
+    private var mChannelId = channelId
+    private var mChannel: Channel? = null
     private var mWebSocketUrl = ""
     private val mOkHttpClient = OkHttpClient()
     private var mRequest: Request? = null
@@ -50,6 +49,10 @@ class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelCo
         mChannelId = mChannelId
     }
 
+    constructor(view: ChannelContract.View, channel: Channel) : this(view, channel.id) {
+        mChannel = channel
+    }
+
     override fun subscribe() {
         mView.setLoadingIndicator(true)
         fetchData()
@@ -62,11 +65,17 @@ class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelCo
     }
 
     override fun fetchData() {
-        val disposable = (when {
-            mChannel.isPrivate == true -> GroupsRepository.history(mChannelId)
-            mChannel.isChannel == true -> ChannelsRepository.history(mChannelId)
-            else -> IMRepository.history(mChannelId)
-        }).subscribeOn(Schedulers.io())
+        val disposable = ChannelsRepository.info(mChannelId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    mChannel = it.channel
+                    (when {
+                        mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId)
+                        mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId)
+                        else -> IMRepository.history(mChannelId)
+                    })
+                }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     mView.setLoadingIndicator(false)
@@ -96,8 +105,8 @@ class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelCo
         if (mHasMore && mOldestMessageTs.isNotEmpty()) {
             mView.showLoadingMore(true)
             val disposable = (when {
-                mChannel.isPrivate == true -> GroupsRepository.history(mChannelId, oldest = mOldestMessageTs)
-                mChannel.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mOldestMessageTs)
+                mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, oldest = mOldestMessageTs)
+                mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mOldestMessageTs)
                 else -> IMRepository.history(mChannelId, oldest = mOldestMessageTs)
             }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -127,17 +136,17 @@ class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelCo
                         MessageModel_()
                                 .message(message as Message)
                                 .itemOnClickListener(View.OnClickListener {
-                                    it.context.startActivity<MessageActivity>(MessagePresenter.KEY_EXTRA_MESSAGE to message)
+                                    mView.gotoMessageDetails(message)
                                 })
                                 .itemOnCreateContextMenuListener({ menu, _, _ ->
                                     menu.add(Menu.NONE, R.id.action_copy_text, 0, "Copy text")
                                     menu.add(Menu.NONE, R.id.action_share, 0, "Share")
                                 })
-                                .directMessage(mChannel.isIm ?: false)
+                                .directMessage(mChannel?.isIm ?: false)
                     }
 
     override fun fetchRtm() {
-        val disposable = RtmRepository.connect(0)
+        val disposable = RtmRepository().connect(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -183,6 +192,12 @@ class ChannelPresenter(view: ChannelContract.View, channel: Channel) : ChannelCo
 
     override fun disconnectWebSocket() {
 
+    }
+
+    override fun viewDetails() {
+        mChannel?.let {
+            mView.gotoChannelDetails(it)
+        }
     }
 
 }

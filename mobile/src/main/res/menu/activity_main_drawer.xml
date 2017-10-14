@@ -9,15 +9,23 @@
         <item
             android:id="@+id/nav_direct_messages"
             android:icon="@drawable/ic_message_black_24dp"
-            android:title="@string/messages" />
+            android:title="@string/nav_messages" />
         <item
             android:id="@+id/nav_channels"
             android:icon="@drawable/ic_channel_black_24dp"
-            android:title="@string/channels" />
+            android:title="@string/nav_channels" />
+        <item
+            android:id="@+id/nav_groups"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="@string/nav_groups" />
+        <item
+            android:id="@+id/nav_directory"
+            android:icon="@drawable/ic_contacts_black_24dp"
+            android:title="@string/directory" />
         <item
             android:id="@+id/nav_starred_items"
             android:icon="@drawable/ic_star_black_24dp"
-            android:title="@string/starred" />
+            android:title="@string/nav_starred" />
     </group>
 
     <group
@@ -26,11 +34,11 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/settings" />
+            android:title="@string/nav_settings" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info_black_24dp"
-            android:title="@string/about" />
+            android:title="@string/nav_about" />
     </group>
 
 </menu>

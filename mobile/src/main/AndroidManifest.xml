@@ -63,6 +63,51 @@
             android:label="@string/profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".ui.channel.profile.ChannelProfileActivity"
+            android:label="@string/channel_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.status.SetStatusActivity"
+            android:label="@string/set_status"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.channels.add.AddChannelActivity"
+            android:label="@string/add_channel"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:label="@string/about"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.invite.InviteActivity"
+            android:label="@string/invite_members_to_team"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:label="@string/search"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.channel.edit.EditChannelActivity"
+            android:label="@string/edit_channel"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.channel.notifications.NotificationsActivity"
+            android:label="@string/notifications"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

@@ -428,7 +428,7 @@ data class File(
          * The [pinnedTo] array contains the IDs of any channels to which the file is currently pinned.
          */
         @SerializedName("pinned_to")
-        val pinnedTo: List<String>,
+        val pinnedTo: List<String>?,
 
         /**
          * The [reactions] property contains any reactions that have been added to the file
@@ -443,12 +443,19 @@ data class File(
          * regardless of whether count is greater than users.length or not.
          */
         @SerializedName("reactions")
-        val reactions: List<Reaction>,
+        val reactions: List<Reaction>?,
 
         @SerializedName("comments_count")
-        val commentsCount: Int
+        val commentsCount: Int,
+
+        @SerializedName("score")
+        val score: String?,
+
+        @SerializedName("top_file")
+        val topFile: Boolean?
 
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readLong(),
@@ -510,7 +517,9 @@ data class File(
             parcel.readByte() != 0.toByte(),
             parcel.createStringArrayList(),
             parcel.createTypedArrayList(Reaction),
-            parcel.readInt())
+            parcel.readInt(),
+            parcel.readString(),
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -523,7 +532,8 @@ data class File(
         parcel.writeString(prettyType)
         parcel.writeString(user)
         parcel.writeString(mode)
-        parcel.writeByte(if (editable) 1.toByte() else 0.toByte())
+        parcel.writeByte(if (editable) 1 else 0)
+        parcel.writeByte(if (isExternal) 1 else 0)
         parcel.writeString(externalType)
         parcel.writeString(username)
         parcel.writeLong(size)
@@ -561,18 +571,20 @@ data class File(
         parcel.writeString(previewHighlight)
         parcel.writeLong(lines)
         parcel.writeLong(linesMore)
-        parcel.writeByte(if (isPublic) 1.toByte() else 0.toByte())
-        parcel.writeByte(if (publicUrlShared) 1.toByte() else 0.toByte())
-        parcel.writeByte(if (displayAsBot) 1.toByte() else 0.toByte())
+        parcel.writeByte(if (isPublic) 1 else 0)
+        parcel.writeByte(if (publicUrlShared) 1 else 0)
+        parcel.writeByte(if (displayAsBot) 1 else 0)
         parcel.writeStringList(channels)
         parcel.writeStringList(groups)
         parcel.writeStringList(ims)
         parcel.writeParcelable(initialComment, flags)
         parcel.writeInt(numStars)
-        parcel.writeByte(if (isStarred) 1.toByte() else 0.toByte())
+        parcel.writeByte(if (isStarred) 1 else 0)
         parcel.writeStringList(pinnedTo)
         parcel.writeTypedList(reactions)
         parcel.writeInt(commentsCount)
+        parcel.writeString(score)
+        parcel.writeValue(topFile)
     }
 
     override fun describeContents(): Int = 0
@@ -586,5 +598,6 @@ data class File(
             return arrayOfNulls(size)
         }
     }
+
 
 }

@@ -46,7 +46,7 @@ interface UsersService {
      *
      * @param token Required. Authentication token bearing required scopes.
      * @param userId Required. User to get info on. e.g. W1234567890.
-     * @param includeLocale Optional. Set this to true to receive the locale for this user. Defaults to false
+     * @param includeLocale Optional. Set this to true to receive the locale for this user. Defaults to true.
      *
      * @return If successful, the command returns a [UserWrapper] object.
      */
@@ -54,7 +54,7 @@ interface UsersService {
     @FormUrlEncoded
     fun info(@Field("token") token: String,
              @Field("user") userId: String,
-             @Field("include_locale") includeLocale: Boolean = false): Observable<UserWrapper>
+             @Field("include_locale") includeLocale: Boolean = true): Observable<UserWrapper>
 
     /**
      * Lists all users in a Slack team.
@@ -72,8 +72,8 @@ interface UsersService {
     @POST("users.list")
     @FormUrlEncoded
     fun list(@Field("token") token: String,
-             @Field("cursor") cursor: String,
-             @Field("include_locale") includeLocale: Boolean = false,
+             @Field("cursor") cursor: String = "",
+             @Field("include_locale") includeLocale: Boolean = true,
              @Field("limit") limit: Int = Api.LIMIT,
              @Field("presence") presence: Boolean = true): Observable<UserListWrapper>
 

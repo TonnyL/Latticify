@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.ui.ims
 
+import android.content.Intent
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
@@ -12,7 +13,6 @@ import io.github.tonnyl.latticify.ui.channel.ChannelPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.startActivity
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -86,9 +86,7 @@ class IMsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         ChannelModel_()
                                 .channel(channel as Channel)
                                 .itemOnClickListener(View.OnClickListener {
-                                    with(it.context) {
-                                        startActivity<ChannelActivity>(ChannelPresenter.KEY_EXTRA_CHANNEL to channel)
-                                    }
+                                    mView.gotoActivity(Intent(it.context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
                                 })
                     }
 

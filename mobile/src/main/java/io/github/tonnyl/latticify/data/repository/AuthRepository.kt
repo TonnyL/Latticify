@@ -11,7 +11,7 @@ import io.reactivex.Observable
 /**
  * Created by lizhaotailang on 10/10/2017.
  */
-object AuthRepository : AuthDataSource {
+class AuthRepository : AuthDataSource {
 
     private val mAuthService = RetrofitClient.createService(AuthService::class.java, AccessTokenManager.getAccessToken())
     private val mToken = AccessTokenManager.getAccessToken().accessToken
