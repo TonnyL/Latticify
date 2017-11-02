@@ -4,9 +4,9 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
+import com.google.gson.Gson
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.Channel
-import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.repository.ChannelsRepository
 import io.github.tonnyl.latticify.data.repository.GroupsRepository
 import io.github.tonnyl.latticify.data.repository.IMRepository
@@ -15,9 +15,8 @@ import io.github.tonnyl.latticify.epoxy.MessageModel_
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
+import okhttp3.*
+import okio.ByteString
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -32,10 +31,9 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
     private val mView = view
     private var mChannelId = channelId
     private var mChannel: Channel? = null
-    private var mWebSocketUrl = ""
-    private val mOkHttpClient = OkHttpClient()
-    private var mRequest: Request? = null
     private var mWebSocket: WebSocket? = null
+    private var mRtmResponseMessage: RtmResponseMessageWrapper? = null
+    private val mGson = Gson()
 
     companion object {
         @JvmField
@@ -55,13 +53,18 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
 
     override fun subscribe() {
         mView.setLoadingIndicator(true)
+
         fetchData()
 
-        fetchRtm()
+        connectWebSocket()
+
+        mChannel?.let { if (it.isChannel == true) mView.showChannel(it) }
     }
 
     override fun unsubscribe() {
         mCompositeDisposable.clear()
+
+        mWebSocket?.cancel()
     }
 
     override fun fetchData() {
@@ -145,15 +148,19 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
                                 .directMessage(mChannel?.isIm ?: false)
                     }
 
-    override fun fetchRtm() {
-        val disposable = RtmRepository().connect(0)
+    override fun viewDetails() {
+        mChannel?.let {
+            mView.gotoChannelDetails(it)
+        }
+    }
+
+    override fun connectWebSocket() {
+        val disposable = RtmRepository.connect(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    mWebSocketUrl = it.url
-                    Log.d("url", "" + it)
-                    /*mRequest = Request.Builder().url(mWebSocketUrl).build()
-                    mWebSocket = mOkHttpClient.newWebSocket(mRequest, object : WebSocketListener() {
+                    mRtmResponseMessage = it
+                    mWebSocket = OkHttpClient().newWebSocket(Request.Builder().url(it.url).build(), object : WebSocketListener() {
                         override fun onOpen(webSocket: WebSocket?, response: Response?) {
                             super.onOpen(webSocket, response)
                             Log.d("onOpen", "response -> $response")
@@ -162,6 +169,13 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
                         override fun onMessage(webSocket: WebSocket?, text: String?) {
                             super.onMessage(webSocket, text)
                             Log.d("onMessage", "text -> $text")
+                            text?.let {
+                                val msg = mGson.fromJson<RtmReceivedMessage>(it, RtmReceivedMessage::class.java)
+                                Log.d("onMessage", "message -> $text")
+                                if (msg.type == "typing") {
+
+                                }
+                            }
                         }
 
                         override fun onMessage(webSocket: WebSocket?, bytes: ByteString?) {
@@ -179,7 +193,7 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
                             Log.d("onFailure", "throwable -> ${t?.message} response -> $response")
                         }
 
-                    })*/
+                    })
                 }, {
                     it.printStackTrace()
                     Log.d("error", "" + it.message)
@@ -187,17 +201,25 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
         mCompositeDisposable.add(disposable)
     }
 
-    override fun connectWebSocket() {
-    }
-
-    override fun disconnectWebSocket() {
-
-    }
-
-    override fun viewDetails() {
-        mChannel?.let {
-            mView.gotoChannelDetails(it)
+    override fun sendMessage(content: String) {
+        mRtmResponseMessage?.let {
+            mWebSocket?.send(mGson.toJson(RtmSendingMessage(it.rtmSelf.id, "message", mChannelId, content)))
         }
+    }
+
+    private fun getLatestOneMessage() {
+        val disposable = (when {
+            mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
+            mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
+            else -> IMRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
     }
 
 }

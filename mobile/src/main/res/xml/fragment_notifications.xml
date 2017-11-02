@@ -15,6 +15,7 @@
         android:entries="@array/notification_type_titles"
         android:entryValues="@array/notification_type_values"
         android:key="key_notification_types"
+        android:summary="%1$s"
         android:title="@string/notifications_range" />
 
 </PreferenceScreen>

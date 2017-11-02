@@ -110,5 +110,7 @@
     <string name="ignore_at_channel_and_at_here">Ignore @channel and @here</string>
     <string name="notifications_range">On mobile, notify me about…</string>
 
+    <string name="channel_members_1">1 member</string>
+    <string name="channel_members">%1$d members</string>
 
 </resources>

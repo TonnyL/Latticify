@@ -29,6 +29,8 @@ interface ChannelContract {
 
         fun showErrorView()
 
+        fun showChannel(channel: Channel)
+
         fun gotoMessageDetails(message: Message)
 
         fun gotoChannelDetails(channel: Channel)
@@ -47,13 +49,11 @@ interface ChannelContract {
 
         fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>>
 
-        fun fetchRtm()
-
         fun connectWebSocket()
 
-        fun disconnectWebSocket()
-
         fun viewDetails()
+
+        fun sendMessage(content: String)
 
     }
 

@@ -16,6 +16,8 @@ import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelActivity
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelPresenter
+import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsActivity
+import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsPresenter
 import io.github.tonnyl.latticify.util.AccessTokenManager
 import kotlinx.android.synthetic.main.fragment_channel_details.*
 
@@ -31,11 +33,11 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         fun newInstance() = ChannelProfileFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_channel_details, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_channel_details, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
@@ -51,7 +53,7 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == android.R.id.home) {
-            activity.onBackPressed()
+            activity?.onBackPressed()
         }
         return true
     }
@@ -73,9 +75,19 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         archiveDescriptionTextView.text = getString(R.string.archive_description).format(channel.name)
 
         editTextView.setOnClickListener {
-            startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+            activity?.let {
+                startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            }
         }
+
+        notificationsTextView.setOnClickListener {
+            activity?.let {
+                startActivity(Intent(context, NotificationsActivity::class.java).apply { putExtra(NotificationsPresenter.KEY_EXTRA_CHANNEL, channel) },
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            }
+        }
+
     }
 
     override fun showPinnedItems(epoxyModels: Collection<EpoxyModel<*>>) {

@@ -6,6 +6,8 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.R
@@ -18,6 +20,7 @@ import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
 import io.github.tonnyl.latticify.ui.message.MessageActivity
 import io.github.tonnyl.latticify.ui.message.MessagePresenter
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.layout_input.*
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -38,14 +41,17 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         fun newInstance(): ChannelFragment = ChannelFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_channel, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_channel, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         swipeRefreshLayout.isEnabled = false
-        swipeRefreshLayout.setColorSchemeColors(context.getColor(R.color.colorAccent))
+        context?.let {
+            swipeRefreshLayout.setColorSchemeColors(it.getColor(R.color.colorAccent))
+        }
         swipeRefreshLayout.setOnRefreshListener {
             mPresenter.fetchData()
         }
@@ -74,6 +80,29 @@ class ChannelFragment : Fragment(), ChannelContract.View {
             })
         }
 
+        messageEditText.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(editable: Editable?) {
+                sendMessageImageView.isEnabled = !editable.isNullOrBlank()
+            }
+
+            override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        sendMessageImageView.setOnClickListener {
+            if (messageEditText.text.toString().isNotBlank()) {
+                mPresenter.sendMessage(messageEditText.text.toString())
+            }
+            messageEditText.setText("")
+        }
+
         setHasOptionsMenu(true)
 
         mPresenter.subscribe()
@@ -95,7 +124,7 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         val id = item?.itemId
         when (id) {
             android.R.id.home -> {
-                activity.onBackPressed()
+                activity?.onBackPressed()
             }
             R.id.action_view_details -> {
                 mPresenter.viewDetails()
@@ -169,14 +198,27 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         errorView.visibility = View.VISIBLE
     }
 
+    override fun showChannel(channel: Channel) {
+        with(activity as ChannelActivity) {
+            supportActionBar?.title = channel.name
+            channel.numMembers?.let {
+                supportActionBar?.subtitle = if (channel.numMembers == 1) getString(R.string.channel_members_1) else getString(R.string.channel_members).format(channel.numMembers)
+            }
+        }
+    }
+
     override fun gotoChannelDetails(channel: Channel) {
-        context.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) },
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+        activity?.let {
+            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) },
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+        }
     }
 
     override fun gotoMessageDetails(message: Message) {
-        context.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) },
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+        activity?.let {
+            context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) },
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+        }
     }
 
 }

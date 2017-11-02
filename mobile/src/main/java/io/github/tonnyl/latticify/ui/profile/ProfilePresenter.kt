@@ -162,18 +162,18 @@ class ProfilePresenter(view: ProfileContract.View) : ProfileContract.Presenter {
                                 .title(when {
                                     hours > 0 -> {
                                         if (hours == 1L)
-                                            context.getString(R.string.timezone_behind_1_hour).format(tzLabel)
+                                            context?.getString(R.string.timezone_behind_1_hour)?.format(tzLabel) ?: ""
                                         else
-                                            context.getString(R.string.timezone_behind_n_hours).format(hours, tzLabel)
+                                            context?.getString(R.string.timezone_behind_n_hours)?.format(hours, tzLabel) ?: ""
                                     }
                                     hours == 0L -> {
-                                        (mView as Fragment).context.getString(R.string.timezone_same).format(tzLabel)
+                                        (mView as Fragment).context?.getString(R.string.timezone_same)?.format(tzLabel) ?: ""
                                     }
                                     else -> {
                                         if (hours == -1L)
-                                            context.getString(R.string.timezone_ahead_1_hour).format(tzLabel)
+                                            context?.getString(R.string.timezone_ahead_1_hour)?.format(tzLabel) ?: ""
                                         else
-                                            context.getString(R.string.timezone_ahead_n_hours).format(-hours, tzLabel)
+                                            context?.getString(R.string.timezone_ahead_n_hours)?.format(-hours, tzLabel) ?: ""
                                     }
                                 })
                                 .icon1ResId(R.drawable.ic_access_time_black_24dp)

@@ -35,6 +35,7 @@ import io.github.tonnyl.latticify.ui.starred.StarredItemsPresenter
 import io.github.tonnyl.latticify.ui.status.SetStatusActivity
 import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -51,7 +52,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val mFragments = mutableListOf<Fragment>()
 
-    private var checkedItemId = 0
+    private var mCheckedItemId = 0
+
+    private val mCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initViews()
 
         fab.setOnClickListener {
-            when (checkedItemId) {
+            when (mCheckedItemId) {
                 R.id.nav_direct_messages -> {
 
                 }
@@ -87,6 +90,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         getTeamInfo()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mCompositeDisposable.clear()
     }
 
     override fun onBackPressed() {
@@ -133,22 +142,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_direct_messages -> {
                 showFragmentAndHideRest(mImsFragment)
                 titleTextView.text = getString(R.string.nav_messages)
-                checkedItemId = R.id.nav_direct_messages
+                mCheckedItemId = R.id.nav_direct_messages
             }
             R.id.nav_channels -> {
                 showFragmentAndHideRest(mChannelsFragment)
                 titleTextView.text = getString(R.string.nav_channels)
-                checkedItemId = R.id.nav_channels
+                mCheckedItemId = R.id.nav_channels
             }
             R.id.nav_groups -> {
                 showFragmentAndHideRest(mGroupsFragment)
                 titleTextView.text = getString(R.string.nav_groups)
-                checkedItemId = R.id.nav_groups
+                mCheckedItemId = R.id.nav_groups
             }
             R.id.nav_directory -> {
                 showFragmentAndHideRest(mDirectoryFragment)
                 titleTextView.text = getString(R.string.directory)
-                checkedItemId = R.id.nav_directory
+                mCheckedItemId = R.id.nav_directory
             }
             R.id.nav_starred_items -> {
                 showFragmentAndHideRest(mStarredItemsFragment)
@@ -176,7 +185,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
         navView.setCheckedItem(R.id.nav_direct_messages)
-        checkedItemId = R.id.nav_direct_messages
+        mCheckedItemId = R.id.nav_direct_messages
 
         mChannelsFragment = ChannelsFragment.newInstance()
         mImsFragment = IMsFragment.newInstance()
@@ -217,7 +226,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun getMyInfo() {
-        AccessTokenManager.getAccessToken().userId?.let {
+        val disposable = AccessTokenManager.getAccessToken().userId?.let {
             UsersRepository.info(it)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -234,10 +243,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     })
         }
+        disposable?.let {
+            mCompositeDisposable.add(it)
+        }
     }
 
     private fun getTeamInfo() {
-        TeamRepository.info()
+        val disposable = TeamRepository.info()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -252,7 +264,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }, {
                     it.printStackTrace()
                 })
-
+        mCompositeDisposable.add(disposable)
     }
 
     private fun showSnoozeNotificationsDialog() {

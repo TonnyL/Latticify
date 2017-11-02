@@ -17,7 +17,7 @@ class Api private constructor() {
 
         val SLACK_AUTHORIZE_CALLBACK_URI = "https://tonnyl.github.io/callback"
         val SLACK_AUTHORIZE_CALLBACK_URI_HOST = "tonnyl.github.io"
-        val SLACK_AUTHORIZE_SCOPE = "admin+commands" + // others
+        /*val SLACK_AUTHORIZE_SCOPE = "admin+commands" + // others
                 "+channels:history+channels:read+channels:write" + // channels
                 "+chat:write:bot+chat:write:user" + // chat
                 "+dnd:read+dnd:write" + // dnd
@@ -35,7 +35,8 @@ class Api private constructor() {
                 "+team:read" + // team
                 "+usergroups:read+usergroups:write" + // user groups
                 "+users.profile:read+users.profile:write" + // user's profile
-                "+users:read+users:read.email+users:write" // users
+                "+users:read+users:read.email+users:write" // users*/
+        val SLACK_AUTHORIZE_SCOPE = "client"
 
         val LIMIT = 20
     }

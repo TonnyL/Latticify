@@ -24,14 +24,16 @@ abstract class ListFragment : Fragment(), ListContract.View {
 
     private var mIsLoading = false
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swipeRefreshLayout.setColorSchemeColors(context.getColor(R.color.colorAccent))
+        context?.let {
+            swipeRefreshLayout.setColorSchemeColors(it.getColor(R.color.colorAccent))
+        }
         swipeRefreshLayout.setOnRefreshListener {
             mPresenter.fetchData()
             mIsLoading = true
@@ -110,7 +112,9 @@ abstract class ListFragment : Fragment(), ListContract.View {
     }
 
     override fun gotoActivity(intent: Intent) {
-        startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+        activity?.let {
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+        }
     }
 
 }

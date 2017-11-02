@@ -21,7 +21,7 @@ class NotificationsActivity : AppCompatActivity() {
 
         mNotificationsFragment = NotificationsFragment.newInstance()
 
-        NotificationsPresenter(mNotificationsFragment)
+        NotificationsPresenter(mNotificationsFragment, intent.getParcelableExtra(NotificationsPresenter.KEY_EXTRA_CHANNEL))
 
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, mNotificationsFragment, NotificationsFragment::class.java.simpleName)

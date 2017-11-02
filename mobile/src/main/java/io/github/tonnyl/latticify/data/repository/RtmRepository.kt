@@ -10,7 +10,7 @@ import io.reactivex.Observable
 /**
  * Created by lizhaotailang on 10/10/2017.
  */
-class RtmRepository : RtmDataSource {
+object RtmRepository : RtmDataSource {
 
     private val mRtmService = RetrofitClient.createService(RtmService::class.java, AccessTokenManager.getAccessToken())
     private val mToken = AccessTokenManager.getAccessToken().accessToken

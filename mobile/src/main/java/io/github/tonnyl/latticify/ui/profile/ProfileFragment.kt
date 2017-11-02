@@ -33,11 +33,11 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         fun newInstance(): ProfileFragment = ProfileFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_profile, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
@@ -67,7 +67,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                activity.onBackPressed()
+                activity?.onBackPressed()
             }
             R.id.action_edit -> {
 
@@ -118,8 +118,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun gotoChannel(channel: Channel) {
-        context.startActivity(Intent(context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle())
+        activity?.let {
+            context?.startActivity(Intent(context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+        }
     }
 
     private fun initViews() {

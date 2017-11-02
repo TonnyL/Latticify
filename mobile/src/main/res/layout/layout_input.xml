@@ -15,6 +15,7 @@
         android:tint="@color/textColorSecondary" />
 
     <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/messageEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -25,6 +26,7 @@
         android:textSize="15sp" />
 
     <ImageView
+        android:id="@+id/sendMessageImageView"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="end"

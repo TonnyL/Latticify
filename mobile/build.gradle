@@ -18,7 +18,7 @@ android {
         versionName configuration.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        if (isTravisCi == true) {
+        if (isTravisCi == "true") {
             buildConfigField "String", "CLIENT_ID", "\"${System.getenv("CLIENT_ID")}\""
             buildConfigField "String", "CLIENT_SECRET", "\"${System.getenv(CLIENT_SECRET)}\""
             buildConfigField "String", "VERIFICATION_TOKEN", "\"${System.getenv(VERIFICATION_TOKEN)}\""
@@ -28,6 +28,12 @@ android {
             buildConfigField "String", "CLIENT_ID", "\"${properties.CLIENT_ID}\""
             buildConfigField "String", "CLIENT_SECRET", "\"${properties.CLIENT_SECRET}\""
             buildConfigField "String", "VERIFICATION_TOKEN", "\"${properties.VERIFICATION_TOKEN}\""
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
         }
 
     }
@@ -87,9 +93,16 @@ dependencies {
     // Matisse
     implementation "com.zhihu.android:matisse:${libraries.matisseVersion}"
     implementation "com.google.android:flexbox:${libraries.flexBoxVersion}"
+    implementation "com.airbnb.android:lottie:${libraries.lottieVersion}"
 
     // GMS
     implementation "com.google.android.gms:play-services-wearable:${libraries.gmsWearableVersion}"
+
+    // Database
+    // Room
+    implementation "android.arch.persistence.room:runtime:${libraries.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${libraries.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${libraries.roomVersion}"
 
     // Test
     // JUnit

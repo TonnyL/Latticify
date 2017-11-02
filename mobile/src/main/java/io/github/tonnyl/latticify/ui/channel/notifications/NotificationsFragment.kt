@@ -19,7 +19,7 @@ class NotificationsFragment : PreferenceFragmentCompat(), NotificationsContract.
         fun newInstance() = NotificationsFragment()
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
@@ -56,7 +56,7 @@ class NotificationsFragment : PreferenceFragmentCompat(), NotificationsContract.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                activity.onBackPressed()
+                activity?.onBackPressed()
             }
         }
         return true
