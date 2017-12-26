@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.10'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha01'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha06'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -29,29 +29,29 @@ ext {
             compileSdkVersion: 27,
             targetSdkVersion : 27,
             minSdkVersion    : 23,
-            buildToolsVersion: '27.0.0',
+            buildToolsVersion: '27.0.3',
             versionCode      : 1,
             versionName      : "1.0"
     ]
 
     // App dependencies
     libraries = [
-            roomVersion             : '1.0.0-rc1',
+            roomVersion             : '1.0.0',
             lottieVersion           : '2.2.5',
-            supportLibraryVersion   : '27.0.0',
+            supportLibraryVersion   : '27.0.2',
             constraintLayoutVersion : '1.0.2',
             rxKotlinVersion         : '2.1.0',
             rxAndroidVersion        : '2.0.1',
             retrofitVersion         : '2.3.0',
-            epoxyVersion            : '2.5.0',
+            epoxyVersion            : '2.7.3',
             okhttpLoggingInterceptor: '3.9.0',
             glideVersion            : '4.1.1',
             matisseVersion          : '0.4.3',
             flexBoxVersion          : '0.3.1',
             wearableVersion         : '2.1.0',
-            gmsWearableVersion      : '11.4.2',
+            gmsWearableVersion      : '11.8.0',
             junitVersion            : '4.12',
-            espressoVersion         : '2.2.2'
+            espressoVersion         : '3.0.1'
     ]
 
 }

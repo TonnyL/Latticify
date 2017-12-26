@@ -5,7 +5,6 @@ apply plugin: 'kotlin-kapt'
 
 def configuration = rootProject.ext.configuration
 def libraries = rootProject.ext.libraries
-def isTravisCi = System.getenv("TRAVIS_CI")
 
 android {
     compileSdkVersion configuration.compileSdkVersion
@@ -18,16 +17,21 @@ android {
         versionName configuration.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        if (isTravisCi == "true") {
-            buildConfigField "String", "CLIENT_ID", "\"${System.getenv("CLIENT_ID")}\""
-            buildConfigField "String", "CLIENT_SECRET", "\"${System.getenv(CLIENT_SECRET)}\""
-            buildConfigField "String", "VERIFICATION_TOKEN", "\"${System.getenv(VERIFICATION_TOKEN)}\""
+        Properties properties = new Properties()
+        boolean hasPropertiesFile = false
+        if (project.rootProject.file('latticify.properties').exists()) {
+            hasPropertiesFile = true
+            properties.load(project.rootProject.file('latticify.properties').newDataInputStream())
+        }
+
+        if (hasPropertiesFile) {
+          buildConfigField "String", "CLIENT_ID", "\"${properties.CLIENT_ID}\""
+          buildConfigField "String", "CLIENT_SECRET", "\"${properties.CLIENT_SECRET}\""
+          buildConfigField "String", "VERIFICATION_TOKEN", "\"${properties.VERIFICATION_TOKEN}\""
         } else {
-            Properties properties = new Properties()
-            properties.load(new FileInputStream(rootProject.file("latticify.properties")))
-            buildConfigField "String", "CLIENT_ID", "\"${properties.CLIENT_ID}\""
-            buildConfigField "String", "CLIENT_SECRET", "\"${properties.CLIENT_SECRET}\""
-            buildConfigField "String", "VERIFICATION_TOKEN", "\"${properties.VERIFICATION_TOKEN}\""
+          buildConfigField "String", "CLIENT_ID", "\"${System.getenv("CLIENT_ID")}\""
+          buildConfigField "String", "CLIENT_SECRET", "\"${System.getenv("CLIENT_SECRET")}\""
+          buildConfigField "String", "VERIFICATION_TOKEN", "\"${System.getenv("VERIFICATION_TOKEN")}\""
         }
 
         javaCompileOptions {
