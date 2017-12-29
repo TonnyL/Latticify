@@ -4,6 +4,15 @@
     tools:showIn="navigation_view">
 
     <group
+        android:id="@+id/profile_group"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/nav_profile" />
+    </group>
+
+    <group
         android:id="@+id/main_group"
         android:checkableBehavior="single">
         <item

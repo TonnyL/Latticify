@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_reaction"
+        android:icon="@drawable/ic_emoji_black_24dp"
+        android:orderInCategory="1"
+        android:title="@string/add_reaction"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_comment"
+        android:icon="@drawable/ic_comment_black_24dp"
+        android:orderInCategory="2"
+        android:title="@string/comment"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_star_file"
+        android:orderInCategory="3"
+        android:title="@string/star_file"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_share_file"
+        android:orderInCategory="4"
+        android:title="@string/share_file"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_copy_link"
+        android:orderInCategory="6"
+        android:title="@string/copy_link"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="7"
+        android:title="@string/delete"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_open_in_browser"
+        android:orderInCategory="8"
+        android:title="@string/open_in_browser"
+        app:showAsAction="never" />
+
+</menu>

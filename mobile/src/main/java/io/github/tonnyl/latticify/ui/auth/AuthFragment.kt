@@ -36,9 +36,13 @@ class AuthFragment : Fragment(), AuthContract.View {
         mPresenter.subscribe()
 
         getStartedButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("${Api.SLACK_AUTHORIZE_URL}?client_id=${Api.CLIENT_ID}&redirect_uri=${Api.SLACK_AUTHORIZE_CALLBACK_URI}&scope=${Api.SLACK_AUTHORIZE_SCOPE}")
-            startActivity(intent)
+            val dataString = """
+                |${Api.SLACK_AUTHORIZE_URL}
+                |?client_id=${Api.CLIENT_ID}
+                |&redirect_uri=${Api.SLACK_AUTHORIZE_CALLBACK_URI}
+                |&scope=${Api.SLACK_AUTHORIZE_SCOPE}
+                """.trimMargin()
+            startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(dataString) })
         }
     }
 

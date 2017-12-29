@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 08/10/2017.
@@ -26,6 +27,8 @@ import com.google.gson.annotations.SerializedName
  * "channel": "C2147483705"
  * },
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class StarredPinnedItem(
 
         @SerializedName("type")
@@ -49,37 +52,4 @@ data class StarredPinnedItem(
         @SerializedName("created_by")
         val createdBy: String?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(Message::class.java.classLoader),
-            parcel.readParcelable(File::class.java.classLoader),
-            parcel.readParcelable(FileComment::class.java.classLoader),
-            parcel.readLong(),
-            parcel.readString())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(type)
-        parcel.writeString(channel)
-        parcel.writeParcelable(message, flags)
-        parcel.writeParcelable(file, flags)
-        parcel.writeParcelable(comment, flags)
-        parcel.writeLong(created)
-        parcel.writeString(createdBy)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<StarredPinnedItem> {
-        override fun createFromParcel(parcel: Parcel): StarredPinnedItem {
-            return StarredPinnedItem(parcel)
-        }
-
-        override fun newArray(size: Int): Array<StarredPinnedItem?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

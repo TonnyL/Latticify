@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by lizhaotailang on 13/10/2017.
  */
-data class SearchMessageMatchPreNext(
+data class SearchedMessageMatchPreNext(
 
         @SerializedName("type")
         val type: String,

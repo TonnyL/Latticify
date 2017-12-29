@@ -2,14 +2,10 @@ package io.github.tonnyl.latticify.ui.channel.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.text.format.DateUtils
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
@@ -27,6 +23,8 @@ import kotlinx.android.synthetic.main.fragment_channel_details.*
 class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
 
     private lateinit var mPresenter: ChannelProfileContract.Presenter
+
+    private var mMenu: Menu? = null
 
     companion object {
         @JvmStatic
@@ -51,11 +49,23 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         mPresenter.unsubscribe()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_channel_profile, menu)
+
+        mMenu = menu
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home) {
-            activity?.onBackPressed()
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+            }
+            R.id.action_star_channel -> {
+                mPresenter.starUnstarChannel()
+            }
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     override fun setPresenter(presenter: ChannelProfileContract.Presenter) {
@@ -76,15 +86,13 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
 
         editTextView.setOnClickListener {
             activity?.let {
-                startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+                startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
             }
         }
 
         notificationsTextView.setOnClickListener {
             activity?.let {
-                startActivity(Intent(context, NotificationsActivity::class.java).apply { putExtra(NotificationsPresenter.KEY_EXTRA_CHANNEL, channel) },
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+                startActivity(Intent(context, NotificationsActivity::class.java).apply { putExtra(NotificationsPresenter.KEY_EXTRA_CHANNEL, channel) })
             }
         }
 
@@ -101,6 +109,11 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
                 }
             }
         }
+    }
+
+    override fun setIfChannelStarred(starred: Boolean) {
+        mMenu?.getItem(0)?.setIcon(if (starred) R.drawable.ic_star_black_24dp else R.drawable.ic_star_border_black_24dp)
+        onPrepareOptionsMenu(mMenu)
     }
 
 }

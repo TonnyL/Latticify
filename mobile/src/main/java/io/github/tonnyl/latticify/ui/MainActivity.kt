@@ -3,13 +3,13 @@ package io.github.tonnyl.latticify.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.repository.TeamRepository
 import io.github.tonnyl.latticify.data.repository.UsersRepository
@@ -42,6 +42,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
+@DeepLink("slack://open", "slack://open?team={TEAM_ID}")
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mChannelsFragment: ChannelsFragment
@@ -69,8 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 }
                 R.id.nav_channels -> {
-                    startActivity(Intent(this, AddChannelActivity::class.java),
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                    startActivity(Intent(this, AddChannelActivity::class.java))
                 }
                 R.id.nav_groups -> {
 
@@ -82,11 +82,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         navView.getHeaderView(0).accountActionImageView.setOnClickListener {
-            startActivity(Intent(this, AuthActivity::class.java),
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+            startActivity(Intent(this, AuthActivity::class.java))
         }
-
-        getMyInfo()
 
         getTeamInfo()
 
@@ -114,16 +111,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                startActivity(Intent(this, SearchActivity::class.java),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                startActivity(Intent(this, SearchActivity::class.java))
             }
             R.id.action_set_status -> {
-                startActivity(Intent(this, SetStatusActivity::class.java),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                startActivity(Intent(this, SetStatusActivity::class.java))
             }
             R.id.action_invite_members_to_team -> {
-                startActivity(Intent(this, InviteActivity::class.java),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                startActivity(Intent(this, InviteActivity::class.java))
             }
             R.id.action_snooze -> {
                 showSnoozeNotificationsDialog()
@@ -139,37 +133,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             fab.show()
         }
         when (item.itemId) {
+            R.id.nav_profile -> {
+                navigateToProfile()
+            }
             R.id.nav_direct_messages -> {
                 showFragmentAndHideRest(mImsFragment)
-                titleTextView.text = getString(R.string.nav_messages)
+                toolbar.title = getString(R.string.nav_messages)
                 mCheckedItemId = R.id.nav_direct_messages
             }
             R.id.nav_channels -> {
                 showFragmentAndHideRest(mChannelsFragment)
-                titleTextView.text = getString(R.string.nav_channels)
+                toolbar.title = getString(R.string.nav_channels)
                 mCheckedItemId = R.id.nav_channels
             }
             R.id.nav_groups -> {
                 showFragmentAndHideRest(mGroupsFragment)
-                titleTextView.text = getString(R.string.nav_groups)
+                toolbar.title = getString(R.string.nav_groups)
                 mCheckedItemId = R.id.nav_groups
             }
             R.id.nav_directory -> {
                 showFragmentAndHideRest(mDirectoryFragment)
-                titleTextView.text = getString(R.string.directory)
+                toolbar.title = getString(R.string.directory)
                 mCheckedItemId = R.id.nav_directory
             }
             R.id.nav_starred_items -> {
                 showFragmentAndHideRest(mStarredItemsFragment)
-                titleTextView.text = getString(R.string.nav_starred)
+                toolbar.title = getString(R.string.nav_starred)
+                mCheckedItemId = R.id.nav_starred_items
             }
             R.id.nav_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
             R.id.nav_about -> {
-                startActivity(Intent(this, AboutActivity::class.java),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                startActivity(Intent(this, AboutActivity::class.java))
             }
         }
 
@@ -225,19 +221,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun getMyInfo() {
+    private fun navigateToProfile() {
         val disposable = AccessTokenManager.getAccessToken().userId?.let {
             UsersRepository.info(it)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ userWrapper ->
                         if (userWrapper.ok) {
-                            GlideLoader.loadAvatar(userAvatarImageView, userWrapper.user.profile.image192)
-
-                            userAvatarImageView.setOnClickListener {
-                                startActivity(Intent(this, ProfileActivity::class.java).apply { putExtra(ProfilePresenter.KEY_EXTRA_USER, userWrapper.user) },
-                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
-                            }
+                            startActivity(Intent(this, ProfileActivity::class.java).apply { putExtra(ProfilePresenter.KEY_EXTRA_USER, userWrapper.user) })
                         }
                     }, {
 
@@ -255,7 +246,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribe({
                     if (it.ok) {
                         with(it.team) {
-                            GlideLoader.loadAvatar(avatarImageView, icon.image132)
+                            GlideLoader.loadAvatar(teamAvatarImageView, icon.image132)
 
                             teamNameTextView.text = name
                             teamUrlTextView.text = getString(R.string.team_url).format(domain)

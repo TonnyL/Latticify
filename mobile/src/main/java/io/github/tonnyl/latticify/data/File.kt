@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 23/09/2017.
@@ -69,6 +70,8 @@ import com.google.gson.annotations.SerializedName
  * "comments_count": 1
  * }
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class File(
 
         @SerializedName("id")
@@ -454,150 +457,4 @@ data class File(
         @SerializedName("top_file")
         val topFile: Boolean?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readLong(),
-            parcel.readLong(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readLong(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readLong(),
-            parcel.readLong(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.createStringArrayList(),
-            parcel.createStringArrayList(),
-            parcel.createStringArrayList(),
-            parcel.readParcelable(FileComment::class.java.classLoader),
-            parcel.readInt(),
-            parcel.readByte() != 0.toByte(),
-            parcel.createStringArrayList(),
-            parcel.createTypedArrayList(Reaction),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean)
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeLong(created)
-        parcel.writeLong(timestamp)
-        parcel.writeString(name)
-        parcel.writeString(title)
-        parcel.writeString(mimeType)
-        parcel.writeString(fileType)
-        parcel.writeString(prettyType)
-        parcel.writeString(user)
-        parcel.writeString(mode)
-        parcel.writeByte(if (editable) 1 else 0)
-        parcel.writeByte(if (isExternal) 1 else 0)
-        parcel.writeString(externalType)
-        parcel.writeString(username)
-        parcel.writeLong(size)
-        parcel.writeString(urlPrivate)
-        parcel.writeString(urlPrivateDownload)
-        parcel.writeString(thumb64)
-        parcel.writeString(thumb80)
-        parcel.writeString(thumb360)
-        parcel.writeString(thumb360Gif)
-        parcel.writeInt(thumb360W)
-        parcel.writeInt(thumb360H)
-        parcel.writeString(thumb480)
-        parcel.writeInt(thumb480W)
-        parcel.writeInt(thumb480H)
-        parcel.writeString(thumb160)
-        parcel.writeString(thumb720)
-        parcel.writeValue(thumb720W)
-        parcel.writeValue(thumb720H)
-        parcel.writeString(thumb800)
-        parcel.writeValue(thumb800W)
-        parcel.writeValue(thumb800H)
-        parcel.writeString(thumb960)
-        parcel.writeValue(thumb960W)
-        parcel.writeValue(thumb960H)
-        parcel.writeString(thumb1024)
-        parcel.writeValue(thumb1024W)
-        parcel.writeValue(thumb1024H)
-        parcel.writeValue(imageExifRotation)
-        parcel.writeValue(originalW)
-        parcel.writeValue(originalH)
-        parcel.writeString(permalink)
-        parcel.writeString(permalinkPublic)
-        parcel.writeString(editLink)
-        parcel.writeString(preview)
-        parcel.writeString(previewHighlight)
-        parcel.writeLong(lines)
-        parcel.writeLong(linesMore)
-        parcel.writeByte(if (isPublic) 1 else 0)
-        parcel.writeByte(if (publicUrlShared) 1 else 0)
-        parcel.writeByte(if (displayAsBot) 1 else 0)
-        parcel.writeStringList(channels)
-        parcel.writeStringList(groups)
-        parcel.writeStringList(ims)
-        parcel.writeParcelable(initialComment, flags)
-        parcel.writeInt(numStars)
-        parcel.writeByte(if (isStarred) 1 else 0)
-        parcel.writeStringList(pinnedTo)
-        parcel.writeTypedList(reactions)
-        parcel.writeInt(commentsCount)
-        parcel.writeString(score)
-        parcel.writeValue(topFile)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<File> {
-        override fun createFromParcel(parcel: Parcel): File {
-            return File(parcel)
-        }
-
-        override fun newArray(size: Int): Array<File?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-
-}
+) : Parcelable

@@ -1,8 +1,8 @@
 package io.github.tonnyl.latticify.data.datasource
 
-import io.github.tonnyl.latticify.data.SearchAllWrapper
 import io.github.tonnyl.latticify.data.SearchFilesWrapper
 import io.github.tonnyl.latticify.data.SearchMessagesWrapper
+import io.github.tonnyl.latticify.data.SearchedAllWrapper
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
 
@@ -16,7 +16,7 @@ interface SearchDataSource {
             highlight: Boolean = true,
             page: Int = 1,
             sort: String = "score",
-            sortDir: String = "desc"): Observable<SearchAllWrapper>
+            sortDir: String = "desc"): Observable<SearchedAllWrapper>
 
     fun files(query: String,
               count: Int = Api.LIMIT,

@@ -6,6 +6,7 @@ import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.StarredPinnedItem
 import io.github.tonnyl.latticify.data.repository.ChannelsRepository
 import io.github.tonnyl.latticify.data.repository.PinsRepository
+import io.github.tonnyl.latticify.data.repository.StarredItemsRepository
 import io.github.tonnyl.latticify.epoxy.PinnedItemModel_
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,11 +15,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by lizhaotailang on 12/10/2017.
  */
-class ChannelProfilePresenter(view: ChannelProfileContract.View, channelId: String) : ChannelProfileContract.Presenter {
+class ChannelProfilePresenter(private val mView: ChannelProfileContract.View, channelId: String) : ChannelProfileContract.Presenter {
 
-    private val mView = view
-
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mCompositeDisposable = CompositeDisposable()
     private val mChannelId = channelId
     private var mChannel: Channel? = null
 
@@ -38,7 +37,10 @@ class ChannelProfilePresenter(view: ChannelProfileContract.View, channelId: Stri
     }
 
     override fun subscribe() {
-        mChannel?.let { mView.showChannelDetails(it) } ?: run {
+        mChannel?.let {
+            mView.showChannelDetails(it)
+            mView.setIfChannelStarred(mChannel?.isStarred == true)
+        } ?: run {
             val disposable = ChannelsRepository.info(mChannelId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -83,6 +85,21 @@ class ChannelProfilePresenter(view: ChannelProfileContract.View, channelId: Stri
 
                             })
                 }
+    }
+
+    override fun starUnstarChannel() {
+        val disposable = if (mChannel?.isStarred == false) {
+            StarredItemsRepository.add(mChannelId)
+        } else {
+            StarredItemsRepository.remove(mChannelId, "", "", "")
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ responseWrapper ->
+                    mView.setIfChannelStarred(responseWrapper.ok)
+                }, { error ->
+                    error.printStackTrace()
+                })
+        mCompositeDisposable.add(disposable)
     }
 
 }

@@ -14,6 +14,6 @@ class SearchMessagesWrapper(
         val query: String,
 
         @SerializedName("messages")
-        val messages: SearchMessages
+        val messages: SearchedMessages
 
 )

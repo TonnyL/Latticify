@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 23/09/2017.
@@ -20,6 +21,8 @@ import com.google.gson.annotations.SerializedName
  * "last_set":1491730312
  * }
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class TopicPurpose(
 
         @SerializedName("value")
@@ -31,29 +34,4 @@ data class TopicPurpose(
         @SerializedName("last_set")
         val lastSet: Long
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readLong())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(value)
-        parcel.writeString(creator)
-        parcel.writeLong(lastSet)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<TopicPurpose> {
-        override fun createFromParcel(parcel: Parcel): TopicPurpose {
-            return TopicPurpose(parcel)
-        }
-
-        override fun newArray(size: Int): Array<TopicPurpose?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

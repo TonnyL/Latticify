@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 24/09/2017.
@@ -72,6 +73,8 @@ import com.google.gson.annotations.SerializedName
  * "bot_id": null,
  * "ts": "1504622888.000639"
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class Message(
 
         @SerializedName("user")
@@ -116,48 +119,4 @@ data class Message(
         @SerializedName("reactions")
         val reactions: List<Reaction>?
 
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(Icons::class.java.classLoader),
-            parcel.createTypedArrayList(Attachment),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(File::class.java.classLoader),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.createTypedArrayList(Reaction))
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(user)
-        parcel.writeString(username)
-        parcel.writeParcelable(icons, flags)
-        parcel.writeTypedList(attachments)
-        parcel.writeValue(markdown)
-        parcel.writeValue(displayAsBot)
-        parcel.writeString(botId)
-        parcel.writeString(text)
-        parcel.writeString(type)
-        parcel.writeParcelable(file, flags)
-        parcel.writeString(subtype)
-        parcel.writeString(ts)
-        parcel.writeTypedList(reactions)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<Message> {
-        override fun createFromParcel(parcel: Parcel): Message {
-            return Message(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Message?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

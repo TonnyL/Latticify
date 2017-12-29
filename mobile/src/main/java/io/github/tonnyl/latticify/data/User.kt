@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 23/09/2017.
@@ -44,6 +45,8 @@ import com.google.gson.annotations.SerializedName
  * "has_2fa": false,
  * "locale": "en-US"
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class User(
 
         /**
@@ -150,63 +153,4 @@ data class User(
         @SerializedName("locale")
         val locale: String?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readLong(),
-            parcel.readParcelable(UsersProfile::class.java.classLoader),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readLong(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readString())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeString(teamId)
-        parcel.writeString(name)
-        parcel.writeByte(if (deleted) 1 else 0)
-        parcel.writeString(color)
-        parcel.writeString(realName)
-        parcel.writeString(tz)
-        parcel.writeString(tzLabel)
-        parcel.writeLong(tzOffset)
-        parcel.writeParcelable(profile, flags)
-        parcel.writeByte(if (isAdmin) 1 else 0)
-        parcel.writeByte(if (isOwner) 1 else 0)
-        parcel.writeByte(if (isPrimaryOwner) 1 else 0)
-        parcel.writeByte(if (isRestricted) 1 else 0)
-        parcel.writeByte(if (isUltraRestricted) 1 else 0)
-        parcel.writeByte(if (isBot) 1 else 0)
-        parcel.writeLong(updated)
-        parcel.writeByte(if (isAppUser) 1 else 0)
-        parcel.writeByte(if (has2fa) 1 else 0)
-        parcel.writeString(locale)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<User> {
-        override fun createFromParcel(parcel: Parcel): User {
-            return User(parcel)
-        }
-
-        override fun newArray(size: Int): Array<User?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

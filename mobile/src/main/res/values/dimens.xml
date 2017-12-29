@@ -10,6 +10,12 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="nav_drawer_width">280dp</dimen>
 
+    <dimen name="bottom_sheet_horizontal_padding">16dp</dimen>
+    <dimen name="bottom_sheet_item_vertical_padding">12dp</dimen>
+    <dimen name="bottom_sheet_item_height">48dp</dimen>
+    <dimen name="bottom_sheet_title_height">56dp</dimen>
+    <dimen name="bottom_sheet_divider_height">1px</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_elevation">12dp</dimen>
 
@@ -25,5 +31,6 @@
 
     <dimen name="card_view_radius">2dp</dimen>
     <dimen name="card_view_elevation">2dp</dimen>
+    <dimen name="z_app_bar">4dp</dimen>
 
 </resources>

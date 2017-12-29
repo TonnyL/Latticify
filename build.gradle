@@ -36,22 +36,24 @@ ext {
 
     // App dependencies
     libraries = [
-            roomVersion             : '1.0.0',
-            lottieVersion           : '2.2.5',
-            supportLibraryVersion   : '27.0.2',
-            constraintLayoutVersion : '1.0.2',
-            rxKotlinVersion         : '2.1.0',
-            rxAndroidVersion        : '2.0.1',
-            retrofitVersion         : '2.3.0',
-            epoxyVersion            : '2.7.3',
-            okhttpLoggingInterceptor: '3.9.0',
-            glideVersion            : '4.1.1',
-            matisseVersion          : '0.4.3',
-            flexBoxVersion          : '0.3.1',
-            wearableVersion         : '2.1.0',
-            gmsWearableVersion      : '11.8.0',
-            junitVersion            : '4.12',
-            espressoVersion         : '3.0.1'
+            roomVersion                  : '1.0.0',
+            lottieVersion                : '2.5.0-beta1',
+            supportLibraryVersion        : '27.0.2',
+            constraintLayoutVersion      : '1.1.0-beta4',
+            rxKotlinVersion              : '2.1.0',
+            rxAndroidVersion             : '2.0.1',
+            retrofitVersion              : '2.3.0',
+            epoxyVersion                 : '2.8.0',
+            okhttpLoggingInterceptor     : '3.9.0',
+            glideVersion                 : '4.4.0',
+            matisseVersion               : '0.4.3',
+            flexBoxVersion               : '0.3.1',
+            deeplinkDispatchVersion      : '3.1.1',
+            wearableVersion              : '2.1.0',
+            gmsWearableVersion           : '11.8.0',
+            junitVersion                 : '4.12',
+            espressoVersion              : '3.0.1',
+            androidTestRunnerRulesVersion: '0.5'
     ]
 
 }

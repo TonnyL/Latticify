@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 23/09/2017.
@@ -79,6 +80,8 @@ import com.google.gson.annotations.SerializedName
  * }
  * },
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class Channel(
 
         @SerializedName("id")
@@ -253,89 +256,4 @@ data class Channel(
         @SerializedName("locale")
         val locale: String?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readLong(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readString(),
-            parcel.readParcelable(Message::class.java.classLoader),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readParcelable(TopicPurpose::class.java.classLoader),
-            parcel.readParcelable(TopicPurpose::class.java.classLoader),
-            parcel.createStringArrayList(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.createStringArrayList(),
-            parcel.readString())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeString(name)
-        parcel.writeValue(isChannel)
-        parcel.writeValue(isGroup)
-        parcel.writeValue(isIm)
-        parcel.writeString(user)
-        parcel.writeValue(isUserDeleted)
-        parcel.writeLong(created)
-        parcel.writeString(creator)
-        parcel.writeValue(isArchived)
-        parcel.writeValue(isGeneral)
-        parcel.writeValue(isStarred)
-        parcel.writeValue(unlinked)
-        parcel.writeString(nameNormalized)
-        parcel.writeValue(isReadOnly)
-        parcel.writeValue(isShared)
-        parcel.writeValue(isExtShared)
-        parcel.writeValue(isOrgShared)
-        parcel.writeValue(isPendingExtShared)
-        parcel.writeValue(isMember)
-        parcel.writeValue(isPrivate)
-        parcel.writeValue(isMpim)
-        parcel.writeString(lastRead)
-        parcel.writeParcelable(latest, flags)
-        parcel.writeValue(unreadCount)
-        parcel.writeValue(unreadCountDisplay)
-        parcel.writeValue(isOpen)
-        parcel.writeParcelable(topic, flags)
-        parcel.writeParcelable(purpose, flags)
-        parcel.writeStringList(previousNames)
-        parcel.writeValue(numMembers)
-        parcel.writeStringList(members)
-        parcel.writeString(locale)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<Channel> {
-        override fun createFromParcel(parcel: Parcel): Channel {
-            return Channel(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Channel?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

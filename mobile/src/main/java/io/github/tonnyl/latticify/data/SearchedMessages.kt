@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by lizhaotailang on 13/10/2017.
  */
-data class SearchFiles(
+data class SearchedMessages(
 
         @SerializedName("total")
         val total: Int,
@@ -17,6 +17,6 @@ data class SearchFiles(
         val paging: Paging,
 
         @SerializedName("matches")
-        val matches: List<File>?
+        val matches: List<SearchedMessageMatch>
 
 )

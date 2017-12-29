@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by lizhaotailang on 13/10/2017.
  */
-data class SearchMessageMatch(
+data class SearchedMessageMatch(
 
         @SerializedName("previous")
-        val previous: SearchMessageMatchPreNext?,
+        val previous: SearchedMessageMatchPreNext?,
 
         @SerializedName("previous_2")
-        val previous2: SearchMessageMatchPreNext?,
+        val previous2: SearchedMessageMatchPreNext?,
 
         @SerializedName("next")
-        val next: SearchMessageMatchPreNext?,
+        val next: SearchedMessageMatchPreNext?,
 
         @SerializedName("next_2")
-        val next2: SearchMessageMatchPreNext?,
+        val next2: SearchedMessageMatchPreNext?,
 
         @SerializedName("type")
         val type: String,
@@ -44,7 +44,7 @@ data class SearchMessageMatch(
         val team: String?,
 
         @SerializedName("channel")
-        val channel: SearchMessageMatchChannel,
+        val channel: SearchedMessageMatchChannel,
 
         @SerializedName("permalink")
         val permalink: String

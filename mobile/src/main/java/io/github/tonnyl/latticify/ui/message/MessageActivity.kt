@@ -2,13 +2,14 @@ package io.github.tonnyl.latticify.ui.message
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.Message
 import kotlinx.android.synthetic.main.activity_common.*
 
 /**
  * Created by lizhaotailang on 08/10/2017.
  */
+@DeepLink("slack://user?team={TEAM_ID}&id={USER_ID}")
 class MessageActivity : AppCompatActivity() {
 
     private lateinit var mMessageFragment: MessageFragment

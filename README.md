@@ -10,16 +10,16 @@ Latticify is an Android app for [Slack](https://slack.com/). It's still in its e
 
 ## Build🛠
 ### Download the source code
-```
+```shell
 git clone https://github.com/TonnyL/Latticify.git
 ```
 
-### Setup API keys
+### Setup API Keys
 You need to register your application at [Slack API home](https://api.slack.com/). You can find information about how to gain access via the relevant links.
 
 When you obtain the keys, you need to place them into the `latticify.propterties` file.
 
-```
+```java
 CLIENT_ID=<YOUR CLIENT ID>
 CLIENT_SECRET=<YOUR CLIENT SECRET>
 VERIFICATION_TOKEN=<YOUR VERIFICATION TOKEN>
@@ -30,9 +30,14 @@ VERIFICATION_TOKEN=<YOUR VERIFICATION TOKEN>
 As for *Callback URL*, you need to define your own url and then modify relative constants in [Api.kt](./mobile/src/main/java/io/github/tonnyl/latticify/retrofit/Api.kt).
 
 ### Open the project in Android Studio
-Latticify requires the latest **Android Studio 3.0 (or newer).**
+Latticify requires **Android Studio 3.0 (or newer).**
 
 Open the `Latticify/` directory in Android Studio.
+
+### Get Started
+```shell
+./gradlew build
+```
 
 ### Troubleshoot
 + Update Android Studio to latest version.

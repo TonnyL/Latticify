@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 08/10/2017.
@@ -16,6 +17,8 @@ import com.google.gson.annotations.SerializedName
  * "resource_id": 0
  * }
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class AccessTokenPermission(
 
         @SerializedName("scopes")
@@ -27,28 +30,4 @@ data class AccessTokenPermission(
         @SerializedName("resource_id")
         val resourceId: Int
 
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-            parcel.createStringArrayList(),
-            parcel.readString(),
-            parcel.readInt())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeStringList(scopes)
-        parcel.writeString(resourceType)
-        parcel.writeInt(resourceId)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<AccessTokenPermission> {
-        override fun createFromParcel(parcel: Parcel): AccessTokenPermission {
-            return AccessTokenPermission(parcel)
-        }
-
-        override fun newArray(size: Int): Array<AccessTokenPermission?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

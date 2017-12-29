@@ -1,12 +1,15 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 08/10/2017.
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class UsersProfile(
 
         @SerializedName("first_name")
@@ -75,68 +78,4 @@ data class UsersProfile(
         @SerializedName("team")
         val team: String?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(firstName)
-        parcel.writeString(lastName)
-        parcel.writeString(avatarHash)
-        parcel.writeString(image24)
-        parcel.writeString(image32)
-        parcel.writeString(image48)
-        parcel.writeString(image72)
-        parcel.writeString(image192)
-        parcel.writeString(image512)
-        parcel.writeString(image1024)
-        parcel.writeString(imageOriginal)
-        parcel.writeString(statusText)
-        parcel.writeString(statusEmoji)
-        parcel.writeString(title)
-        parcel.writeString(realName)
-        parcel.writeString(displayName)
-        parcel.writeString(realNameNormalized)
-        parcel.writeString(displayNameNormalized)
-        parcel.writeString(email)
-        parcel.writeString(phone)
-        parcel.writeString(skype)
-        parcel.writeString(team)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<UsersProfile> {
-        override fun createFromParcel(parcel: Parcel): UsersProfile {
-            return UsersProfile(parcel)
-        }
-
-        override fun newArray(size: Int): Array<UsersProfile?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-
-}
+) : Parcelable

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/AppTheme.ToolbarStyle"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+                android:id="@+id/search_box_expanded"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/search_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:background="@null"
+                    android:hint="@string/search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textFilter"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/search_clear_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/search_close"
+                    android:focusable="true"
+                    android:paddingBottom="@dimen/activity_vertical_margin_half"
+                    android:paddingEnd="@dimen/activity_horizontal_margin_half"
+                    android:paddingStart="@dimen/activity_horizontal_margin_half"
+                    android:paddingTop="@dimen/activity_vertical_margin_half"
+                    android:src="@drawable/ic_clear_black_24dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimary"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextColor="@color/textColorSecondary" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:lottie_fileName="material_wave_loading.json"
+            app:lottie_loop="true" />
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

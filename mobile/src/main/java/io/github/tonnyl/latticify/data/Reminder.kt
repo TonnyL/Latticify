@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 10/10/2017.
@@ -17,6 +18,8 @@ import com.google.gson.annotations.SerializedName
  * "complete_ts": 0
  * }
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class Reminder(
 
         @SerializedName("id")
@@ -46,38 +49,4 @@ data class Reminder(
         @SerializedName("complete_ts")
         val completeTs: Long?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readByte() != 0.toByte(),
-            parcel.readValue(Long::class.java.classLoader) as? Long,
-            parcel.readValue(Long::class.java.classLoader) as? Long)
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeString(creator)
-        parcel.writeString(user)
-        parcel.writeString(text)
-        parcel.writeByte(if (recurring) 1.toByte() else 0.toByte())
-        parcel.writeValue(time)
-        parcel.writeValue(completeTs)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<Reminder> {
-        override fun createFromParcel(parcel: Parcel): Reminder {
-            return Reminder(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Reminder?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-
-}
+) : Parcelable

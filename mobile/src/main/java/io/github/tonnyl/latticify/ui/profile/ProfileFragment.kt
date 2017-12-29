@@ -2,7 +2,6 @@ package io.github.tonnyl.latticify.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
@@ -119,8 +118,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun gotoChannel(channel: Channel) {
         activity?.let {
-            context?.startActivity(Intent(context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) },
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            context?.startActivity(Intent(context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
         }
     }
 

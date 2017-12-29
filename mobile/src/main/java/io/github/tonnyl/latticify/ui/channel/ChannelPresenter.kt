@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.ui.channel
 
 import android.util.Log
-import android.view.Menu
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import com.google.gson.Gson
@@ -142,8 +141,18 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
                                     mView.gotoMessageDetails(message)
                                 })
                                 .itemOnCreateContextMenuListener({ menu, _, _ ->
-                                    menu.add(Menu.NONE, R.id.action_copy_text, 0, "Copy text")
-                                    menu.add(Menu.NONE, R.id.action_share, 0, "Share")
+                                    menu.add(R.id.group_message_0, R.id.action_copy_text, 0, R.string.copy_text)
+                                    menu.add(R.id.group_message_0, R.id.action_copy_link_to_message, 0, R.string.copy_link_to_message)
+                                    menu.add(R.id.group_message_0, R.id.action_share_message, 0, R.string.share_message)
+
+                                    menu.add(R.id.group_message_1, R.id.action_add_reaction, 0, R.string.add_reaction)
+
+                                    menu.add(R.id.group_message_2, R.id.action_star, 0, R.string.star)
+                                    menu.add(R.id.group_message_2, R.id.action_remind_me, 0, R.string.remind_me)
+                                    menu.add(R.id.group_message_2, R.id.action_pin_to_conversation, 0, R.string.pin_to_conversation)
+
+                                    menu.add(R.id.group_message_3, R.id.action_edit_message, 0, R.string.edit_message)
+                                    menu.add(R.id.group_message_3, R.id.action_delete, 0, R.string.delete)
                                 })
                                 .directMessage(mChannel?.isIm ?: false)
                     }

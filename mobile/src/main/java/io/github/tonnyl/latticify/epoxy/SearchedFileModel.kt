@@ -15,7 +15,7 @@ import io.github.tonnyl.latticify.data.File
  * Created by lizhaotailang on 14/10/2017.
  */
 @EpoxyModelClass(layout = R.layout.item_search_file)
-abstract class SearchFileModel : EpoxyModelWithHolder<SearchFileModel.SearchFileHolder>() {
+abstract class SearchedFileModel : EpoxyModelWithHolder<SearchedFileModel.SearchFileHolder>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var itemClickListener: View.OnClickListener

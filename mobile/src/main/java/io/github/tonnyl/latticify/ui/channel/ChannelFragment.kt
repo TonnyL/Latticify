@@ -2,7 +2,6 @@ package io.github.tonnyl.latticify.ui.channel
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -144,7 +143,31 @@ class ChannelFragment : Fragment(), ChannelContract.View {
             R.id.action_copy_text -> {
 
             }
-            R.id.action_share -> {
+            R.id.action_copy_link_to_message -> {
+
+            }
+            R.id.action_share_message -> {
+
+            }
+            R.id.action_add_reaction -> {
+
+            }
+            R.id.action_star -> {
+
+            }
+            R.id.action_remind_me -> {
+
+            }
+            R.id.action_mark_unread -> {
+
+            }
+            R.id.action_pin_to_conversation -> {
+
+            }
+            R.id.action_edit_message -> {
+
+            }
+            R.id.action_delete_message -> {
 
             }
         }
@@ -209,15 +232,13 @@ class ChannelFragment : Fragment(), ChannelContract.View {
 
     override fun gotoChannelDetails(channel: Channel) {
         activity?.let {
-            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) },
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) })
         }
     }
 
     override fun gotoMessageDetails(message: Message) {
         activity?.let {
-            context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) },
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) })
         }
     }
 

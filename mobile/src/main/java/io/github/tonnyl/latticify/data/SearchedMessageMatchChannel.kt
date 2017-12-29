@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by lizhaotailang on 13/10/2017.
  */
-data class SearchMessageMatchChannel(
+data class SearchedMessageMatchChannel(
 
         @SerializedName("id")
         val id: String,
@@ -26,12 +26,6 @@ data class SearchMessageMatchChannel(
         val isPrivate: Boolean,
 
         @SerializedName("is_mpim")
-        val isMpim: Boolean,
-
-        @SerializedName("pending_shared")
-        val pendingShared: Boolean,
-
-        @SerializedName("is_pending_ext_shared")
-        val isPendingExtShared: Boolean
+        val isMpim: Boolean
 
 )

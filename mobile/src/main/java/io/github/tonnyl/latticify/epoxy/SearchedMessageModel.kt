@@ -9,18 +9,18 @@ import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.SearchMessageMatch
+import io.github.tonnyl.latticify.data.SearchedMessageMatch
 
 /**
  * Created by lizhaotailang on 14/10/2017.
  */
 @EpoxyModelClass(layout = R.layout.item_search_message)
-abstract class SearchMessageModel : EpoxyModelWithHolder<SearchMessageModel.SearchMessageHolder>() {
+abstract class SearchedMessageModel : EpoxyModelWithHolder<SearchedMessageModel.SearchMessageHolder>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var itemClickListener: View.OnClickListener
     @EpoxyAttribute
-    lateinit var message: SearchMessageMatch
+    lateinit var message: SearchedMessageMatch
 
     override fun createNewHolder(): SearchMessageHolder = SearchMessageHolder()
 

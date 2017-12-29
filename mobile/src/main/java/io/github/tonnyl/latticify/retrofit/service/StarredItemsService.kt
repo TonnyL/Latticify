@@ -31,7 +31,7 @@ interface StarredItemsService {
             @Field("channel") channelId: String = "",
             @Field("file") file: String = "",
             @Field("file_comment") fileCommentId: String = "",
-            @Field("timestamp") timestamp: String = ""): Observable<ResponseWrapper>
+            @Field("timestamp") timestamp: String): Observable<ResponseWrapper>
 
     /**
      * Lists the items starred by the authed user.

@@ -22,7 +22,7 @@ class LatticifyAppGlideModule : AppGlideModule() {
     companion object {
         // Max cache size of glide.
         @JvmField
-        val MAX_CACHE_SIZE = 1024 * 1024 * 512 // 512M
+        val MAX_CACHE_SIZE = (1024 * 1024 * 512).toLong() // 512M
 
         // The cache directory name.
         @JvmField
@@ -34,7 +34,7 @@ class LatticifyAppGlideModule : AppGlideModule() {
 
         // 36MB, memory cache size
         // default value: 24MB
-        val memoryCacheSize = 1024 * 1024 * 36
+        val memoryCacheSize = (1024 * 1024 * 36).toLong()
         builder?.setMemoryCache(LruResourceCache(memoryCacheSize))
 
         // Internal cache

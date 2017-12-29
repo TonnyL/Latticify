@@ -1,13 +1,14 @@
 package io.github.tonnyl.latticify.data
 
+import android.annotation.SuppressLint
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
-import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.github.tonnyl.latticify.database.converters.AccessTokenTypeConverters
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 19/09/2017.
@@ -35,6 +36,8 @@ import io.github.tonnyl.latticify.database.converters.AccessTokenTypeConverters
  */
 @Entity(tableName = "access_tokens")
 @TypeConverters(AccessTokenTypeConverters::class)
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class AccessToken(
 
         @PrimaryKey(autoGenerate = true)
@@ -84,48 +87,4 @@ data class AccessToken(
         @SerializedName("permissions")
         val permissions: List<AccessTokenPermission>?
 
-) : Parcelable {
-
-    constructor(parcel: Parcel) : this(
-            parcel.readValue(Long::class.java.classLoader) as? Long,
-            parcel.readByte() != 0.toByte(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.createTypedArrayList(AccessTokenPermission))
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(id)
-        parcel.writeByte(if (ok) 1 else 0)
-        parcel.writeString(accessToken)
-        parcel.writeString(tokenType)
-        parcel.writeString(appId)
-        parcel.writeString(appUserId)
-        parcel.writeString(installerUserId)
-        parcel.writeString(scope)
-        parcel.writeString(userId)
-        parcel.writeString(teamName)
-        parcel.writeString(teamId)
-        parcel.writeTypedList(permissions)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<AccessToken> {
-        override fun createFromParcel(parcel: Parcel): AccessToken {
-            return AccessToken(parcel)
-        }
-
-        override fun newArray(size: Int): Array<AccessToken?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-
-}
+) : Parcelable

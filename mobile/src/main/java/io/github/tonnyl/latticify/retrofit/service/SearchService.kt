@@ -1,8 +1,8 @@
 package io.github.tonnyl.latticify.retrofit.service
 
-import io.github.tonnyl.latticify.data.SearchAllWrapper
 import io.github.tonnyl.latticify.data.SearchFilesWrapper
 import io.github.tonnyl.latticify.data.SearchMessagesWrapper
+import io.github.tonnyl.latticify.data.SearchedAllWrapper
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
 import retrofit2.http.Field
@@ -36,7 +36,7 @@ interface SearchService {
             @Field("highlight") highlight: Boolean = true,
             @Field("page") page: Int = 1,
             @Field("sort") sort: String = "score",
-            @Field("sort_dir") sortDir: String = "desc"): Observable<SearchAllWrapper>
+            @Field("sort_dir") sortDir: String = "desc"): Observable<SearchedAllWrapper>
 
     /**
      * Searches for files matching a query.

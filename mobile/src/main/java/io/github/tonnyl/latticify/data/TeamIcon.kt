@@ -1,8 +1,9 @@
 package io.github.tonnyl.latticify.data
 
-import android.os.Parcel
+import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by lizhaotailang on 08/10/2017.
@@ -17,6 +18,8 @@ import com.google.gson.annotations.SerializedName
  * "image_default": true
  * }
  */
+@Parcelize
+@SuppressLint("ParcelCreator")
 data class TeamIcon(
 
         @SerializedName("image_34")
@@ -43,38 +46,4 @@ data class TeamIcon(
         @SerializedName("image_original")
         val imageOriginal: String?
 
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString())
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(image34)
-        parcel.writeString(image44)
-        parcel.writeString(image68)
-        parcel.writeString(image88)
-        parcel.writeString(image102)
-        parcel.writeString(image132)
-        parcel.writeString(image230)
-        parcel.writeString(imageOriginal)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<TeamIcon> {
-        override fun createFromParcel(parcel: Parcel): TeamIcon {
-            return TeamIcon(parcel)
-        }
-
-        override fun newArray(size: Int): Array<TeamIcon?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : Parcelable

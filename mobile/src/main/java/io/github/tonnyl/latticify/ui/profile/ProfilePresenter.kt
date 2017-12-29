@@ -20,9 +20,7 @@ import java.util.*
 /**
  * Created by lizhaotailang on 08/10/2017.
  */
-class ProfilePresenter(view: ProfileContract.View) : ProfileContract.Presenter {
-
-    private val mView = view
+class ProfilePresenter(private val mView: ProfileContract.View) : ProfileContract.Presenter {
 
     private var mUser: User? = null
     private var mUserId: String? = null

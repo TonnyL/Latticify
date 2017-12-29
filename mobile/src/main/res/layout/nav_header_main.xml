@@ -13,7 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/avatarImageView"
+        android:id="@+id/teamAvatarImageView"
         android:layout_width="@dimen/avatar_nav_size"
         android:layout_height="@dimen/avatar_nav_size"
         android:paddingTop="@dimen/nav_header_vertical_spacing"

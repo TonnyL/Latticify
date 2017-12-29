@@ -49,6 +49,25 @@
         </activity>
 
         <activity
+            android:name=".DeepLinkActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="dribbble.com"
+                    android:pathPattern="/shots/.*"
+                    android:scheme="https" />
+
+            </intent-filter>
+
+        </activity>
+
+        <activity
             android:name=".ui.channel.ChannelActivity"
             android:label="@string/channel"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -106,6 +125,11 @@
         <activity
             android:name=".ui.channel.notifications.NotificationsActivity"
             android:label="@string/notifications"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.file.FileActivity"
+            android:label="@string/file"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

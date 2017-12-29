@@ -14,6 +14,6 @@ class SearchFilesWrapper(
         val query: String,
 
         @SerializedName("files")
-        val files: SearchFiles
+        val files: SearchedFiles
 
 )

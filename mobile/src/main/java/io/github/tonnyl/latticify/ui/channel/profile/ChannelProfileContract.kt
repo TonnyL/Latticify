@@ -16,11 +16,15 @@ interface ChannelProfileContract {
 
         fun showPinnedItems(epoxyModels: Collection<EpoxyModel<*>>)
 
+        fun setIfChannelStarred(starred: Boolean)
+
     }
 
     interface Presenter : BasePresenter {
 
         fun fetchPinnedItems()
+
+        fun starUnstarChannel()
 
         fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>>
 

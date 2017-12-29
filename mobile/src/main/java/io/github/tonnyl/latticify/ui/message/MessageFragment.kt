@@ -40,7 +40,7 @@ class MessageFragment : Fragment(), MessageContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.menu_message, menu)
+        inflater?.inflate(R.menu.menu_message_item, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
