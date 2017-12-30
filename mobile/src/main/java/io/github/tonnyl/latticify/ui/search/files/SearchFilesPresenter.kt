@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.ui.search.files
 
+import android.content.Intent
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.File
@@ -8,6 +9,8 @@ import io.github.tonnyl.latticify.data.repository.SearchRepository
 import io.github.tonnyl.latticify.epoxy.SearchedFileModel_
 import io.github.tonnyl.latticify.mvp.ListContract
 import io.github.tonnyl.latticify.mvp.ListPresenter
+import io.github.tonnyl.latticify.ui.file.FileActivity
+import io.github.tonnyl.latticify.ui.file.FilePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -72,7 +75,10 @@ class SearchFilesPresenter(mView: ListContract.View) : ListPresenter(mView) {
                     SearchedFileModel_()
                             .file(file as File)
                             .itemClickListener(View.OnClickListener {
-
+                                (mView as SearchFilesFragment).context?.let {
+                                    it.startActivity(Intent(it, FileActivity::class.java)
+                                            .apply { putExtra(FilePresenter.KEY_EXTRA_FILE, file) })
+                                }
                             })
                 }
     }

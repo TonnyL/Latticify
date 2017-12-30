@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <ImageView
-        android:id="@+id/avatarImageView"
+        android:id="@+id/avatar_image_view"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size" />
 

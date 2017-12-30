@@ -9,7 +9,7 @@ Latticify is an Android app for [Slack](https://slack.com/). It's still in its e
 + Applies ReactiveX ([RxKotlin](https://github.com/ReactiveX/RxKotlin))
 
 ## Build🛠
-### Download the source code
+### Download the Source Code
 ```shell
 git clone https://github.com/TonnyL/Latticify.git
 ```
@@ -29,7 +29,7 @@ VERIFICATION_TOKEN=<YOUR VERIFICATION TOKEN>
 
 As for *Callback URL*, you need to define your own url and then modify relative constants in [Api.kt](./mobile/src/main/java/io/github/tonnyl/latticify/retrofit/Api.kt).
 
-### Open the project in Android Studio
+### Open the Project in Android Studio
 Latticify requires **Android Studio 3.0 (or newer).**
 
 Open the `Latticify/` directory in Android Studio.
@@ -39,7 +39,7 @@ Open the `Latticify/` directory in Android Studio.
 ./gradlew build
 ```
 
-### Troubleshoot
+### Troubleshooting
 + Update Android Studio to latest version.
 + Update Kotlin to latest version.
 + Try to clean the project and rebuild it.

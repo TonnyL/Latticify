@@ -24,7 +24,7 @@ class ProfilePresenter(private val mView: ProfileContract.View) : ProfileContrac
 
     private var mUser: User? = null
     private var mUserId: String? = null
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mCompositeDisposable = CompositeDisposable()
 
     constructor(view: ProfileContract.View, userId: String) : this(view) {
         mUserId = userId

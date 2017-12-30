@@ -55,7 +55,7 @@ abstract class UserModel : EpoxyModelWithHolder<UserModel.UserHolder>() {
             itemView?.let {
                 with(it) {
                     itemLayout = findViewById(R.id.userItemLayout)
-                    avatarImageView = findViewById(R.id.avatarImageView)
+                    avatarImageView = findViewById(R.id.avatar_image_view)
                     realNameTextView = findViewById(R.id.realNameTextView)
                     displayTextView = findViewById(R.id.displayNameTextView)
                     titleTextView = findViewById(R.id.titleTextView)

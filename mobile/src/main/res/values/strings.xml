@@ -132,5 +132,6 @@
     <string name="mark_unread">Mark unread</string>
     <string name="pin_to_conversation">Pin to conversation</string>
     <string name="edit_message">Edit</string>
+    <string name="avatar">Avatar</string>
 
 </resources>

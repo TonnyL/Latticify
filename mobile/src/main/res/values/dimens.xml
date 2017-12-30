@@ -31,6 +31,10 @@
 
     <dimen name="card_view_radius">2dp</dimen>
     <dimen name="card_view_elevation">2dp</dimen>
-    <dimen name="z_app_bar">4dp</dimen>
+
+    <dimen name="space_height">16dp</dimen>
+    <dimen name="space_height_half">8dp</dimen>
+    <dimen name="space_width">16dp</dimen>
+    <dimen name="space_width_half">8dp</dimen>
 
 </resources>

@@ -237,7 +237,7 @@ data class File(
          * If a thumbnail is available for the file, the URL to a 64x64 pixel will be returned as the [thumb64] prop.
          */
         @SerializedName("thumb_64")
-        val thumb64: String,
+        val thumb64: String?,
 
         /**
          * The [thumb80] prop (when present) contains the URL of an 80x80 thumb.
@@ -245,7 +245,7 @@ data class File(
          * even when the source image was smaller (it's padded with transparent pixels).
          */
         @SerializedName("thumb_80")
-        val thumb80: String,
+        val thumb80: String?,
 
         /**
          * A variable sized thumb will be returned as [thumb360],
@@ -254,7 +254,7 @@ data class File(
          * Dimensions for this thumb are returned in [thumb360W] and [thumb360H].
          */
         @SerializedName("thumb_360")
-        val thumb360: String,
+        val thumb360: String?,
 
         /**
          * In the case where the original image was an animated gif with dimensions greater than 360 pixels,
@@ -264,22 +264,22 @@ data class File(
         val thumb360Gif: String?,
 
         @SerializedName("thumb_360_w")
-        val thumb360W: Int,
+        val thumb360W: Int?,
 
         @SerializedName("thumb_360_h")
-        val thumb360H: Int,
+        val thumb360H: Int?,
 
         @SerializedName("thumb_480")
-        val thumb480: String,
+        val thumb480: String?,
 
         @SerializedName("thumb_480_w")
-        val thumb480W: Int,
+        val thumb480W: Int?,
 
         @SerializedName("thumb_480_h")
-        val thumb480H: Int,
+        val thumb480H: Int?,
 
         @SerializedName("thumb_160")
-        val thumb160: String,
+        val thumb160: String?,
 
         @SerializedName("thumb_720")
         val thumb720: String?,
@@ -343,34 +343,34 @@ data class File(
          * The [editLink] is only present for posts and snippets and is the page at which the file can be edited.
          */
         @SerializedName("edit_link")
-        val editLink: String,
+        val editLink: String?,
 
         /**
          * For posts, we also include a short plain-text [preview] than can be shown in place of a thumbnail.
          */
         @SerializedName("preview")
-        val preview: String,
+        val preview: String?,
 
         /**
          * For snippets, we include a simple [preview] of the contents (a few truncated lines of plaintext),
          * as well as a more complex syntax-highlighted preview ([previewHighlight]) in HTML.
          */
         @SerializedName("preview_highlight")
-        val previewHighlight: String,
+        val previewHighlight: String?,
 
         /**
          *  The total count of lines in the snippet if returned in [lines],
          *  while [linesMore] contains a count of lines not shown in the preview.
          */
         @SerializedName("lines")
-        val lines: Long,
+        val lines: Long?,
 
         /**
          *  The total count of lines in the snippet if returned in [lines],
          *  while [linesMore] contains a count of lines not shown in the preview.
          */
         @SerializedName("lines_more")
-        val linesMore: Long,
+        val linesMore: Long?,
 
         /**
          * If a file is public, the [isPublic] flag will be set.

@@ -102,7 +102,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun showAvatar(url: String) {
 
-        GlideLoader.loadWithPalette(avatarImageView, url, object : OnPaletteProcessedCallback {
+        GlideLoader.loadWithPalette(avatar_image_view, url, object : OnPaletteProcessedCallback {
 
             override fun onPaletteGenerated(palette: Palette?) {
                 palette?.vibrantSwatch?.let {

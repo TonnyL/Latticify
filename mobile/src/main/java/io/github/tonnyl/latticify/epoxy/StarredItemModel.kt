@@ -59,7 +59,7 @@ abstract class StarredItemModel : EpoxyModelWithHolder<StarredItemModel.StarredI
                 with(it) {
                     itemLayout = findViewById(R.id.starredItemLayout)
                     titleTextView = findViewById(R.id.titleTextView)
-                    avatarImageView = findViewById(R.id.avatarImageView)
+                    avatarImageView = findViewById(R.id.avatar_image_view)
                 }
             }
         }

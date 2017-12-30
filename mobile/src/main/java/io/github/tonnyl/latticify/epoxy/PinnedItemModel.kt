@@ -54,7 +54,7 @@ abstract class PinnedItemModel : EpoxyModelWithHolder<PinnedItemModel.PinnedItem
             itemView?.let {
                 with(it) {
                     itemLayout = findViewById(R.id.pinItemLayout)
-                    avatarImageView = findViewById(R.id.avatarImageView)
+                    avatarImageView = findViewById(R.id.avatar_image_view)
                     pinCreatorTextView = findViewById(R.id.pinCreatorTextView)
                     pinTimeTextView = findViewById(R.id.pinTimeTextView)
                     pinContentTextView = findViewById(R.id.pinContentTextView)
