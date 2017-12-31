@@ -11,5 +11,6 @@ data class ResponseWrapper(
         val ok: Boolean,
 
         @SerializedName("error")
-        val error: String
+        val error: String?
+
 )

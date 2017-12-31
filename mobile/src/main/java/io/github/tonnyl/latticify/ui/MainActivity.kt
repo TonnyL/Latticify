@@ -6,11 +6,13 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
+import io.github.tonnyl.latticify.data.repository.DndRespository
 import io.github.tonnyl.latticify.data.repository.TeamRepository
 import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
@@ -259,7 +261,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showSnoozeNotificationsDialog() {
+        AccessTokenManager.getAccessToken().userId?.let {
 
+            DndRespository().info(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ dndInfoWrapper ->
+
+                        //                        val array = resources.getStringArray(R.array.snooze_notifications_items)
+
+                        AlertDialog.Builder(this)
+                                .setTitle(getString(R.string.snooze_notifications))
+                                .setItems(R.array.snooze_notifications_items, { _, which ->
+                                    val minutes = when (which) {
+                                        0 -> 20 // 20 minutes
+                                        1 -> 60 // 1 hour
+                                        2 -> 2 * 60 // 2 hours
+                                        3 -> 4 * 60 // 4 hours
+                                        4 -> 8 * 60 // 8 hours
+                                        else -> 24 * 60 // 24 hours
+                                    }
+                                })
+                                .create()
+                                .show()
+                    }, {
+
+                    })
+        }
     }
 
 }

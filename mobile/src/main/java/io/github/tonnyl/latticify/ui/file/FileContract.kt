@@ -20,15 +20,20 @@ interface FileContract {
 
         fun showContent(wrapper: FileWrapper)
 
+        fun finishActivity()
+
+        fun showDeleteFileError()
+
+        fun copyLink(link: String)
     }
 
     interface Presenter : BasePresenter {
 
-        fun addReaction()
+        fun addReaction(name: String)
 
         fun comment(comment: String)
 
-        fun star()
+        fun starUnstar()
 
         fun share()
 

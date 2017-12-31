@@ -81,7 +81,7 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
                 with(it) {
                     item = findViewById(R.id.channelLayout)
                     avatar = findViewById(R.id.avatar)
-                    username = findViewById(R.id.usernameTextView)
+                    username = findViewById(R.id.username_text_view)
                     time = findViewById(R.id.timeTextView)
                     summary = findViewById(R.id.messageSummaryTextView)
                     unreadCount = findViewById(R.id.unreadCountTextView)

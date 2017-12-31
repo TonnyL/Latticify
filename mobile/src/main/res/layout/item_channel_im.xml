@@ -26,12 +26,12 @@
         android:layout_width="16dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/usernameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/username_text_view"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/usernameTextView"
+        android:id="@+id/username_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -53,7 +53,7 @@
         android:textSize="@dimen/text_body_size"
         app:layout_constraintBottom_toTopOf="@+id/messageSummaryTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/usernameTextView"
+        app:layout_constraintStart_toEndOf="@+id/username_text_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="03:00 PM" />
@@ -70,7 +70,7 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/unreadCountTextView"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@id/usernameTextView"
+        app:layout_constraintTop_toBottomOf="@id/username_text_view"
         tools:text="Are you sure that the notes include that? I'm pretty sure they ..." />
 
     <TextView

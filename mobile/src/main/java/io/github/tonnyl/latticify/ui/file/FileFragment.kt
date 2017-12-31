@@ -1,13 +1,19 @@
 package io.github.tonnyl.latticify.ui.file
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.text.format.DateUtils
 import android.view.*
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.File
 import io.github.tonnyl.latticify.data.FileWrapper
 import kotlinx.android.synthetic.main.fragment_file.*
+import kotlinx.android.synthetic.main.item_message.*
 
 /**
  * Created by lizhaotailang on 29/12/2017.
@@ -65,10 +71,10 @@ class FileFragment : Fragment(), FileContract.View {
 
             }
             R.id.action_copy_link -> {
-
+                mPresenter.copyLink()
             }
             R.id.action_delete -> {
-
+                showDeleteDialog()
             }
             R.id.action_open_in_browser -> {
 
@@ -119,6 +125,42 @@ class FileFragment : Fragment(), FileContract.View {
             </html>
             """
         content_web_view.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
+    }
+
+    override fun finishActivity() {
+        activity?.onBackPressed()
+    }
+
+    override fun showDeleteFileError() {
+        Snackbar.make(username_text_view, getString(R.string.failed_to_delete_file), Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun copyLink(link: String) {
+        val manager = context?.getSystemService(Context.CLIPBOARD_SERVICE)?.let {
+            it as ClipboardManager
+        } ?: run {
+            return
+        }
+        val clipData = ClipData.newPlainText("text", link)
+        manager.primaryClip = clipData
+
+        Snackbar.make(username_text_view, R.string.copied, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showDeleteDialog() {
+        AlertDialog.Builder(context ?: return)
+                .setTitle(getString(R.string.dialog_delete_file_title))
+                .setMessage(getString(R.string.dialog_delete_file_msg))
+                .setNegativeButton(getString(R.string.button_cancel_text), { d, _ ->
+                    d.dismiss()
+                })
+                .setPositiveButton(getString(R.string.button_ok_text), { d, _ ->
+                    d.dismiss()
+
+                    mPresenter.delete()
+                })
+                .create()
+                .show()
     }
 
 }

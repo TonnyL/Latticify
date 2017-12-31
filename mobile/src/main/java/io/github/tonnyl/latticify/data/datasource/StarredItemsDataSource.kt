@@ -16,11 +16,11 @@ interface StarredItemsDataSource {
             timestamp: String = ""): Observable<ResponseWrapper>
 
     fun list(count: Int = Api.LIMIT,
-             page: Int): Observable<StarItemsWrapper>
+             page: Int = 1): Observable<StarItemsWrapper>
 
-    fun remove(channelId: String,
-               fileId: String,
-               fileCommentId: String,
-               timestamp: String): Observable<ResponseWrapper>
+    fun remove(channelId: String = "",
+               fileId: String = "",
+               fileCommentId: String = "",
+               timestamp: String = ""): Observable<ResponseWrapper>
 
 }

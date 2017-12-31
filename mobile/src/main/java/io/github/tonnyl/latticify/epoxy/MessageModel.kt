@@ -75,7 +75,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                 with(it) {
                     itemLayout = findViewById(R.id.messageLayout)
                     avatarImageView = findViewById(R.id.avatar_image_view)
-                    usernameTextView = findViewById(R.id.usernameTextView)
+                    usernameTextView = findViewById(R.id.username_text_view)
                     messageContentLayout = findViewById(R.id.messageContentLayout)
                     messageContentTextView = findViewById(R.id.messageContentTextView)
                     timeTextView = findViewById(R.id.timeTextView)

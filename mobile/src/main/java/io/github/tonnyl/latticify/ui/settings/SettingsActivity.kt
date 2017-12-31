@@ -14,7 +14,12 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common)
 
+        val fragment = SettingsFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+                .add(R.id.container, fragment, SettingsFragment::class.java.simpleName)
+                .commit()
 
+        SettingsPresenter(fragment)
     }
 
 }

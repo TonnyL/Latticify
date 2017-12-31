@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/profile">
+
+        <Preference
+            android:key="@string/key_edit_profile"
+            android:title="@string/edit_profile" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_availability"
+            android:summaryOff="@string/offline"
+            android:summaryOn="@string/online"
+            android:title="@string/availability" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notifications">
+
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

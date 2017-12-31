@@ -27,7 +27,7 @@
 
     <dimen name="item_horizontal_spacing">8dp</dimen>
 
-    <dimen name="app_bar_height">240dp</dimen>
+    <dimen name="app_bar_height">160dp</dimen>
 
     <dimen name="card_view_radius">2dp</dimen>
     <dimen name="card_view_elevation">2dp</dimen>

@@ -56,7 +56,7 @@ abstract class SearchedMessageModel : EpoxyModelWithHolder<SearchedMessageModel.
                     messageToTextView = findViewById(R.id.messageToTextView)
                     timeTextView = findViewById(R.id.timeTextView)
                     avatarImageView = findViewById(R.id.avatar_image_view)
-                    usernameTextView = findViewById(R.id.usernameTextView)
+                    usernameTextView = findViewById(R.id.username_text_view)
                     messageContentTextView = findViewById(R.id.messageContentTextView)
                 }
             }

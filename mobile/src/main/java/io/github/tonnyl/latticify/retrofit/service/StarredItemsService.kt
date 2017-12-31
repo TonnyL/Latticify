@@ -31,7 +31,7 @@ interface StarredItemsService {
             @Field("channel") channelId: String = "",
             @Field("file") file: String = "",
             @Field("file_comment") fileCommentId: String = "",
-            @Field("timestamp") timestamp: String): Observable<ResponseWrapper>
+            @Field("timestamp") timestamp: String = ""): Observable<ResponseWrapper>
 
     /**
      * Lists the items starred by the authed user.
@@ -46,7 +46,7 @@ interface StarredItemsService {
     @FormUrlEncoded
     fun list(@Field("token") token: String,
              @Field("count") count: Int = Api.LIMIT,
-             @Field("page") page: Int): Observable<StarItemsWrapper>
+             @Field("page") page: Int = 1): Observable<StarItemsWrapper>
 
     /**
      * Removes a star from an item.
@@ -63,8 +63,8 @@ interface StarredItemsService {
     @POST("stars.remove")
     @FormUrlEncoded
     fun remove(@Field("token") token: String,
-               @Field("channel") channelId: String,
-               @Field("file") fileId: String,
-               @Field("file_comment") fileCommentId: String,
-               @Field("timestamp") timestamp: String): Observable<ResponseWrapper>
+               @Field("channel") channelId: String = "",
+               @Field("file") fileId: String = "",
+               @Field("file_comment") fileCommentId: String = "",
+               @Field("timestamp") timestamp: String = ""): Observable<ResponseWrapper>
 }
