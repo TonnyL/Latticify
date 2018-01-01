@@ -35,7 +35,6 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="status">Status</string>
-    <string name="skype">Skype</string>
     <string name="locale">Locale</string>
     <string name="timezone">Timezone</string>
     <string name="timezone_ahead_1_hour">1 hour ahead of you (%1$s)</string>
@@ -150,6 +149,8 @@
 
     <string name="snooze_notifications">Snooze notifications</string>
     <string name="what_i_do">What I do</string>
+    <string name="info">Info</string>
+
     <string-array name="snooze_notifications_items">
         <item>20 minutes</item>
         <item>1 hour</item>

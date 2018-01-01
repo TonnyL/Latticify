@@ -27,7 +27,8 @@
     </style>
 
     <style name="AppTheme.ExpandedAppBar" parent="TextAppearance.AppCompat.Display1">
-        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -15,9 +15,10 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/AppTheme.CollapsedAppBar"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|enterAlways">
+            app:expandedTitleTextAppearance="@style/AppTheme.ExpandedAppBar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -26,7 +27,9 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:paddingTop="@dimen/activity_vertical_margin"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5">
 
                 <ImageView
                     android:id="@+id/avatar_image_view"
@@ -81,8 +84,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
+                android:theme="@style/AppTheme.ToolbarStyle"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:subtitleTextColor="@color/textColorSecondary"
+                app:titleTextColor="@color/textColorPrimary"
+                tools:title="Latticify" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -90,7 +97,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -98,7 +105,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin_half"
@@ -113,117 +122,79 @@
                 app:contentPaddingRight="@dimen/activity_horizontal_margin"
                 app:contentPaddingTop="@dimen/activity_vertical_margin">
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <!--Real name series-->
-                    <ImageView
-                        android:id="@+id/real_name_image_view"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/real_name_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/real_name"
+                            android:src="@drawable/ic_person_black_24dp"
+                            android:tint="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/real_name_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/real_name_image_view"
+                            android:text="@string/real_name" />
+
+                        <TextView
+                            android:id="@+id/real_name_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/real_name_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/real_name_image_view"
+                            tools:text="TonnyL" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/real_name"
-                        android:src="@drawable/ic_person_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toTopOf="@id/space_real_name_status"
-                        app:layout_constraintEnd_toStartOf="@id/space_real_name"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_real_name"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toTopOf="@id/space_real_name_status"
-                        app:layout_constraintEnd_toStartOf="@id/real_name_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/real_name_image_view"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        <ImageView
+                            android:id="@+id/status_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/status"
+                            android:src="@drawable/ic_work_black_24dp"
+                            android:tint="@color/colorAccent" />
 
-                    <TextView
-                        android:id="@+id/real_name_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/real_name"
-                        app:layout_constraintBottom_toTopOf="@id/real_name_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_real_name"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        <TextView
+                            android:id="@+id/status_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/status_image_view"
+                            android:text="@string/status" />
 
-                    <TextView
-                        android:id="@+id/real_name_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toTopOf="@id/space_real_name_status"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_real_name"
-                        app:layout_constraintTop_toBottomOf="@id/real_name_summary_text_view"
-                        tools:text="Tonny" />
-                    <!--Real name series end-->
+                        <TextView
+                            android:id="@+id/status_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/status_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/status_image_view"
+                            tools:text="On a vocation" />
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_real_name_status"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/activity_vertical_margin"
-                        app:layout_constraintBottom_toTopOf="@id/status_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/real_name_text_view" />
+                    </RelativeLayout>
 
-                    <!--Status series-->
-                    <ImageView
-                        android:id="@+id/status_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/status"
-                        android:src="@drawable/ic_work_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/space_status"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/space_real_name_status" />
-
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_status"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/status_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/status_image_view"
-                        app:layout_constraintTop_toBottomOf="@id/space_real_name_status" />
-
-                    <TextView
-                        android:id="@+id/status_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/status"
-                        app:layout_constraintBottom_toTopOf="@id/status_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_status"
-                        app:layout_constraintTop_toBottomOf="@id/space_real_name_status" />
-
-                    <TextView
-                        android:id="@+id/status_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_status"
-                        app:layout_constraintTop_toBottomOf="@id/status_summary_text_view"
-                        tools:text="🗓 In a meeting" />
-
-                    <android.support.constraint.Group
-                        android:id="@+id/status_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="space_real_name_status,status_image_view,space_status,status_summary_text_view,status_text_view" />
-
-                    <!--Status series end-->
-
-                </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -242,180 +213,79 @@
                 app:contentPaddingRight="@dimen/activity_horizontal_margin"
                 app:contentPaddingTop="@dimen/activity_vertical_margin">
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <!--Telephone series-->
-                    <ImageView
-                        android:id="@+id/phone_image_view"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/phone_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/real_name"
+                            android:src="@drawable/ic_phone_black_24dp"
+                            android:tint="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/phone_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/phone_image_view"
+                            android:text="@string/phone" />
+
+                        <TextView
+                            android:id="@+id/phone_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/phone_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/phone_image_view"
+                            tools:text="+86 12345678900" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/real_name"
-                        android:src="@drawable/ic_phone_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toTopOf="@id/space_phone_email"
-                        app:layout_constraintEnd_toStartOf="@id/space_phone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_phone"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toTopOf="@id/space_phone_email"
-                        app:layout_constraintEnd_toStartOf="@id/phone_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/phone_image_view"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <ImageView
+                            android:id="@+id/email_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/email"
+                            android:src="@drawable/ic_email_black_24dp"
+                            android:tint="@color/colorAccent" />
 
-                    <TextView
-                        android:id="@+id/phone_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/phone"
-                        app:layout_constraintBottom_toTopOf="@id/phone_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_phone"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        <TextView
+                            android:id="@+id/email_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/email_image_view"
+                            android:text="@string/email" />
 
-                    <TextView
-                        android:id="@+id/phone_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toTopOf="@id/space_phone_email"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_phone"
-                        app:layout_constraintTop_toBottomOf="@id/phone_summary_text_view"
-                        tools:text="+86 12345678900" />
+                        <TextView
+                            android:id="@+id/email_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/email_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/email_image_view"
+                            tools:text="slack@slack.com" />
 
-                    <android.support.constraint.Group
-                        android:id="@+id/phone_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="phone_image_view,space_phone,phone_summary_text_view,phone_text_view" />
-                    <!--Telephone series end-->
+                    </RelativeLayout>
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_phone_email"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/activity_vertical_margin"
-                        app:layout_constraintBottom_toTopOf="@id/email_summary_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/phone_text_view" />
-
-                    <!--Email series-->
-                    <ImageView
-                        android:id="@+id/email_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/email"
-                        android:src="@drawable/ic_email_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toTopOf="@id/space_email_skype"
-                        app:layout_constraintEnd_toStartOf="@id/space_email"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/space_phone_email" />
-
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_email"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toTopOf="@id/space_email_skype"
-                        app:layout_constraintEnd_toStartOf="@id/email_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/email_image_view"
-                        app:layout_constraintTop_toBottomOf="@id/space_phone_email" />
-
-                    <TextView
-                        android:id="@+id/email_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/email"
-                        app:layout_constraintBottom_toTopOf="@id/email_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_email"
-                        app:layout_constraintTop_toBottomOf="@id/space_phone_email" />
-
-                    <TextView
-                        android:id="@+id/email_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toTopOf="@id/space_email_skype"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_email"
-                        app:layout_constraintTop_toBottomOf="@id/space_phone_email"
-                        tools:text="slack@slack.com" />
-
-                    <android.support.constraint.Group
-                        android:id="@+id/email_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="space_phone_email,email_image_view,space_email,email_summary_text_view,email_text_view" />
-                    <!--Email series end-->
-
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_email_skype"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/activity_vertical_margin"
-                        app:layout_constraintBottom_toTopOf="@id/skype_image_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/email_text_view" />
-
-                    <!--Skype series-->
-                    <ImageView
-                        android:id="@+id/skype_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/skype"
-                        android:src="@drawable/ic_skype_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/space_skype"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/space_email_skype" />
-
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_skype"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/skype_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/skype_image_view"
-                        app:layout_constraintTop_toBottomOf="@id/space_email_skype" />
-
-                    <TextView
-                        android:id="@+id/skype_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/skype"
-                        app:layout_constraintBottom_toTopOf="@id/skype_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_skype"
-                        app:layout_constraintTop_toBottomOf="@id/space_email_skype" />
-
-                    <TextView
-                        android:id="@+id/skype_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_phone"
-                        app:layout_constraintTop_toBottomOf="@id/skype_summary_text_view"
-                        tools:text="My skype account" />
-
-                    <android.support.constraint.Group
-                        android:id="@+id/skype_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="space_email_skype,skype_image_view,space_skype,skype_summary_text_view,skype_text_view" />
-                    <!--Skype series end-->
-
-                </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -433,109 +303,79 @@
                 app:contentPaddingRight="@dimen/activity_horizontal_margin"
                 app:contentPaddingTop="@dimen/activity_vertical_margin">
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <!--locale series-->
-                    <ImageView
-                        android:id="@+id/locale_image_view"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/locale_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/locale"
+                            android:src="@drawable/ic_location_on_black_24dp"
+                            android:tint="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/locale_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/locale_image_view"
+                            android:text="@string/locale" />
+
+                        <TextView
+                            android:id="@+id/locale_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/locale_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/locale_image_view"
+                            tools:text="enUS" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/locale"
-                        android:src="@drawable/ic_location_on_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toTopOf="@id/space_locale_timezone"
-                        app:layout_constraintEnd_toStartOf="@id/space_locale"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_locale"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toTopOf="@id/space_locale_timezone"
-                        app:layout_constraintEnd_toStartOf="@id/locale_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/locale_image_view"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <ImageView
+                            android:id="@+id/timezone_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/timezone"
+                            android:src="@drawable/ic_access_time_black_24dp"
+                            android:tint="@color/colorAccent" />
 
-                    <TextView
-                        android:id="@+id/locale_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/locale"
-                        app:layout_constraintBottom_toTopOf="@id/locale_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_locale"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        <TextView
+                            android:id="@+id/timezone_summary_text_view"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/timezone_image_view"
+                            android:text="@string/timezone" />
 
-                    <TextView
-                        android:id="@+id/locale_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toTopOf="@id/space_locale_timezone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_locale"
-                        app:layout_constraintTop_toBottomOf="@id/locale_summary_text_view"
-                        tools:text="enUS" />
-                    <!--locale series end-->
+                        <TextView
+                            android:id="@+id/timezone_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/timezone_summary_text_view"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_toEndOf="@id/timezone_image_view"
+                            tools:text="In your timezone(China Standard Time)" />
 
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_locale_timezone"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/activity_vertical_margin"
-                        app:layout_constraintBottom_toTopOf="@id/timezone_image_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/locale_text_view" />
+                    </RelativeLayout>
 
-                    <!--timezone series-->
-                    <ImageView
-                        android:id="@+id/timezone_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/timezone"
-                        android:src="@drawable/ic_access_time_black_24dp"
-                        android:tint="@color/colorAccent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/space_timezone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/space_locale_timezone" />
-
-                    <android.support.v4.widget.Space
-                        android:id="@+id/space_timezone"
-                        android:layout_width="@dimen/activity_horizontal_margin"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/timezone_summary_text_view"
-                        app:layout_constraintStart_toEndOf="@id/timezone_image_view"
-                        app:layout_constraintTop_toBottomOf="@id/space_locale_timezone" />
-
-                    <TextView
-                        android:id="@+id/timezone_summary_text_view"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/timezone"
-                        app:layout_constraintBottom_toTopOf="@id/timezone_text_view"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_timezone"
-                        app:layout_constraintTop_toBottomOf="@id/space_locale_timezone" />
-
-                    <TextView
-                        android:id="@+id/timezone_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/space_timezone"
-                        app:layout_constraintTop_toBottomOf="@id/timezone_summary_text_view"
-                        tools:text="In ur timezone(China Standard Time)" />
-                    <!--timezone series end-->
-
-                </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 

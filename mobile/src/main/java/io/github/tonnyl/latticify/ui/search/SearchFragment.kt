@@ -61,8 +61,10 @@ class SearchFragment : Fragment(), SearchContract.View {
                     mSearchMessagesPresenter?.fetchSearchResults(this)
                     mSearchFilesPresenter?.fetchSearchResults(this)
                 }
+                true
+            } else {
+                false
             }
-            false
         }
 
         search_clear_image_view.setOnClickListener {

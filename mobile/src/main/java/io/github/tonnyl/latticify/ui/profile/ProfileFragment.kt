@@ -85,6 +85,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         with(user) {
             GlideLoader.loadAvatar(avatar_image_view, user.profile.image192)
 
+            name_text_view.text = user.name
+            username_text_view.text = user.realName
+
             real_name_text_view.text = realName
 
             status_text_view.text = "${profile.statusEmoji} ${profile.statusText}"
@@ -94,17 +97,6 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             } else {
                 phone_text_view.text = profile.phone
                 email_text_view.text = profile.email
-                skype_text_view.text = profile.skype
-
-                if (profile.phone == null) {
-                    phone_group.visibility = View.GONE
-                }
-                if (profile.email == null) {
-                    email_group.visibility = View.GONE
-                }
-                if (profile.skype == null) {
-                    skype_group.visibility = View.GONE
-                }
             }
 
             locale_text_view.text = locale

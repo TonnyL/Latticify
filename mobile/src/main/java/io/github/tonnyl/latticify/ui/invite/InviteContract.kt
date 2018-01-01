@@ -14,6 +14,8 @@ interface InviteContract {
 
     interface Presenter : BasePresenter {
 
+        fun invite(email: String)
+
     }
 
 }

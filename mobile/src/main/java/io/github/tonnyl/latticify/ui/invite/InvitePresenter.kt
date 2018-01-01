@@ -19,4 +19,8 @@ class InvitePresenter(view: InviteContract.View) : InviteContract.Presenter {
 
     }
 
+    override fun invite(email: String) {
+
+    }
+
 }
