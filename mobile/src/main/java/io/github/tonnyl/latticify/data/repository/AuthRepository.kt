@@ -5,7 +5,6 @@ import io.github.tonnyl.latticify.data.AuthTestWrapper
 import io.github.tonnyl.latticify.data.datasource.AuthDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.AuthService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -13,13 +12,15 @@ import io.reactivex.Observable
  */
 class AuthRepository : AuthDataSource {
 
-    private val mAuthService = RetrofitClient.createService(AuthService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mAuthService = RetrofitClient.createService(AuthService::class.java)
+    private val mToken = RetrofitClient.mToken
 
-    override fun revoke(test: Int): Observable<AuthRevokeWrapper> =
-            mAuthService.revoke(mToken, test)
+    override fun revoke(test: Int): Observable<AuthRevokeWrapper> {
+        return mAuthService.revoke(mToken, test)
+    }
 
-    override fun test(): Observable<AuthTestWrapper> =
-            mAuthService.test(mToken)
+    override fun test(): Observable<AuthTestWrapper> {
+        return mAuthService.test(mToken)
+    }
 
 }

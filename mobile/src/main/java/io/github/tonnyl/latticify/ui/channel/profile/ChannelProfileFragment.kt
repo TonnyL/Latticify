@@ -14,7 +14,6 @@ import io.github.tonnyl.latticify.ui.channel.edit.EditChannelActivity
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelPresenter
 import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsActivity
 import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsPresenter
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import kotlinx.android.synthetic.main.fragment_channel_details.*
 
 /**
@@ -79,9 +78,9 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         creatorTextView.text = getString(R.string.channel_creation).format(channel.creator, DateUtils.getRelativeTimeSpanString(channel.created * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS))
         memberListTextView.text = getString(R.string.member_list).format(channel.numMembers ?: channel.members?.size)
 
-        if (channel.creator == AccessTokenManager.getAccessToken().userId) {
+        /*if (channel.creator == AccessTokenManager.getAccessToken().userId) {
             advancedLayout.visibility = View.VISIBLE
-        }
+        }*/
         archiveDescriptionTextView.text = getString(R.string.archive_description).format(channel.name)
 
         editTextView.setOnClickListener {

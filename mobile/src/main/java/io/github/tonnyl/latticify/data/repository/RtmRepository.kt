@@ -4,7 +4,6 @@ import io.github.tonnyl.latticify.data.RtmResponseMessageWrapper
 import io.github.tonnyl.latticify.data.datasource.RtmDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.RtmService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -12,8 +11,8 @@ import io.reactivex.Observable
  */
 object RtmRepository : RtmDataSource {
 
-    private val mRtmService = RetrofitClient.createService(RtmService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mRtmService = RetrofitClient.createService(RtmService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun connect(batchPresenceAware: Int): Observable<RtmResponseMessageWrapper> =
             mRtmService.connect(mToken, batchPresenceAware)

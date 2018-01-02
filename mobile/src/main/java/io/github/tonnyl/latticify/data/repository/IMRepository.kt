@@ -4,7 +4,6 @@ import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.datasource.IMDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.IMService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -12,8 +11,8 @@ import io.reactivex.Observable
  */
 object IMRepository : IMDataSource {
 
-    private val mIMService = RetrofitClient.createService(IMService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mIMService = RetrofitClient.createService(IMService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun close(channelId: String): Observable<ChannelCloseWrapper> =
             mIMService.close(mToken, channelId)

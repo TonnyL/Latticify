@@ -3,7 +3,6 @@ package io.github.tonnyl.latticify.ui.profile
 import io.github.tonnyl.latticify.data.User
 import io.github.tonnyl.latticify.data.repository.IMRepository
 import io.github.tonnyl.latticify.data.repository.UsersRepository
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -44,7 +43,7 @@ class ProfilePresenter(private val mView: ProfileContract.View) : ProfileContrac
             fetchData()
         }
 
-        mView.setIsMe(mUserId == AccessTokenManager.getAccessToken().userId)
+//        mView.setIsMe(mUserId == AccessTokenManager.getAccessToken().userId)
     }
 
     override fun unsubscribe() {

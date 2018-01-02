@@ -10,8 +10,12 @@ import io.github.tonnyl.latticify.R
  */
 class AuthActivity : AppCompatActivity() {
 
-    private lateinit var mPresenter: AuthPresenter
     private lateinit var mAuthFragment: AuthFragment
+
+    companion object {
+        @JvmField
+        val ACTION_FROM_MAIN = "ACTION_FROM_MAIN"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +28,7 @@ class AuthActivity : AppCompatActivity() {
                 .add(R.id.container, mAuthFragment, AuthFragment::class.java.simpleName)
                 .commit()
 
-        mPresenter = AuthPresenter(mAuthFragment)
+        AuthPresenter(mAuthFragment)
     }
 
     override fun onNewIntent(intent: Intent?) {

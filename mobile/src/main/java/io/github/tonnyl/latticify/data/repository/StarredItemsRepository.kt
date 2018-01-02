@@ -5,7 +5,6 @@ import io.github.tonnyl.latticify.data.StarItemsWrapper
 import io.github.tonnyl.latticify.data.datasource.StarredItemsDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.StarredItemsService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -13,8 +12,8 @@ import io.reactivex.Observable
  */
 object StarredItemsRepository : StarredItemsDataSource {
 
-    private val mStarredItemsService = RetrofitClient.createService(StarredItemsService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mStarredItemsService = RetrofitClient.createService(StarredItemsService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun add(channelId: String, file: String, fileCommentId: String, timestamp: String): Observable<ResponseWrapper> {
         return mStarredItemsService.add(mToken, channelId, file, fileCommentId, timestamp)

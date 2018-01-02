@@ -1,23 +1,24 @@
 package io.github.tonnyl.latticify.ui
 
+import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.repository.DndRespository
 import io.github.tonnyl.latticify.data.repository.TeamRepository
-import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
+import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.ui.about.AboutActivity
 import io.github.tonnyl.latticify.ui.auth.AuthActivity
+import io.github.tonnyl.latticify.ui.auth.Authenticator
 import io.github.tonnyl.latticify.ui.channels.ChannelsFragment
 import io.github.tonnyl.latticify.ui.channels.ChannelsPresenter
 import io.github.tonnyl.latticify.ui.channels.add.AddChannelActivity
@@ -28,14 +29,12 @@ import io.github.tonnyl.latticify.ui.groups.GroupsPresenter
 import io.github.tonnyl.latticify.ui.ims.IMsFragment
 import io.github.tonnyl.latticify.ui.ims.IMsPresenter
 import io.github.tonnyl.latticify.ui.invite.InviteActivity
-import io.github.tonnyl.latticify.ui.profile.ProfileActivity
-import io.github.tonnyl.latticify.ui.profile.ProfilePresenter
 import io.github.tonnyl.latticify.ui.search.SearchActivity
 import io.github.tonnyl.latticify.ui.settings.SettingsActivity
 import io.github.tonnyl.latticify.ui.starred.StarredItemsFragment
 import io.github.tonnyl.latticify.ui.starred.StarredItemsPresenter
 import io.github.tonnyl.latticify.ui.status.SetStatusActivity
-import io.github.tonnyl.latticify.util.AccessTokenManager
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -59,12 +58,51 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val mCompositeDisposable = CompositeDisposable()
 
+    private lateinit var mAccountManager: AccountManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        initViews()
+        mAccountManager = AccountManager.get(this)
+
+        val disposable = Observable.create<String> {
+            val accounts = mAccountManager.getAccountsByType(Authenticator.KEY_ACCOUNT_TYPE)
+
+            Log.d("accounts", "" + accounts)
+
+            if (accounts.isNotEmpty()) {
+                val bundle = mAccountManager.getAuthToken(accounts[0], Authenticator.KEY_AUTH_TYPE, null, this@MainActivity, null, null).result
+                val token = bundle.get(AccountManager.KEY_AUTHTOKEN).toString()
+
+                it.onNext(token)
+            } else {
+                it.onNext("")
+            }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ token ->
+                    if (token.isNotEmpty()) {
+                        RetrofitClient.mToken = token
+
+                        initViews()
+
+                        getTeamInfo()
+
+                    } else {
+                        val i = Intent(this, AuthActivity::class.java)
+                        i.action = AuthActivity.ACTION_FROM_MAIN
+                        startActivity(i)
+
+                        finish()
+                    }
+                })
+        mCompositeDisposable.add(disposable)
+
+        navView.getHeaderView(0).accountActionImageView.setOnClickListener {
+            startActivity(Intent(this, AuthActivity::class.java))
+        }
 
         fab.setOnClickListener {
             when (mCheckedItemId) {
@@ -82,13 +120,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
-
-        navView.getHeaderView(0).accountActionImageView.setOnClickListener {
-            startActivity(Intent(this, AuthActivity::class.java))
-        }
-
-        getTeamInfo()
-
     }
 
     override fun onDestroy() {
@@ -183,6 +214,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
         navView.setCheckedItem(R.id.nav_direct_messages)
+
+        fab.isClickable = true
+
         mCheckedItemId = R.id.nav_direct_messages
 
         mChannelsFragment = ChannelsFragment.newInstance()
@@ -224,7 +258,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun navigateToProfile() {
-        val disposable = AccessTokenManager.getAccessToken().userId?.let {
+        /*val disposable = AccessTokenManager.getAccessToken().userId?.let {
             UsersRepository.info(it)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -238,7 +272,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         disposable?.let {
             mCompositeDisposable.add(it)
-        }
+        }*/
     }
 
     private fun getTeamInfo() {
@@ -261,7 +295,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showSnoozeNotificationsDialog() {
-        AccessTokenManager.getAccessToken().userId?.let {
+        /*AccessTokenManager.getAccessToken().userId?.let {
 
             DndRespository().info(it)
                     .subscribeOn(Schedulers.io())
@@ -287,7 +321,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }, {
 
                     })
-        }
+        }*/
     }
 
 }

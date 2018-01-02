@@ -5,7 +5,6 @@ import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.data.datasource.DndDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.DndService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -13,8 +12,8 @@ import io.reactivex.Observable
  */
 class DndRespository : DndDataSource {
 
-    private val mDndService = RetrofitClient.createService(DndService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mDndService = RetrofitClient.createService(DndService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun endDnd(): Observable<ResponseWrapper> =
             mDndService.endDnd(mToken)

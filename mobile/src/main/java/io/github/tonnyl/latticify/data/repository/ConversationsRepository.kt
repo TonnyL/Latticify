@@ -4,7 +4,6 @@ import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.datasource.ConversationsDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.ConversationsService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -12,9 +11,9 @@ import io.reactivex.Observable
  */
 object ConversationsRepository : ConversationsDataSource {
 
-    private val mConversationsService: ConversationsService = RetrofitClient.createService(ConversationsService::class.java, AccessTokenManager.getAccessToken())
+    private val mConversationsService: ConversationsService = RetrofitClient.createService(ConversationsService::class.java)
 
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mToken = RetrofitClient.mToken
 
     override fun archive(channelId: String): Observable<ResponseWrapper> =
             mConversationsService.archive(mToken, channelId)

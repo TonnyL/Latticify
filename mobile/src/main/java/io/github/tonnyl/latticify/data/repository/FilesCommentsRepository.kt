@@ -5,7 +5,6 @@ import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.data.datasource.FilesCommentsDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.FilesCommentsService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -13,8 +12,8 @@ import io.reactivex.Observable
  */
 class FilesCommentsRepository : FilesCommentsDataSource {
 
-    private val mFilesCommentsService = RetrofitClient.createService(FilesCommentsService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mFilesCommentsService = RetrofitClient.createService(FilesCommentsService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun add(comment: String, fileId: String): Observable<FileCommentWrapper> {
         return mFilesCommentsService.add(mToken, comment, fileId)

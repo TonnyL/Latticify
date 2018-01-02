@@ -249,7 +249,6 @@ interface ChannelsService {
     /**
      * Unarchives a channel.
      *
-     * @param token Required. Authentication token bearing required scopes.
      * @param channelId Required. Channel to unarchive. e.g. C1234567890.
      *
      * @return If successful, the command returns a [ResponseWrapper] object.

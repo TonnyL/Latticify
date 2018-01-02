@@ -1,6 +1,5 @@
 package io.github.tonnyl.latticify.ui.auth
 
-import android.util.Log
 import io.github.tonnyl.latticify.data.repository.AccessTokenRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,6 +31,7 @@ class AuthPresenter(private val mView: AuthContract.View) : AuthContract.Present
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ token ->
                     mView.showMessage(token.accessToken)
+
                     mView.mockStoreAccessToken(token)
                 }, {
                     it.printStackTrace()

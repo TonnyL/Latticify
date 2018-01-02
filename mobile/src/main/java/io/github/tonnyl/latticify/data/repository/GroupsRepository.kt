@@ -4,7 +4,6 @@ import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.datasource.GroupsDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.GroupsService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -12,9 +11,9 @@ import io.reactivex.Observable
  */
 object GroupsRepository : GroupsDataSource {
 
-    private val mGroupsService: GroupsService = RetrofitClient.createService(GroupsService::class.java, AccessTokenManager.getAccessToken())
+    private val mGroupsService: GroupsService = RetrofitClient.createService(GroupsService::class.java)
 
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mToken = RetrofitClient.mToken
 
     override fun archive(channelId: String): Observable<ResponseWrapper> =
             mGroupsService.archive(mToken, channelId)

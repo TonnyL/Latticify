@@ -6,7 +6,6 @@ import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.data.datasource.FilesDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.FilesService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -14,8 +13,8 @@ import io.reactivex.Observable
  */
 class FilesRepository : FilesDataSource {
 
-    private val mFilesService = RetrofitClient.createService(FilesService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mFilesService = RetrofitClient.createService(FilesService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun delete(fileId: String): Observable<ResponseWrapper> {
         return mFilesService.delete(mToken, fileId)

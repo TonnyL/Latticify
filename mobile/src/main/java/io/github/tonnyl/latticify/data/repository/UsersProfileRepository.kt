@@ -4,7 +4,6 @@ import io.github.tonnyl.latticify.data.UsersProfileWrapper
 import io.github.tonnyl.latticify.data.datasource.UsersProfileDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.UsersProfileService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -12,8 +11,8 @@ import io.reactivex.Observable
  */
 class UsersProfileRepository : UsersProfileDataSource {
 
-    private val mUsersProfileService = RetrofitClient.createService(UsersProfileService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mUsersProfileService = RetrofitClient.createService(UsersProfileService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun getUsersProfile(includeLabels: Boolean, userId: String): Observable<UsersProfileWrapper> =
             mUsersProfileService.getUsersProfile(mToken, includeLabels, userId)

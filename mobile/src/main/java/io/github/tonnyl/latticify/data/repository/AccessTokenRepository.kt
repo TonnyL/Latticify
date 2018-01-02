@@ -2,9 +2,9 @@ package io.github.tonnyl.latticify.data.repository
 
 import io.github.tonnyl.latticify.data.AccessToken
 import io.github.tonnyl.latticify.data.datasource.AccessTokenDataSource
-import io.github.tonnyl.latticify.retrofit.service.AccessTokenService
 import io.github.tonnyl.latticify.retrofit.Api
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
+import io.github.tonnyl.latticify.retrofit.service.AccessTokenService
 import io.reactivex.Observable
 
 /**
@@ -13,7 +13,7 @@ import io.reactivex.Observable
 object AccessTokenRepository : AccessTokenDataSource {
 
     override fun getAccessToken(code: String): Observable<AccessToken> {
-        return RetrofitClient.createService(AccessTokenService::class.java, null)
+        return RetrofitClient.createService(AccessTokenService::class.java)
                 .getAccessToken(Api.CLIENT_ID,
                         Api.CLIENT_SECRET,
                         code,

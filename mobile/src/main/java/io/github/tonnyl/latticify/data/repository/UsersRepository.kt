@@ -7,7 +7,6 @@ import io.github.tonnyl.latticify.data.UsersPresenceInfo
 import io.github.tonnyl.latticify.data.datasource.UsersDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.UsersService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -15,8 +14,8 @@ import io.reactivex.Observable
  */
 object UsersRepository : UsersDataSource {
 
-    private val mUsersService = RetrofitClient.createService(UsersService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mUsersService = RetrofitClient.createService(UsersService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun deletePhoto(): Observable<ResponseWrapper> =
             mUsersService.deletePhoto(mToken)

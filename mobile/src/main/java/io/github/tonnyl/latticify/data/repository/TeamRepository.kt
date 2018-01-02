@@ -6,7 +6,6 @@ import io.github.tonnyl.latticify.data.TeamWrapper
 import io.github.tonnyl.latticify.data.datasource.TeamDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.TeamService
-import io.github.tonnyl.latticify.util.AccessTokenManager
 import io.reactivex.Observable
 
 /**
@@ -14,8 +13,8 @@ import io.reactivex.Observable
  */
 object TeamRepository : TeamDataSource {
 
-    private val mTeamService = RetrofitClient.createService(TeamService::class.java, AccessTokenManager.getAccessToken())
-    private val mToken = AccessTokenManager.getAccessToken().accessToken
+    private val mTeamService = RetrofitClient.createService(TeamService::class.java)
+    private val mToken = RetrofitClient.mToken
 
     override fun accessLogs(before: String,
                             count: Int,
