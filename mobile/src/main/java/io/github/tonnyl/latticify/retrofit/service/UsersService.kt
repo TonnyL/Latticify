@@ -1,14 +1,9 @@
 package io.github.tonnyl.latticify.retrofit.service
 
-import io.github.tonnyl.latticify.data.ResponseWrapper
-import io.github.tonnyl.latticify.data.UserListWrapper
-import io.github.tonnyl.latticify.data.UserWrapper
-import io.github.tonnyl.latticify.data.UsersPresenceInfo
+import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by lizhaotailang on 08/10/2017.
@@ -22,9 +17,8 @@ interface UsersService {
      *
      * @return If successful, the command returns a [ResponseWrapper] object.
      */
-    @POST("users.deletePhoto")
-    @FormUrlEncoded
-    fun deletePhoto(@Field("token") token: String): Observable<ResponseWrapper>
+    @GET("users.deletePhoto")
+    fun deletePhoto(@Query("token") token: String): Observable<ResponseWrapper>
 
     /**
      * Gets user presence information.
@@ -36,10 +30,17 @@ interface UsersService {
      * If you are requesting presence information for the authenticated user, this method returns the current presence,
      * along with details on how it was calculated
      */
-    @POST("users.getPresence")
-    @FormUrlEncoded
-    fun getPresence(@Field("token") token: String,
-                    @Field("user") userId: String): Observable<UsersPresenceInfo>
+    @GET("users.getPresence")
+    fun getPresence(@Query("token") token: String,
+                    @Query("user") userId: String): Observable<UsersPresenceInfo>
+
+    /**
+     * Get a user's identity.
+     *
+     * @return If successful, the command returns a [UserIdentityWrapper] object.
+     */
+    @GET("users.identity")
+    fun identity(@Query("token") token: String): Observable<UserIdentityWrapper>
 
     /**
      * Gets information about a user.
@@ -50,11 +51,10 @@ interface UsersService {
      *
      * @return If successful, the command returns a [UserWrapper] object.
      */
-    @POST("users.info")
-    @FormUrlEncoded
-    fun info(@Field("token") token: String,
-             @Field("user") userId: String,
-             @Field("include_locale") includeLocale: Boolean = true): Observable<UserWrapper>
+    @GET("users.info")
+    fun info(@Query("token") token: String,
+             @Query("user") userId: String,
+             @Query("include_locale") includeLocale: Boolean = true): Observable<UserWrapper>
 
     /**
      * Lists all users in a Slack team.
@@ -69,13 +69,24 @@ interface UsersService {
      *
      * @return If successful, the command returns a list of [io.github.tonnyl.latticify.data.User] objects ([UserListWrapper]), in no particular order.
      */
-    @POST("users.list")
-    @FormUrlEncoded
-    fun list(@Field("token") token: String,
-             @Field("cursor") cursor: String = "",
-             @Field("include_locale") includeLocale: Boolean = true,
-             @Field("limit") limit: Int = Api.LIMIT,
-             @Field("presence") presence: Boolean = true): Observable<UserListWrapper>
+    @GET("users.list")
+    fun list(@Query("token") token: String,
+             @Query("cursor") cursor: String = "",
+             @Query("include_locale") includeLocale: Boolean = true,
+             @Query("limit") limit: Int = Api.LIMIT,
+             @Query("presence") presence: Boolean = true): Observable<UserListWrapper>
+
+    /**
+     * Find a user with an email address.
+     *
+     * @param token Required. Authentication token bearing required scopes.
+     * @param email Required. An email address belonging to a user in the workspace.
+     *
+     * @return If successful, the command returns a [UserWrapper] object.
+     */
+    @GET("users.lookupByEmail")
+    fun lookupByEmail(@Query("token") token: String,
+                      @Query("email") email: String): Observable<UserWrapper>
 
     /**
      * Marks a user as active.

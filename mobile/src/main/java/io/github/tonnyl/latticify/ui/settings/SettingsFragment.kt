@@ -25,12 +25,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsContract.View {
 
         initViews()
 
-        findPreference(getString(R.string.key_edit_profile)).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference("key_edit_profile").onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             true
         }
 
-        findPreference(getString(R.string.key_availability)).onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        findPreference("key_availability").onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             true
         }

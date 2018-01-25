@@ -21,12 +21,10 @@ class LatticifyAppGlideModule : AppGlideModule() {
 
     companion object {
         // Max cache size of glide.
-        @JvmField
-        val MAX_CACHE_SIZE = (1024 * 1024 * 512).toLong() // 512M
+        const val MAX_CACHE_SIZE = (1024 * 1024 * 512).toLong() // 512M
 
         // The cache directory name.
-        @JvmField
-        val CACHE_FILE_NAME = "IMG_CACHE" // cache file dir name
+        const val CACHE_FILE_NAME = "IMG_CACHE" // cache file dir name
     }
 
     override fun applyOptions(context: Context?, builder: GlideBuilder?) {
@@ -41,10 +39,10 @@ class LatticifyAppGlideModule : AppGlideModule() {
         builder?.setDiskCache(InternalCacheDiskCacheFactory(context, CACHE_FILE_NAME, MAX_CACHE_SIZE))
     }
 
-    override fun registerComponents(context: Context?, glide: Glide?, registry: Registry?) {
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         super.registerComponents(context, glide, registry)
         // Replace the http connection with okhttp
-        registry?.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory())
+        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory())
     }
 
     /**

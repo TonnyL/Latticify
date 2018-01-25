@@ -14,10 +14,14 @@ class UsersProfileRepository : UsersProfileDataSource {
     private val mUsersProfileService = RetrofitClient.createService(UsersProfileService::class.java)
     private val mToken = RetrofitClient.mToken
 
-    override fun getUsersProfile(includeLabels: Boolean, userId: String): Observable<UsersProfileWrapper> =
-            mUsersProfileService.getUsersProfile(mToken, includeLabels, userId)
+    override fun getUsersProfile(includeLabels: Boolean, userId: String): Observable<UsersProfileWrapper> {
+        return mUsersProfileService.getUsersProfile(mToken, includeLabels, userId)
+    }
 
-    override fun setUsersProfile(name: String, profile: String, userId: String, value: String): Observable<UsersProfileWrapper> =
-            mUsersProfileService.setUsersProfile(mToken, name, profile, userId, value)
+
+    override fun setUsersProfile(name: String, profile: String, userId: String, value: String): Observable<UsersProfileWrapper> {
+        return mUsersProfileService.setUsersProfile(mToken, name, profile, userId, value)
+    }
+
 
 }

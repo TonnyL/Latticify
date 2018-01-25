@@ -1,11 +1,10 @@
 package io.github.tonnyl.latticify.retrofit.service
 
 import io.github.tonnyl.latticify.data.DndInfoWrapper
+import io.github.tonnyl.latticify.data.DndTeamInfoWrapper
 import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by lizhaotailang on 14/10/2017.
@@ -38,12 +37,13 @@ interface DndService {
      * Retrieves a user's current Do Not Disturb status.
      *
      * @param token Required. Authentication token bearing required scopes.
-     * @param
+     * @param userId Optional. User to fetch status for (defaults to current user).
+     *
+     * @return If successful, the command returns a [DndInfoWrapper] object.
      */
-    @POST("dnd.info")
-    @FormUrlEncoded
-    fun info(@Field("token") token: String,
-             @Field("user") userId: String): Observable<DndInfoWrapper>
+    @GET("dnd.info")
+    fun info(@Query("token") token: String,
+             @Query("user") userId: String): Observable<DndInfoWrapper>
 
     /**
      * Turns on Do Not Disturb mode for the current user, or changes its duration.
@@ -55,10 +55,20 @@ interface DndService {
      * The [DndInfoWrapper.snoozeRemaining] field is expressed in seconds. If your request presents a [numMinutes] value of 1,
      * the response's [DndInfoWrapper.snoozeRemaining] will be 60.
      */
-    @POST("dnd.setSnooze")
-    @FormUrlEncoded
-    fun setSnooze(@Field("token") token: String,
-                  @Field("num_minutes") numMinutes: Int): Observable<DndInfoWrapper>
+    @GET("dnd.setSnooze")
+    fun setSnooze(@Query("token") token: String,
+                  @Query("num_minutes") numMinutes: Int): Observable<DndInfoWrapper>
 
+    /**
+     * Retrieves the Do Not Disturb status for users on a team.
+     *
+     * @param token Required. Authentication token bearing required scopes.
+     * @param users Optional. Comma-separated list of users to fetch Do Not Disturb status for. e.g. U1234,W4567.
+     *
+     * @return If successful, the command returns a [DndTeamInfoWrapper] object.
+     */
+    @GET("dnd.teamInfo")
+    fun teamInfo(@Query("token") token: String,
+                 @Query("users") userIds: Array<String>): Observable<DndTeamInfoWrapper>
 
 }

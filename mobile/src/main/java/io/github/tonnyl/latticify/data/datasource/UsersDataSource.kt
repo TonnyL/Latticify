@@ -1,9 +1,6 @@
 package io.github.tonnyl.latticify.data.datasource
 
-import io.github.tonnyl.latticify.data.ResponseWrapper
-import io.github.tonnyl.latticify.data.UserListWrapper
-import io.github.tonnyl.latticify.data.UserWrapper
-import io.github.tonnyl.latticify.data.UsersPresenceInfo
+import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
 
@@ -16,6 +13,8 @@ interface UsersDataSource {
 
     fun getPresence(userId: String): Observable<UsersPresenceInfo>
 
+    fun identity(): Observable<UserIdentityWrapper>
+
     fun info(userId: String,
              includeLocale: Boolean = true): Observable<UserWrapper>
 
@@ -23,6 +22,9 @@ interface UsersDataSource {
              includeLocale: Boolean = true,
              limit: Int = Api.LIMIT,
              presence: Boolean = true): Observable<UserListWrapper>
+
+    fun lookupByEmail(token: String,
+                      email: String): Observable<UserWrapper>
 
     fun setActive(): Observable<ResponseWrapper>
 

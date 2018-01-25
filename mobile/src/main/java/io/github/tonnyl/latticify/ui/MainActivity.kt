@@ -8,12 +8,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.repository.TeamRepository
+import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.ui.about.AboutActivity
@@ -28,9 +28,11 @@ import io.github.tonnyl.latticify.ui.groups.GroupsFragment
 import io.github.tonnyl.latticify.ui.groups.GroupsPresenter
 import io.github.tonnyl.latticify.ui.ims.IMsFragment
 import io.github.tonnyl.latticify.ui.ims.IMsPresenter
-import io.github.tonnyl.latticify.ui.invite.InviteActivity
+import io.github.tonnyl.latticify.ui.profile.ProfileActivity
+import io.github.tonnyl.latticify.ui.profile.ProfilePresenter
 import io.github.tonnyl.latticify.ui.search.SearchActivity
 import io.github.tonnyl.latticify.ui.settings.SettingsActivity
+import io.github.tonnyl.latticify.ui.snooze.SnoozeNotificationsActivity
 import io.github.tonnyl.latticify.ui.starred.StarredItemsFragment
 import io.github.tonnyl.latticify.ui.starred.StarredItemsPresenter
 import io.github.tonnyl.latticify.ui.status.SetStatusActivity
@@ -54,11 +56,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val mFragments = mutableListOf<Fragment>()
 
+    // Records the selected navigation menu item's id.
     private var mCheckedItemId = 0
-
     private val mCompositeDisposable = CompositeDisposable()
-
     private lateinit var mAccountManager: AccountManager
+    private var mUserId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,38 +69,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         mAccountManager = AccountManager.get(this)
 
-        val disposable = Observable.create<String> {
-            val accounts = mAccountManager.getAccountsByType(Authenticator.KEY_ACCOUNT_TYPE)
+        getToken()
 
-            Log.d("accounts", "" + accounts)
-
-            if (accounts.isNotEmpty()) {
-                val bundle = mAccountManager.getAuthToken(accounts[0], Authenticator.KEY_AUTH_TYPE, null, this@MainActivity, null, null).result
-                val token = bundle.get(AccountManager.KEY_AUTHTOKEN).toString()
-
-                it.onNext(token)
-            } else {
-                it.onNext("")
-            }
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ token ->
-                    if (token.isNotEmpty()) {
-                        RetrofitClient.mToken = token
-
-                        initViews()
-
-                        getTeamInfo()
-
-                    } else {
-                        val i = Intent(this, AuthActivity::class.java)
-                        i.action = AuthActivity.ACTION_FROM_MAIN
-                        startActivity(i)
-
-                        finish()
-                    }
-                })
-        mCompositeDisposable.add(disposable)
+        getMyInfo()
 
         navView.getHeaderView(0).accountActionImageView.setOnClickListener {
             startActivity(Intent(this, AuthActivity::class.java))
@@ -120,6 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+
     }
 
     override fun onDestroy() {
@@ -150,7 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, SetStatusActivity::class.java))
             }
             R.id.action_invite_members_to_team -> {
-                startActivity(Intent(this, InviteActivity::class.java))
+                startActivity(Intent(this, SnoozeNotificationsActivity::class.java))
             }
             R.id.action_snooze -> {
                 showSnoozeNotificationsDialog()
@@ -258,21 +232,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun navigateToProfile() {
-        /*val disposable = AccessTokenManager.getAccessToken().userId?.let {
-            UsersRepository.info(it)
+        mUserId?.let {
+            startActivity(Intent(this, ProfileActivity::class.java).apply {
+                putExtra(ProfilePresenter.KEY_EXTRA_USER_ID, it)
+            })
+        } ?: run {
+            val disposable = UsersRepository.identity()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ userWrapper ->
-                        if (userWrapper.ok) {
-                            startActivity(Intent(this, ProfileActivity::class.java).apply { putExtra(ProfilePresenter.KEY_EXTRA_USER, userWrapper.user) })
+                    .subscribe({
+                        if (it.ok) {
+                            mUserId = it.user.id
+
+                            startActivity(Intent(this, ProfileActivity::class.java).apply {
+                                putExtra(ProfilePresenter.KEY_EXTRA_USER_ID, it.user.id)
+                            })
                         }
                     }, {
 
                     })
+            mCompositeDisposable.add(disposable)
         }
-        disposable?.let {
-            mCompositeDisposable.add(it)
-        }*/
     }
 
     private fun getTeamInfo() {
@@ -295,33 +275,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showSnoozeNotificationsDialog() {
-        /*AccessTokenManager.getAccessToken().userId?.let {
+        startActivity(Intent(this@MainActivity, SnoozeNotificationsActivity::class.java))
+    }
 
-            DndRespository().info(it)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ dndInfoWrapper ->
+    private fun getToken() {
+        val disposable = Observable.create<String> {
+            val accounts = mAccountManager.getAccountsByType(Authenticator.KEY_ACCOUNT_TYPE)
 
-                        //                        val array = resources.getStringArray(R.array.snooze_notifications_items)
+            if (accounts.isNotEmpty()) {
+                val bundle = mAccountManager.getAuthToken(accounts[0], Authenticator.KEY_AUTH_TYPE, null, this@MainActivity, null, null).result
+                val token = bundle.get(AccountManager.KEY_AUTHTOKEN).toString()
 
-                        AlertDialog.Builder(this)
-                                .setTitle(getString(R.string.snooze_notifications))
-                                .setItems(R.array.snooze_notifications_items, { _, which ->
-                                    val minutes = when (which) {
-                                        0 -> 20 // 20 minutes
-                                        1 -> 60 // 1 hour
-                                        2 -> 2 * 60 // 2 hours
-                                        3 -> 4 * 60 // 4 hours
-                                        4 -> 8 * 60 // 8 hours
-                                        else -> 24 * 60 // 24 hours
-                                    }
-                                })
-                                .create()
-                                .show()
-                    }, {
+                it.onNext(token)
+            } else {
+                it.onNext("")
+            }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ token ->
+                    if (token.isNotEmpty()) {
+                        RetrofitClient.mToken = token
 
-                    })
-        }*/
+                        initViews()
+
+                        getTeamInfo()
+
+                    } else {
+                        val i = Intent(this, AuthActivity::class.java)
+                        i.action = AuthActivity.ACTION_FROM_MAIN
+                        startActivity(i)
+
+                        finish()
+                    }
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    private fun getMyInfo() {
+        val disposable = UsersRepository.identity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mUserId = it.user.id
+                    }
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
     }
 
 }

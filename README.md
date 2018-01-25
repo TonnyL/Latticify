@@ -13,7 +13,7 @@ Latticify is an Android app for [Slack](https://slack.com/). It's still in its e
 ```shell
 git clone https://github.com/TonnyL/Latticify.git
 ```
-
+w
 ### Setup API Keys
 You need to register your application at [Slack API home](https://api.slack.com/). You can find information about how to gain access via the relevant links.
 
@@ -46,7 +46,7 @@ Open the `Latticify/` directory in Android Studio.
 + If none of the solutions above, file an issue or email me.
 
 ## Contributions💪
-⚠️ You should be noticed that we do **NOT** accept pull requests currently.
+Discussions and pull requests are welcomed. The [GitHub Contributors Page](https://github.com/TonnyL/Latticify/graphs/contributors) has an entry in the App.
 
 ## License📚
 Latticify is under an MIT license. See the [LICENSE](LICENSE) file for more information.

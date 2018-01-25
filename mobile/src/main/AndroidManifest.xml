@@ -110,8 +110,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.invite.InviteActivity"
-            android:label="@string/invite_members_to_team"
+            android:name=".ui.snooze.SnoozeNotificationsActivity"
+            android:label="@string/snooze_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

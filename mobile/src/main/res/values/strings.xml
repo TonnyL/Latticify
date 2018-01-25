@@ -58,7 +58,6 @@
     <string name="add_channel">Add channel</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
-    <string name="invite_members_to_team">Invite members</string>
     <string name="menu_view_details">View details</string>
 
     <string name="no_purpose_set">No purpose set</string>
@@ -76,9 +75,6 @@
     <string name="advanced">Advanced</string>
     <string name="archive">Archive</string>
     <string name="pinned_items">Pinned items</string>
-    <string name="invite_intro">Know any coworkers who should join the team?</string>
-    <string name="add_an_email_address">Add an email address</string>
-    <string name="send">Send</string>
 
     <string name="channel_name_description">Names must be lowercase, without spaces or periods, and shorter than 22 characters.</string>
     <string name="channel_name">Channel name</string>
@@ -140,25 +136,48 @@
 
     <string name="copied">Copied</string>
     <string name="failed_to_delete_file">Failed to delete file</string>
-    <string name="key_edit_profile">key_edit_profile</string>
-    <string name="key_availability">key_availability</string>
+
     <string name="offline">Offline</string>
     <string name="online">Online</string>
     <string name="availability">Availability</string>
     <string name="edit_profile">Edit profile</string>
-
     <string name="snooze">Snooze</string>
     <string name="snooze_notifications">Snooze notifications</string>
     <string name="what_i_do">What I do</string>
     <string name="info">Info</string>
+    <string name="slack_help_center">Slack help center</string>
+    <string name="slack_privacy">Slack Privacy</string>
+    <string name="open_source_licenses">Open source licenses</string>
+    <string name="general">General</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="do_not_disturb">Do not disturb</string>
+    <string name="version">Version</string>
+    <string name="contributors">Contributors</string>
+    <string name="source_code">Source code</string>
+    <string name="support">Support</string>
+    <string name="open_web_pages_in_app">Open web pages in app</string>
+    <string name="open_web_pages_in_app_summary">Links will open in Latticify</string>
+    <string name="source_code_summary">https://github.com/TonnyL/Latticify</string>
+    <string name="contributors_summary">https://github.com/TonnyL/Latticify/graphs/contributors</string>
+    <string name="display_typing_indicators_summary">Typing indicators will be displayed</string>
+    <string name="display_typing_indicators">Display typing indicators</string>
 
-    <string-array name="snooze_notifications_items">
+    <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>
         <item>1 hour</item>
         <item>2 hours</item>
         <item>4 hours</item>
         <item>8 hours</item>
         <item>24 hours</item>
+    </string-array>
+
+    <string-array name="snooze_notifications_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 
 </resources>

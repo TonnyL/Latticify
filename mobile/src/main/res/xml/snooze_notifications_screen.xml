@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="key_snooze_notifications"
+        android:summary="When enabled all push notifications are turned off"
+        android:title="Snooze notifications" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:dependency="key_snooze_notifications"
+        android:entries="@array/snooze_notifications_entries"
+        android:entryValues="@array/snooze_notifications_values"
+        android:key="key_snooze_notifications_list"
+        android:summary="%1$s"
+        android:title="Snooze notifications for" />
+
+</PreferenceScreen>

@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.data.datasource
 
 import io.github.tonnyl.latticify.data.DndInfoWrapper
+import io.github.tonnyl.latticify.data.DndTeamInfoWrapper
 import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.reactivex.Observable
 
@@ -17,5 +18,6 @@ interface DndDataSource {
 
     fun setSnooze(numMinutes: Int): Observable<DndInfoWrapper>
 
+    fun teamInfo(userIds: Array<String>): Observable<DndTeamInfoWrapper>
 
 }
