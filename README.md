@@ -13,11 +13,11 @@ Latticify is an Android app for [Slack](https://slack.com/). It's still in its e
 ```shell
 git clone https://github.com/TonnyL/Latticify.git
 ```
-w
+
 ### Setup API Keys
 You need to register your application at [Slack API home](https://api.slack.com/). You can find information about how to gain access via the relevant links.
 
-When you obtain the keys, you need to place them into the `latticify.propterties` file.
+When you obtain the keys, you need to place them into the `latticify.properties` file.
 
 ```java
 CLIENT_ID=<YOUR CLIENT ID>

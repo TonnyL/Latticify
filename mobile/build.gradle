@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 def configuration = rootProject.ext.configuration
 def libraries = rootProject.ext.libraries
@@ -110,8 +109,12 @@ dependencies {
     kapt "com.airbnb.android:epoxy-processor:${libraries.epoxyVersion}"
     // Matisse
     implementation "com.zhihu.android:matisse:${libraries.matisseVersion}"
+    // FlexBox layout
     implementation "com.google.android:flexbox:${libraries.flexBoxVersion}"
+    // Lottie
     implementation "com.airbnb.android:lottie:${libraries.lottieVersion}"
+    // Charles
+    implementation "io.github.tonnyl:charles:${libraries.charlesVersion}"
 
     // DeepLink dispatch
     implementation "com.airbnb:deeplinkdispatch:${libraries.deeplinkDispatchVersion}"

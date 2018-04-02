@@ -1,19 +1,21 @@
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext.kotlin_version = '1.2.31'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha08'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
+        maven { url "https://dl.bintray.com/tonnyl/maven" }
     }
 }
 
@@ -37,20 +39,21 @@ ext {
     // App dependencies
     libraries = [
             roomVersion                  : '1.0.0',
-            lottieVersion                : '2.5.0-beta3',
-            supportLibraryVersion        : '27.0.2',
-            constraintLayoutVersion      : '1.1.0-beta4',
+            lottieVersion                : '2.5.1',
+            supportLibraryVersion        : '27.1.0',
+            constraintLayoutVersion      : '1.1.0-beta6',
             rxKotlinVersion              : '2.2.0',
             rxAndroidVersion             : '2.0.1',
-            retrofitVersion              : '2.3.0',
-            epoxyVersion                 : '2.8.0',
-            okhttpLoggingInterceptor     : '3.9.1',
-            glideVersion                 : '4.5.0',
+            retrofitVersion              : '2.4.0',
+            epoxyVersion                 : '2.10.0',
+            charlesVersion               : '0.1.0-alpha3',
+            okhttpLoggingInterceptor     : '3.10.0',
+            glideVersion                 : '4.6.1',
             matisseVersion               : '0.4.3',
             flexBoxVersion               : '0.3.2',
             deeplinkDispatchVersion      : '3.1.1',
-            wearableVersion              : '2.1.0',
-            gmsWearableVersion           : '11.8.0',
+            wearableVersion              : '2.3.0',
+            gmsWearableVersion           : '12.0.1',
             junitVersion                 : '4.12',
             espressoVersion              : '3.0.1',
             androidTestRunnerRulesVersion: '0.5'
