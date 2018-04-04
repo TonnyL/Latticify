@@ -27,16 +27,16 @@ class LatticifyAppGlideModule : AppGlideModule() {
         const val CACHE_FILE_NAME = "IMG_CACHE" // cache file dir name
     }
 
-    override fun applyOptions(context: Context?, builder: GlideBuilder?) {
+     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
 
         // 36MB, memory cache size
         // default value: 24MB
         val memoryCacheSize = (1024 * 1024 * 36).toLong()
-        builder?.setMemoryCache(LruResourceCache(memoryCacheSize))
+        builder.setMemoryCache(LruResourceCache(memoryCacheSize))
 
         // Internal cache
-        builder?.setDiskCache(InternalCacheDiskCacheFactory(context, CACHE_FILE_NAME, MAX_CACHE_SIZE))
+        builder.setDiskCache(InternalCacheDiskCacheFactory(context, CACHE_FILE_NAME, MAX_CACHE_SIZE))
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

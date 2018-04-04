@@ -55,7 +55,7 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
 
         fetchData()
 
-        connectWebSocket()
+//        connectWebSocket()
 
         mChannel?.let { if (it.isChannel == true) mView.showChannel(it) }
     }
@@ -63,7 +63,7 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
     override fun unsubscribe() {
         mCompositeDisposable.clear()
 
-        mWebSocket?.cancel()
+//        mWebSocket?.cancel()
     }
 
     override fun fetchData() {

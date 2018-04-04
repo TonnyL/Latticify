@@ -19,11 +19,11 @@ abstract class LabelModel : EpoxyModelWithHolder<LabelModel.LabelHolder>() {
     @StringRes
     var labelId: Int = 0
 
-    override fun bind(holder: LabelHolder?) {
+    override fun bind(holder: LabelHolder) {
         super.bind(holder)
 
         if (labelId != 0) {
-            holder?.labelTextView?.setText(labelId)
+            holder.labelTextView?.setText(labelId)
         }
     }
 

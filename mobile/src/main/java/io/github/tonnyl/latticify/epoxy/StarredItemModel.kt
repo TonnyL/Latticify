@@ -23,26 +23,24 @@ abstract class StarredItemModel : EpoxyModelWithHolder<StarredItemModel.StarredI
 
     override fun createNewHolder(): StarredItemHolder = StarredItemHolder()
 
-    override fun bind(holder: StarredItemHolder?) {
+    override fun bind(holder: StarredItemHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                itemLayout?.setOnClickListener(itemOnClickListener)
+        with(holder) {
+            itemLayout?.setOnClickListener(itemOnClickListener)
 
-                when {
-                    starredItem.message != null -> {
-                        avatarImageView?.setImageResource(R.drawable.ic_message_black_24dp)
-                        titleTextView?.text = starredItem.message?.text ?: starredItem.message?.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
-                    }
-                    starredItem.file != null -> {
-                        avatarImageView?.setImageResource(R.drawable.ic_folder_black_24dp)
-                        titleTextView?.text = starredItem.file?.title
-                    }
-                    starredItem.channel != null -> {
-                        avatarImageView?.setImageResource(R.drawable.ic_hashtag_black_24dp)
-                        titleTextView?.text = starredItem.channel
-                    }
+            when {
+                starredItem.message != null -> {
+                    avatarImageView?.setImageResource(io.github.tonnyl.latticify.R.drawable.ic_message_black_24dp)
+                    titleTextView?.text = starredItem.message?.text ?: starredItem.message?.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
+                }
+                starredItem.file != null -> {
+                    avatarImageView?.setImageResource(io.github.tonnyl.latticify.R.drawable.ic_folder_black_24dp)
+                    titleTextView?.text = starredItem.file?.title
+                }
+                starredItem.channel != null -> {
+                    avatarImageView?.setImageResource(io.github.tonnyl.latticify.R.drawable.ic_hashtag_black_24dp)
+                    titleTextView?.text = starredItem.channel
                 }
             }
         }

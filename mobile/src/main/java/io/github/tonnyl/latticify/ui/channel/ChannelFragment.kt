@@ -2,18 +2,25 @@ package io.github.tonnyl.latticify.ui.channel
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.TextView
 import com.airbnb.epoxy.EpoxyModel
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import io.github.tonnyl.charles.Charles
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
+import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
+import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
 import io.github.tonnyl.latticify.ui.message.MessageActivity
@@ -38,6 +45,10 @@ class ChannelFragment : Fragment(), ChannelContract.View {
     companion object {
         @JvmStatic
         fun newInstance(): ChannelFragment = ChannelFragment()
+
+        val REQUEST_CHOOSE_IMAGE = 101
+        val REQUEST_CHOOSE_FILE = 102
+
     }
 
 
@@ -100,6 +111,10 @@ class ChannelFragment : Fragment(), ChannelContract.View {
                 mPresenter.sendMessage(messageEditText.text.toString())
             }
             messageEditText.setText("")
+        }
+
+        plusImageView.setOnClickListener {
+            showBottomSheetDialog()
         }
 
         setHasOptionsMenu(true)
@@ -239,6 +254,52 @@ class ChannelFragment : Fragment(), ChannelContract.View {
     override fun gotoMessageDetails(message: Message) {
         activity?.let {
             context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) })
+        }
+    }
+
+    private fun showBottomSheetDialog() {
+        context?.let {
+            val dialog = BottomSheetDialog(it)
+            val view = layoutInflater.inflate(R.layout.layout_channel_bottom_sheet, null)
+            dialog.setContentView(view)
+
+
+            view.findViewById<TextView>(R.id.actionCamera).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            view.findViewById<TextView>(R.id.actionGallery).setOnClickListener {
+                dialog.dismiss()
+
+                // todo
+                Matisse.from(this)
+                        .choose(MimeType.allOf())
+                        .imageEngine(MatisseGlideV4Engine())
+                        .countable(true)
+                        .maxSelectable(1)
+                        .forResult(REQUEST_CHOOSE_IMAGE)
+            }
+
+            view.findViewById<TextView>(R.id.actionFile).setOnClickListener {
+                Charles.from(this)
+                        .choose()
+                        .imageEngine(CharlesGlideV4Engine())
+                        .progressRate(true)
+                        .maxSelectable(1)
+                        .forResult(REQUEST_CHOOSE_FILE)
+
+                dialog.dismiss()
+            }
+
+            view.findViewById<TextView>(R.id.actionCommand).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            view.findViewById<TextView>(R.id.actionAt).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
     }
 

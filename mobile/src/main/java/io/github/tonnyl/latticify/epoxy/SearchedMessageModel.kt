@@ -24,19 +24,17 @@ abstract class SearchedMessageModel : EpoxyModelWithHolder<SearchedMessageModel.
 
     override fun createNewHolder(): SearchMessageHolder = SearchMessageHolder()
 
-    override fun bind(holder: SearchMessageHolder?) {
+    override fun bind(holder: SearchMessageHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                itemLayout?.setOnClickListener(itemClickListener)
+        with(holder) {
+            itemLayout?.setOnClickListener(itemClickListener)
 
-                messageToTextView?.text = message.channel.name
-                timeTextView?.text = DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong(), System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
-                usernameTextView?.text = message.username
-                messageContentTextView?.text = message.text
+            messageToTextView?.text = message.channel.name
+            timeTextView?.text = android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong(), java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
+            usernameTextView?.text = message.username
+            messageContentTextView?.text = message.text
 
-            }
         }
     }
 

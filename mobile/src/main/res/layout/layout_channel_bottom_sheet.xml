@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/actionCamera"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_camera_black_24dp"
+        android:drawableTint="#808080"
+        android:gravity="center_vertical"
+        android:text="Camera" />
+
+    <TextView
+        android:id="@+id/actionGallery"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_gallery_black_24dp"
+        android:drawableTint="#808080"
+        android:gravity="center_vertical"
+        android:text="Gallery" />
+
+    <TextView
+        android:id="@+id/actionFile"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_folder_black_24dp"
+        android:drawableTint="#808080"
+        android:gravity="center_vertical"
+        android:text="File" />
+
+    <TextView
+        android:id="@+id/actionCommand"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_functions_black_24dp"
+        android:drawableTint="#808080"
+        android:gravity="center_vertical"
+        android:text="Command" />
+
+    <TextView
+        android:id="@+id/actionAt"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_at_black_24dp"
+        android:drawableTint="#808080"
+        android:gravity="center_vertical"
+        android:text="At" />
+
+</LinearLayout>

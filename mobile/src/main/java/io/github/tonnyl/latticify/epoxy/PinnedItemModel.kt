@@ -24,21 +24,19 @@ abstract class PinnedItemModel : EpoxyModelWithHolder<PinnedItemModel.PinnedItem
 
     override fun createNewHolder(): PinnedItemHolder = PinnedItemHolder()
 
-    override fun bind(holder: PinnedItemHolder?) {
+    override fun bind(holder: PinnedItemHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                itemLayout?.setOnClickListener(itemClickListener)
-                avatarImageView?.setImageResource(when (pin.type) {
-                    "message" -> R.drawable.ic_message_black_24dp
-                    "file" -> R.drawable.ic_folder_black_24dp
-                    else -> R.drawable.ic_comment_black_24dp
-                })
-                pinCreatorTextView?.text = pin.createdBy
-                pinTimeTextView?.text = DateUtils.getRelativeTimeSpanString(pin.created * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
-                pinContentTextView?.text = pin.message?.text ?: pin.comment?.comment ?: pin.file?.title
-            }
+        with(holder) {
+            itemLayout?.setOnClickListener(itemClickListener)
+            avatarImageView?.setImageResource(when (pin.type) {
+                "message" -> io.github.tonnyl.latticify.R.drawable.ic_message_black_24dp
+                "file" -> io.github.tonnyl.latticify.R.drawable.ic_folder_black_24dp
+                else -> io.github.tonnyl.latticify.R.drawable.ic_comment_black_24dp
+            })
+            pinCreatorTextView?.text = pin.createdBy
+            pinTimeTextView?.text = android.text.format.DateUtils.getRelativeTimeSpanString(pin.created * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
+            pinContentTextView?.text = pin.message?.text ?: pin.comment?.comment ?: pin.file?.title
         }
     }
 

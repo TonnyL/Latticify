@@ -22,16 +22,14 @@ abstract class SearchedFileModel : EpoxyModelWithHolder<SearchedFileModel.Search
     @EpoxyAttribute
     lateinit var file: File
 
-    override fun bind(holder: SearchFileHolder?) {
+    override fun bind(holder: SearchFileHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                itemLayout?.setOnClickListener(itemClickListener)
-                fileNameTextView?.text = file.name
-                fileDescriptionTextView?.text = fileDescriptionTextView?.context?.getString(R.string.search_file_description)
-                        ?.format(if (file.username.isNotEmpty()) file.user else file.user, DateUtils.getRelativeTimeSpanString(file.created * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS))
-            }
+        with(holder) {
+            itemLayout?.setOnClickListener(itemClickListener)
+            fileNameTextView?.text = file.name
+            fileDescriptionTextView?.text = fileDescriptionTextView?.context?.getString(io.github.tonnyl.latticify.R.string.search_file_description)
+                    ?.format(if (file.username.isNotEmpty()) file.user else file.user, android.text.format.DateUtils.getRelativeTimeSpanString(file.created * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS))
         }
     }
 

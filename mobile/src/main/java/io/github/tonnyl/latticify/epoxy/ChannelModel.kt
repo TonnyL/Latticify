@@ -23,48 +23,46 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
 
     override fun createNewHolder(): ChannelHolder = ChannelHolder()
 
-    override fun bind(holder: ChannelHolder?) {
+     override fun bind(holder: ChannelHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                item?.setOnClickListener(itemOnClickListener)
-                username?.text = channel.name
+         with(holder) {
+             item?.setOnClickListener(itemOnClickListener)
+             username?.text = channel.name
 
-                if (channel.latest?.type == "message") {
-                    summary?.text = summary?.context?.getString(R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
-                } else {
-                    summary?.text = channel.purpose?.value ?: channel.topic?.value
-                }
+             if (channel.latest?.type == "message") {
+                 summary?.text = summary?.context?.getString(io.github.tonnyl.latticify.R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
+             } else {
+                 summary?.text = channel.purpose?.value ?: channel.topic?.value
+             }
 
-                avatar?.setImageResource(when {
-                    channel.isPrivate == true -> {
-                        R.drawable.ic_lock_black_24dp
-                    }
-                    channel.isChannel == true -> {
-                        R.drawable.ic_hashtag_black_24dp
-                    }
-                    else -> {
-                        R.drawable.ic_message_black_24dp
-                    }
-                })
+             avatar?.setImageResource(when {
+                 channel.isPrivate == true -> {
+                     io.github.tonnyl.latticify.R.drawable.ic_lock_black_24dp
+                 }
+                 channel.isChannel == true -> {
+                     io.github.tonnyl.latticify.R.drawable.ic_hashtag_black_24dp
+                 }
+                 else -> {
+                     io.github.tonnyl.latticify.R.drawable.ic_message_black_24dp
+                 }
+             })
 
-                if (channel.isPrivate == true) {
-                    avatar?.setImageResource(R.drawable.ic_lock_black_24dp)
-                }
+             if (channel.isPrivate == true) {
+                 avatar?.setImageResource(io.github.tonnyl.latticify.R.drawable.ic_lock_black_24dp)
+             }
 
-                if (channel.isIm == true) {
-                    username?.text = channel.user
-                }
+             if (channel.isIm == true) {
+                 username?.text = channel.user
+             }
 
-                channel.unreadCountDisplay?.let {
-                    if (it != 0) {
-                        unreadCount?.visibility = View.VISIBLE
-                        unreadCount?.text = channel.unreadCount?.toString()
-                    }
-                }
-            }
-        }
+             channel.unreadCountDisplay?.let {
+                 if (it != 0) {
+                     unreadCount?.visibility = android.view.View.VISIBLE
+                     unreadCount?.text = channel.unreadCount?.toString()
+                 }
+             }
+         }
     }
 
     class ChannelHolder : EpoxyHolder() {

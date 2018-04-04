@@ -24,22 +24,20 @@ abstract class UserModel : EpoxyModelWithHolder<UserModel.UserHolder>() {
 
     override fun createNewHolder(): UserHolder = UserHolder()
 
-    override fun bind(holder: UserHolder?) {
+    override fun bind(holder: UserHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                itemLayout?.setOnClickListener(itemOnClickListener)
+        with(holder) {
+            itemLayout?.setOnClickListener(itemOnClickListener)
 
-                avatarImageView?.let {
-                    GlideLoader.loadAvatar(it, user.profile.image192)
-                }
-
-                realNameTextView?.text = user.profile.realNameNormalized
-                displayTextView?.text = user.profile.displayNameNormalized
-                titleTextView?.text = user.profile.title
-
+            avatarImageView?.let {
+                io.github.tonnyl.latticify.glide.GlideLoader.loadAvatar(it, user.profile.image192)
             }
+
+            realNameTextView?.text = user.profile.realNameNormalized
+            displayTextView?.text = user.profile.displayNameNormalized
+            titleTextView?.text = user.profile.title
+
         }
     }
 

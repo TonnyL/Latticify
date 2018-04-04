@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.epoxy
 
 import android.support.v7.widget.AppCompatTextView
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -12,7 +11,6 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
-import io.github.tonnyl.latticify.glide.GlideLoader
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -33,26 +31,24 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
     override fun createNewHolder(): MessageHolder = MessageHolder()
 
-    override fun bind(holder: MessageHolder?) {
+    override fun bind(holder: MessageHolder) {
         super.bind(holder)
 
-        holder?.let {
-            with(it) {
-                messageContentLayout.setOnClickListener(itemOnClickListener)
-                messageContentLayout.setOnCreateContextMenuListener(itemOnCreateContextMenuListener)
+        with(holder) {
+            messageContentLayout.setOnClickListener(itemOnClickListener)
+            messageContentLayout.setOnCreateContextMenuListener(itemOnCreateContextMenuListener)
 
-                usernameTextView.text = message.user ?: message.username ?: ""
-                messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
+            usernameTextView.text = message.user ?: message.username ?: ""
+            messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
 
-                message.botId?.let { botBadgeTextView.visibility = View.VISIBLE }
+            message.botId?.let { botBadgeTextView.visibility = android.view.View.VISIBLE }
 
-                timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " } ?: ""}${DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)}"
+            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " } ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
 
-                message.file?.let { file ->
-                    if (file.mimeType == "image/jpeg") {
-                        imageMessageImageView.visibility = View.VISIBLE
-                        GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720 ?: file.thumb360)
-                    }
+            message.file?.let { file ->
+                if (file.mimeType == "image/jpeg") {
+                    imageMessageImageView.visibility = android.view.View.VISIBLE
+                    io.github.tonnyl.latticify.glide.GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720 ?: file.thumb360)
                 }
             }
         }

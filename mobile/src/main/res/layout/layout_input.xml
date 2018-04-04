@@ -8,10 +8,13 @@
     android:padding="8dp">
 
     <ImageView
+        android:id="@+id/plusImageView"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="start"
-        android:src="@drawable/ic_emoji_black_24dp"
+        android:clickable="true"
+        android:contentDescription="Send"
+        android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/textColorSecondary" />
 
     <android.support.v7.widget.AppCompatEditText
@@ -21,7 +24,9 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:background="@null"
-        android:hint="Message"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="Message..."
         android:padding="@dimen/activity_horizontal_margin_half"
         android:textSize="15sp" />
 
@@ -30,6 +35,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_gravity="end"
+        android:contentDescription="Send"
         android:src="@drawable/ic_send_black_24dp"
         android:tint="@color/textColorSecondary" />
 
