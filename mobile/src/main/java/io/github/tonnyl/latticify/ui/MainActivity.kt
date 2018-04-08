@@ -123,9 +123,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_set_status -> {
                 startActivity(Intent(this, SetStatusActivity::class.java))
             }
-            R.id.action_invite_members_to_team -> {
-                startActivity(Intent(this, SnoozeNotificationsActivity::class.java))
-            }
             R.id.action_snooze -> {
                 showSnoozeNotificationsDialog()
             }

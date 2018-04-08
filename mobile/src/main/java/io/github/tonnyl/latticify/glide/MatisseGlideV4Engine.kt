@@ -16,13 +16,13 @@ class MatisseGlideV4Engine : ImageEngine {
 
     override fun loadImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
         imageView?.let {
-            GlideLoader.loadNormal(it, uri.toString())
+            GlideLoader.loadMatissePreview(it, uri.toString())
         }
     }
 
     override fun loadAnimatedGifImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
         imageView?.let {
-            GlideLoader.loadNormal(it, uri.toString())
+            GlideLoader.loadMatissePreviewAsGif(it, uri.toString())
         }
     }
 

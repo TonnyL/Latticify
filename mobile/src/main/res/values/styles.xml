@@ -12,14 +12,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="colorControlNormal">@color/textColorPrimary</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <style name="AppTheme.ToolbarStyle">
-        <item name="colorControlNormal">@color/textColorPrimary</item>
     </style>
 
     <style name="AppTheme.CollapsedAppBar" parent="TextAppearance.AppCompat.Title">
@@ -34,5 +26,19 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    // Custom style of Matisse
+
+    <style name="Latticify.MatisseStyle" parent="Matisse.Zhihu">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    // Custom style of Charles
+
+    <style name="Latticify.CharlesStyle" parent="Charles">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
 
 </resources>

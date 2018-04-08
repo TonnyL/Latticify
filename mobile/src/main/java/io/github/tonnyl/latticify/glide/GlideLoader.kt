@@ -5,6 +5,7 @@ import android.support.v7.graphics.Palette
 import android.widget.ImageView
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 
@@ -27,6 +28,23 @@ object GlideLoader {
                 .load(url)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView)
+    }
+
+    fun loadMatissePreview(imageView: ImageView, url: String?) {
+        GlideApp.with(imageView.context)
+                .asBitmap()
+                .load(url)
+                .fitCenter()
+                .into(imageView)
+    }
+
+    fun loadMatissePreviewAsGif(imageView: ImageView, url: String?) {
+        GlideApp.with(imageView.context)
+                .asGif()
+                .load(url)
+                .transition(DrawableTransitionOptions().crossFade())
+                .fitCenter()
                 .into(imageView)
     }
 

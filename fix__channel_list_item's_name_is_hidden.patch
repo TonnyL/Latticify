@@ -1,0 +1,405 @@
+Index: mobile/src/main/java/io/github/tonnyl/latticify/epoxy/MessageModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/java/io/github/tonnyl/latticify/epoxy/MessageModel.kt	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/java/io/github/tonnyl/latticify/epoxy/MessageModel.kt	(date 1523199346000)
+@@ -11,6 +11,7 @@
+ import com.airbnb.epoxy.EpoxyModelWithHolder
+ import io.github.tonnyl.latticify.R
+ import io.github.tonnyl.latticify.data.Message
++import io.github.tonnyl.latticify.glide.GlideLoader
+ 
+ /**
+  * Created by lizhaotailang on 07/10/2017.
+@@ -43,12 +44,14 @@
+ 
+             message.botId?.let { botBadgeTextView.visibility = android.view.View.VISIBLE }
+ 
+-            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " } ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
++            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " }
++                    ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
+ 
+             message.file?.let { file ->
+                 if (file.mimeType == "image/jpeg") {
+                     imageMessageImageView.visibility = android.view.View.VISIBLE
+-                    io.github.tonnyl.latticify.glide.GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720 ?: file.thumb360)
++                    GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720
++                    ?: file.thumb360)
+                 }
+             }
+         }
+Index: mobile/src/main/java/io/github/tonnyl/latticify/glide/GlideLoader.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/java/io/github/tonnyl/latticify/glide/GlideLoader.kt	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/java/io/github/tonnyl/latticify/glide/GlideLoader.kt	(date 1523192778000)
+@@ -5,6 +5,7 @@
+ import android.widget.ImageView
+ import com.bumptech.glide.Priority
+ import com.bumptech.glide.load.engine.DiskCacheStrategy
++import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+ import com.bumptech.glide.request.target.BitmapImageViewTarget
+ import com.bumptech.glide.request.transition.Transition
+ 
+@@ -29,6 +30,23 @@
+                 .diskCacheStrategy(DiskCacheStrategy.NONE)
+                 .into(imageView)
+     }
++
++    fun loadMatissePreview(imageView: ImageView, url: String?) {
++        GlideApp.with(imageView.context)
++                .asBitmap()
++                .load(url)
++                .fitCenter()
++                .into(imageView)
++    }
++
++    fun loadMatissePreviewAsGif(imageView: ImageView, url: String?) {
++        GlideApp.with(imageView.context)
++                .asGif()
++                .load(url)
++                .transition(DrawableTransitionOptions().crossFade())
++                .fitCenter()
++                .into(imageView)
++    }
+ 
+     fun loadWithPalette(imageView: ImageView, url: String?, callback: OnPaletteProcessedCallback) {
+         GlideApp.with(imageView.context)
+Index: mobile/src/main/java/io/github/tonnyl/latticify/glide/MatisseGlideV4Engine.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/java/io/github/tonnyl/latticify/glide/MatisseGlideV4Engine.kt	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/java/io/github/tonnyl/latticify/glide/MatisseGlideV4Engine.kt	(date 1523192944000)
+@@ -16,13 +16,13 @@
+ 
+     override fun loadImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
+         imageView?.let {
+-            GlideLoader.loadNormal(it, uri.toString())
++            GlideLoader.loadMatissePreview(it, uri.toString())
+         }
+     }
+ 
+     override fun loadAnimatedGifImage(context: Context?, resizeX: Int, resizeY: Int, imageView: ImageView?, uri: Uri?) {
+         imageView?.let {
+-            GlideLoader.loadNormal(it, uri.toString())
++            GlideLoader.loadMatissePreviewAsGif(it, uri.toString())
+         }
+     }
+ 
+Index: mobile/src/main/java/io/github/tonnyl/latticify/ui/channel/ChannelFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/java/io/github/tonnyl/latticify/ui/channel/ChannelFragment.kt	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/java/io/github/tonnyl/latticify/ui/channel/ChannelFragment.kt	(date 1523198021000)
+@@ -93,7 +93,15 @@
+         messageEditText.addTextChangedListener(object : TextWatcher {
+ 
+             override fun afterTextChanged(editable: Editable?) {
+-                sendMessageImageView.isEnabled = !editable.isNullOrBlank()
++                if (editable.isNullOrBlank()) {
++                    sendMessageImageView.isEnabled = false
++                    sendMessageImageView.clearColorFilter()
++                } else {
++                    sendMessageImageView.isEnabled = true
++                    context?.let {
++                        sendMessageImageView.setColorFilter(it.getColor(R.color.colorPrimary))
++                    }
++                }
+             }
+ 
+             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+@@ -239,9 +247,6 @@
+     override fun showChannel(channel: Channel) {
+         with(activity as ChannelActivity) {
+             supportActionBar?.title = channel.name
+-            channel.numMembers?.let {
+-                supportActionBar?.subtitle = if (channel.numMembers == 1) getString(R.string.channel_members_1) else getString(R.string.channel_members).format(channel.numMembers)
+-            }
+         }
+     }
+ 
+@@ -277,18 +282,20 @@
+                         .imageEngine(MatisseGlideV4Engine())
+                         .countable(true)
+                         .maxSelectable(1)
++                        .theme(R.style.Latticify_MatisseStyle)
+                         .forResult(REQUEST_CHOOSE_IMAGE)
+             }
+ 
+             view.findViewById<TextView>(R.id.actionFile).setOnClickListener {
++                dialog.dismiss()
++
+                 Charles.from(this)
+                         .choose()
+                         .imageEngine(CharlesGlideV4Engine())
+                         .progressRate(true)
+                         .maxSelectable(1)
++                        .theme(R.style.Latticify_CharlesStyle)
+                         .forResult(REQUEST_CHOOSE_FILE)
+-
+-                dialog.dismiss()
+             }
+ 
+             view.findViewById<TextView>(R.id.actionCommand).setOnClickListener {
+Index: mobile/src/main/java/io/github/tonnyl/latticify/ui/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/java/io/github/tonnyl/latticify/ui/MainActivity.kt	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/java/io/github/tonnyl/latticify/ui/MainActivity.kt	(date 1523194709000)
+@@ -123,9 +123,6 @@
+             R.id.action_set_status -> {
+                 startActivity(Intent(this, SetStatusActivity::class.java))
+             }
+-            R.id.action_invite_members_to_team -> {
+-                startActivity(Intent(this, SnoozeNotificationsActivity::class.java))
+-            }
+             R.id.action_snooze -> {
+                 showSnoozeNotificationsDialog()
+             }
+Index: mobile/src/main/res/layout/activity_common.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/activity_common.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/activity_common.xml	(date 1523196597000)
+@@ -3,7 +3,8 @@
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent">
++    android:layout_height="match_parent"
++    android:fitsSystemWindows="false">
+ 
+     <android.support.design.widget.AppBarLayout
+         android:id="@+id/app_bar"
+@@ -16,10 +17,7 @@
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:background="?attr/colorPrimary"
+-            android:theme="@style/AppTheme.ToolbarStyle"
+             app:popupTheme="@style/AppTheme.PopupOverlay"
+-            app:subtitleTextColor="@color/textColorSecondary"
+-            app:titleTextColor="@color/textColorPrimary"
+             tools:title="Latticify" />
+ 
+     </android.support.design.widget.AppBarLayout>
+Index: mobile/src/main/res/layout/app_bar_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/app_bar_main.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/app_bar_main.xml	(date 1523196411000)
+@@ -16,10 +16,7 @@
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:background="?attr/colorPrimary"
+-            android:theme="@style/AppTheme.ToolbarStyle"
+             app:popupTheme="@style/AppTheme.PopupOverlay"
+-            app:subtitleTextColor="@color/textColorSecondary"
+-            app:titleTextColor="@color/textColorPrimary"
+             tools:title="Latticify" />
+ 
+     </android.support.design.widget.AppBarLayout>
+Index: mobile/src/main/res/layout/fragment_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/fragment_search.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/fragment_search.xml	(date 1523194114000)
+@@ -16,7 +16,6 @@
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:background="?attr/colorPrimary"
+-            android:theme="@style/AppTheme.ToolbarStyle"
+             app:popupTheme="@style/AppTheme.PopupOverlay">
+ 
+             <LinearLayout
+Index: mobile/src/main/res/layout/fragment_user_profile.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/fragment_user_profile.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/fragment_user_profile.xml	(date 1523194114000)
+@@ -84,7 +84,6 @@
+                 android:layout_width="match_parent"
+                 android:layout_height="?attr/actionBarSize"
+                 android:background="@android:color/transparent"
+-                android:theme="@style/AppTheme.ToolbarStyle"
+                 app:layout_collapseMode="pin"
+                 app:popupTheme="@style/AppTheme.PopupOverlay"
+                 app:subtitleTextColor="@color/textColorSecondary"
+Index: mobile/src/main/res/layout/item_channel_im.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/item_channel_im.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/item_channel_im.xml	(date 1523198740000)
+@@ -41,7 +41,7 @@
+         app:layout_constraintBottom_toTopOf="@+id/messageSummaryTextView"
+         app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+         app:layout_constraintStart_toEndOf="@+id/space"
+-        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintTop_toBottomOf="parent"
+         app:layout_constraintVertical_chainStyle="packed"
+         tools:text="Tonny L" />
+ 
+Index: mobile/src/main/res/layout/layout_input.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/layout/layout_input.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/layout/layout_input.xml	(date 1523198262000)
+@@ -12,8 +12,8 @@
+         android:layout_width="36dp"
+         android:layout_height="36dp"
+         android:layout_gravity="start"
+-        android:clickable="true"
+         android:contentDescription="Send"
++        android:padding="4dp"
+         android:src="@drawable/ic_add_black_24dp"
+         android:tint="@color/textColorSecondary" />
+ 
+@@ -24,8 +24,6 @@
+         android:layout_gravity="center_vertical"
+         android:layout_weight="1"
+         android:background="@null"
+-        android:focusable="false"
+-        android:focusableInTouchMode="false"
+         android:hint="Message..."
+         android:padding="@dimen/activity_horizontal_margin_half"
+         android:textSize="15sp" />
+@@ -36,6 +34,7 @@
+         android:layout_height="36dp"
+         android:layout_gravity="end"
+         android:contentDescription="Send"
++        android:padding="4dp"
+         android:src="@drawable/ic_send_black_24dp"
+         android:tint="@color/textColorSecondary" />
+ 
+Index: mobile/src/main/res/menu/menu_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/menu/menu_main.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/menu/menu_main.xml	(date 1523194536000)
+@@ -6,17 +6,13 @@
+         android:id="@+id/action_search"
+         android:icon="@drawable/ic_search_black_24dp"
+         android:title="@string/action_search"
++        app:iconTint="@android:color/white"
+         app:showAsAction="ifRoom" />
+ 
+     <item
+         android:id="@+id/action_set_status"
+         android:title="@string/menu_set_status"
+         app:showAsAction="never" />
+-
+-    <item
+-        android:id="@+id/action_invite_members_to_team"
+-        android:title="@string/menu_invite_members_to_team"
+-        app:showAsAction="never" />
+ 
+     <item
+         android:id="@+id/action_snooze"
+Index: mobile/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/values/colors.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/values/colors.xml	(date 1523194002000)
+@@ -1,8 +1,8 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <color name="colorPrimary">#FFFFFF</color>
+-    <color name="colorPrimaryDark">#e7ebee</color>
+-    <color name="colorAccent">#009688</color>
++    <color name="colorPrimary">#1E8AE8</color>
++    <color name="colorPrimaryDark">#176EB9</color>
++    <color name="colorAccent">#1E8AE8</color>
+ 
+     <color name="textColorPrimary">#131313</color>
+     <color name="textColorSecondary">#848484</color>
+Index: mobile/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/res/values/styles.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/res/values/styles.xml	(date 1523196411000)
+@@ -12,14 +12,6 @@
+     <style name="AppTheme.NoActionBar">
+         <item name="windowActionBar">false</item>
+         <item name="windowNoTitle">true</item>
+-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+-        <item name="colorControlNormal">@color/textColorPrimary</item>
+-        <item name="android:windowLightStatusBar">true</item>
+-    </style>
+-
+-    <style name="AppTheme.ToolbarStyle">
+-        <item name="colorControlNormal">@color/textColorPrimary</item>
+     </style>
+ 
+     <style name="AppTheme.CollapsedAppBar" parent="TextAppearance.AppCompat.Title">
+@@ -35,4 +27,18 @@
+ 
+     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+ 
++    // Custom style of Matisse
++
++    <style name="Latticify.MatisseStyle" parent="Matisse.Zhihu">
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++    </style>
++
++    // Custom style of Charles
++
++    <style name="Latticify.CharlesStyle" parent="Charles">
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++    </style>
++
+ </resources>
+Index: mobile/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mobile/src/main/AndroidManifest.xml	(revision c9e9681b3f052f2394f8897b02acf412ef795f52)
++++ mobile/src/main/AndroidManifest.xml	(date 1523198404000)
+@@ -6,7 +6,6 @@
+     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+ 
+     <application
+         android:name=".LatticifyApp"
+@@ -72,7 +71,8 @@
+         <activity
+             android:name=".ui.channel.ChannelActivity"
+             android:label="@string/channel"
+-            android:theme="@style/AppTheme.NoActionBar" />
++            android:theme="@style/AppTheme.NoActionBar"
++            android:windowSoftInputMode="stateHidden" />
+ 
+         <activity
+             android:name=".ui.message.MessageActivity"

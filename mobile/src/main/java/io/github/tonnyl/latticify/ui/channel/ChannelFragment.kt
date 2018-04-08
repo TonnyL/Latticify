@@ -93,7 +93,15 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         messageEditText.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(editable: Editable?) {
-                sendMessageImageView.isEnabled = !editable.isNullOrBlank()
+                if (editable.isNullOrBlank()) {
+                    sendMessageImageView.isEnabled = false
+                    sendMessageImageView.clearColorFilter()
+                } else {
+                    sendMessageImageView.isEnabled = true
+                    context?.let {
+                        sendMessageImageView.setColorFilter(it.getColor(R.color.colorPrimary))
+                    }
+                }
             }
 
             override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -239,9 +247,6 @@ class ChannelFragment : Fragment(), ChannelContract.View {
     override fun showChannel(channel: Channel) {
         with(activity as ChannelActivity) {
             supportActionBar?.title = channel.name
-            channel.numMembers?.let {
-                supportActionBar?.subtitle = if (channel.numMembers == 1) getString(R.string.channel_members_1) else getString(R.string.channel_members).format(channel.numMembers)
-            }
         }
     }
 
@@ -277,18 +282,20 @@ class ChannelFragment : Fragment(), ChannelContract.View {
                         .imageEngine(MatisseGlideV4Engine())
                         .countable(true)
                         .maxSelectable(1)
+                        .theme(R.style.Latticify_MatisseStyle)
                         .forResult(REQUEST_CHOOSE_IMAGE)
             }
 
             view.findViewById<TextView>(R.id.actionFile).setOnClickListener {
+                dialog.dismiss()
+
                 Charles.from(this)
                         .choose()
                         .imageEngine(CharlesGlideV4Engine())
                         .progressRate(true)
                         .maxSelectable(1)
+                        .theme(R.style.Latticify_CharlesStyle)
                         .forResult(REQUEST_CHOOSE_FILE)
-
-                dialog.dismiss()
             }
 
             view.findViewById<TextView>(R.id.actionCommand).setOnClickListener {

@@ -84,7 +84,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
-                android:theme="@style/AppTheme.ToolbarStyle"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:subtitleTextColor="@color/textColorSecondary"

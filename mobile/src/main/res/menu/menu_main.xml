@@ -6,16 +6,12 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/action_search"
+        app:iconTint="@android:color/white"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_set_status"
         android:title="@string/menu_set_status"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_invite_members_to_team"
-        android:title="@string/menu_invite_members_to_team"
         app:showAsAction="never" />
 
     <item

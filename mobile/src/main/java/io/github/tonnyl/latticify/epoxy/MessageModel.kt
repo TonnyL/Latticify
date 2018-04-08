@@ -11,6 +11,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.glide.GlideLoader
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -43,12 +44,14 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
             message.botId?.let { botBadgeTextView.visibility = android.view.View.VISIBLE }
 
-            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " } ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
+            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " }
+                    ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
 
             message.file?.let { file ->
                 if (file.mimeType == "image/jpeg") {
                     imageMessageImageView.visibility = android.view.View.VISIBLE
-                    io.github.tonnyl.latticify.glide.GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720 ?: file.thumb360)
+                    GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720
+                    ?: file.thumb360)
                 }
             }
         }

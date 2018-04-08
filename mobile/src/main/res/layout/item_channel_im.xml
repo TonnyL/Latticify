@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toTopOf="@+id/messageSummaryTextView"
         app:layout_constraintEnd_toStartOf="@+id/timeTextView"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Tonny L" />
 
