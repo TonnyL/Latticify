@@ -130,11 +130,21 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:${libraries.roomVersion}"
     kapt "android.arch.persistence.room:compiler:${libraries.roomVersion}"
 
+    // Paging
+    implementation "android.arch.paging:runtime:${libraries.pagingVersion}"
+    implementation "android.arch.paging:rxjava2:${libraries.pagingRxJava2Version}"
+
+    // Live data
+    implementation "android.arch.lifecycle:extensions:${libraries.liveDataVersion}"
+    kapt "android.arch.lifecycle:compiler:${libraries.liveDataVersion}"
+
     // Test
     // JUnit
     testImplementation "junit:junit:${libraries.junitVersion}"
     // Test helpers for Room
     testImplementation "android.arch.persistence.room:testing:${libraries.roomVersion}"
+    // Test helpers for LiveData
+    testImplementation "android.arch.core:core-testing:${libraries.liveDataVersion}"
 
     // Espresso
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espressoVersion}"

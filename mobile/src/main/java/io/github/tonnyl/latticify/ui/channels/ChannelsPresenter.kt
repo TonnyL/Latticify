@@ -8,8 +8,8 @@ import io.github.tonnyl.latticify.data.repository.ConversationsRepository
 import io.github.tonnyl.latticify.epoxy.ChannelModel_
 import io.github.tonnyl.latticify.mvp.ListContract
 import io.github.tonnyl.latticify.mvp.ListPresenter
-import io.github.tonnyl.latticify.ui.channel.ChannelActivity
-import io.github.tonnyl.latticify.ui.channel.ChannelPresenter
+import io.github.tonnyl.latticify.ui.chat.ChatActivity
+import io.github.tonnyl.latticify.ui.chat.ChatPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -93,13 +93,14 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         && it.isIm == false
                         && it.isArchived == false
                         && it.isMember == true
+                        && it.isPrivate == false
             }.map { channel ->
                 ChannelModel_()
                         .channel(channel as Channel)
                         .itemOnClickListener(View.OnClickListener {
                             with(it.context) {
-                                mView.gotoActivity(Intent(this, ChannelActivity::class.java)
-                                        .apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
+                                mView.gotoActivity(Intent(this, ChatActivity::class.java)
+                                        .apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })
                             }
                         })
             }

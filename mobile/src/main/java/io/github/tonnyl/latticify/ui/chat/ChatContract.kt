@@ -1,4 +1,4 @@
-package io.github.tonnyl.latticify.ui.channel
+package io.github.tonnyl.latticify.ui.chat
 
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
@@ -9,7 +9,7 @@ import io.github.tonnyl.latticify.mvp.BaseView
 /**
  * Created by lizhaotailang on 07/10/2017.
  */
-interface ChannelContract {
+interface ChatContract {
 
     interface View : BaseView<Presenter> {
 

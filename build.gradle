@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -40,13 +40,16 @@ ext {
     libraries = [
             roomVersion                  : '1.0.0',
             lottieVersion                : '2.5.1',
-            supportLibraryVersion        : '27.1.0',
+            supportLibraryVersion        : '27.1.1',
             constraintLayoutVersion      : '1.1.0-beta6',
             rxKotlinVersion              : '2.2.0',
             rxAndroidVersion             : '2.0.1',
             retrofitVersion              : '2.4.0',
             epoxyVersion                 : '2.10.0',
-            charlesVersion               : '0.1.0-alpha3',
+            pagingVersion                : '1.0.0-beta1',
+            pagingRxJava2Version         : '1.0.0-alpha1',
+            liveDataVersion              : '1.1.1',
+            charlesVersion               : '0.1.0-alpha5',
             okhttpLoggingInterceptor     : '3.10.0',
             glideVersion                 : '4.6.1',
             matisseVersion               : '0.4.3',

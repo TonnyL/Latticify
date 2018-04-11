@@ -8,8 +8,8 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.User
 import io.github.tonnyl.latticify.glide.GlideLoader
-import io.github.tonnyl.latticify.ui.channel.ChannelActivity
-import io.github.tonnyl.latticify.ui.channel.ChannelPresenter
+import io.github.tonnyl.latticify.ui.chat.ChatActivity
+import io.github.tonnyl.latticify.ui.chat.ChatPresenter
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import java.util.*
 
@@ -127,7 +127,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun gotoChannel(channel: Channel) {
-        context?.startActivity(Intent(context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
+        context?.startActivity(Intent(context, ChatActivity::class.java).apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })
     }
 
     private fun initViews() {

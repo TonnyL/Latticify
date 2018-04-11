@@ -6,6 +6,7 @@
         android:id="@+id/action_star_channel"
         android:icon="@drawable/ic_star_border_black_24dp"
         android:title="@string/star_channel"
+        app:iconTint="@android:color/white"
         app:showAsAction="ifRoom" />
 
 </menu>

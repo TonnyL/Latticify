@@ -1,4 +1,4 @@
-package io.github.tonnyl.latticify.ui.channel
+package io.github.tonnyl.latticify.ui.chat
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyModel
@@ -32,11 +33,11 @@ import kotlinx.android.synthetic.main.layout_input.*
  * Created by lizhaotailang on 06/10/2017.
  *
  */
-class ChannelFragment : Fragment(), ChannelContract.View {
+class ChatFragment : Fragment(), ChatContract.View {
 
     override var ignoreScrollChange: Boolean = false
 
-    private lateinit var mPresenter: ChannelContract.Presenter
+    private lateinit var mPresenter: ChatContract.Presenter
 
     private var mIsLoading = false
     private val mAdapter = LatticifyEpoxyAdapter()
@@ -44,7 +45,7 @@ class ChannelFragment : Fragment(), ChannelContract.View {
 
     companion object {
         @JvmStatic
-        fun newInstance(): ChannelFragment = ChannelFragment()
+        fun newInstance(): ChatFragment = ChatFragment()
 
         val REQUEST_CHOOSE_IMAGE = 101
         val REQUEST_CHOOSE_FILE = 102
@@ -94,10 +95,8 @@ class ChannelFragment : Fragment(), ChannelContract.View {
 
             override fun afterTextChanged(editable: Editable?) {
                 if (editable.isNullOrBlank()) {
-                    sendMessageImageView.isEnabled = false
                     sendMessageImageView.clearColorFilter()
                 } else {
-                    sendMessageImageView.isEnabled = true
                     context?.let {
                         sendMessageImageView.setColorFilter(it.getColor(R.color.colorPrimary))
                     }
@@ -115,10 +114,11 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         })
 
         sendMessageImageView.setOnClickListener {
-            if (messageEditText.text.toString().isNotBlank()) {
+            Log.d("TAG", "${messageEditText.text.isNotBlank()}")
+            if (!messageEditText.text.isNullOrBlank()) {
                 mPresenter.sendMessage(messageEditText.text.toString())
+                messageEditText.setText("")
             }
-            messageEditText.setText("")
         }
 
         plusImageView.setOnClickListener {
@@ -198,7 +198,7 @@ class ChannelFragment : Fragment(), ChannelContract.View {
         return true
     }
 
-    override fun setPresenter(presenter: ChannelContract.Presenter) {
+    override fun setPresenter(presenter: ChatContract.Presenter) {
         mPresenter = presenter
     }
 
@@ -245,7 +245,7 @@ class ChannelFragment : Fragment(), ChannelContract.View {
     }
 
     override fun showChannel(channel: Channel) {
-        with(activity as ChannelActivity) {
+        with(activity as ChatActivity) {
             supportActionBar?.title = channel.name
         }
     }

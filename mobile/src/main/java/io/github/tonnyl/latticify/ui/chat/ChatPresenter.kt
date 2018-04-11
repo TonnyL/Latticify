@@ -1,4 +1,4 @@
-package io.github.tonnyl.latticify.ui.channel
+package io.github.tonnyl.latticify.ui.chat
 
 import android.util.Log
 import android.view.View
@@ -21,7 +21,7 @@ import okio.ByteString
  * Created by lizhaotailang on 06/10/2017.
  *
  */
-class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelContract.Presenter {
+class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.Presenter {
 
     override var mOldestMessageTs: String = ""
     override var mHasMore: Boolean = false
@@ -46,7 +46,7 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
         mChannelId = mChannelId
     }
 
-    constructor(view: ChannelContract.View, channel: Channel) : this(view, channel.id) {
+    constructor(view: ChatContract.View, channel: Channel) : this(view, channel.id) {
         mChannel = channel
     }
 
@@ -107,8 +107,8 @@ class ChannelPresenter(view: ChannelContract.View, channelId: String) : ChannelC
         if (mHasMore && mOldestMessageTs.isNotEmpty()) {
             mView.showLoadingMore(true)
             val disposable = (when {
-                mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, oldest = mOldestMessageTs)
-                mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mOldestMessageTs)
+                mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, latest = mOldestMessageTs)
+                mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, latest = mOldestMessageTs)
                 else -> IMRepository.history(mChannelId, oldest = mOldestMessageTs)
             }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

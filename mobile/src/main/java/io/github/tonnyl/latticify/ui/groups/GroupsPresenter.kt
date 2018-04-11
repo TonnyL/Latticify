@@ -8,8 +8,8 @@ import io.github.tonnyl.latticify.data.repository.GroupsRepository
 import io.github.tonnyl.latticify.epoxy.ChannelModel_
 import io.github.tonnyl.latticify.mvp.ListContract
 import io.github.tonnyl.latticify.mvp.ListPresenter
-import io.github.tonnyl.latticify.ui.channel.ChannelActivity
-import io.github.tonnyl.latticify.ui.channel.ChannelPresenter
+import io.github.tonnyl.latticify.ui.chat.ChatActivity
+import io.github.tonnyl.latticify.ui.chat.ChatPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -87,15 +87,17 @@ class GroupsPresenter(mView: ListContract.View) : ListPresenter(mView) {
 
     }
 
-    override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> {
-        return dataList.filter { it is Channel }
-                .map { channel ->
-                    ChannelModel_()
-                            .channel(channel as Channel)
-                            .itemOnClickListener(View.OnClickListener {
-                                mView.gotoActivity(Intent(it.context, ChannelActivity::class.java).apply { putExtra(ChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
-                            })
-                }
-    }
+    override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> =
+            dataList.filter {
+                it is Channel
+                        && it.isGroup == true
+                        && it.isArchived != true
+            }.map { channel ->
+                ChannelModel_()
+                        .channel(channel as Channel)
+                        .itemOnClickListener(View.OnClickListener {
+                            mView.gotoActivity(Intent(it.context, ChatActivity::class.java).apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })
+                        })
+            }
 
 }
