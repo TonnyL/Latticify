@@ -17,26 +17,48 @@ class Api private constructor() {
 
         val SLACK_AUTHORIZE_CALLBACK_URI = "https://tonnyl.github.io/callback"
         val SLACK_AUTHORIZE_CALLBACK_URI_HOST = "tonnyl.github.io"
-        /*val SLACK_AUTHORIZE_SCOPE = "admin+commands" + // others
-                "+channels:history+channels:read+channels:write" + // channels
-                "+chat:write:bot+chat:write:user" + // chat
-                "+dnd:read+dnd:write" + // dnd
-                "+emoji:read" + // emoji
-                "+files:read+files:write:user" + // files
-                "+groups:history+groups:read+groups:write" + // groups
-                "+im:history+im:read+im:write" + // im
-                "+links:read+links:write" + // links
-                "+mpim:history+mpim:read+mpim:write" + // mpim
-                "+pins:read+pins:write" + // pins
-                "+reactions:read+reactions:write" + // reactions
-                "+reminders:read+reminders:write" + // reminders
-                "+search:read" + // search
-                "+stars:read+stars:write" + // stars
-                "+team:read" + // team
-                "+usergroups:read+usergroups:write" + // user groups
-                "+users.profile:read+users.profile:write" + // user's profile
-                "+users:read+users:read.email+users:write" // users*/
-        val SLACK_AUTHORIZE_SCOPE = "client"
+        val SLACK_AUTHORIZE_SCOPE =
+                """
+                |+admin+commands
+                |+channels:history+channels:read+channels:write
+                |+chat:write:bot+chat:write:user
+                |+dnd:read+dnd:write
+                |+emoji:read
+                |+files:read+files:write:user
+                |+groups:history+groups:read+groups:write
+                |+im:history+im:read+im:write
+                |+links:read+links:write
+                |+mpim:history+mpim:read+mpim:write
+                |+pins:read+pins:write
+                |+reactions:read+reactions:write
+                |+reminders:read+reminders:write
+                |+search:read
+                |+stars:read+stars:write
+                |+team:read
+                |+usergroups:read+usergroups:write
+                |+users.profile:read+users.profile:write
+                |+users:read+users:read.email+users:write
+                """.trimMargin()
+//                "admin+commands" + // others
+//                "+channels:history+channels:read+channels:write" + // channels
+//                "+chat:write:bot+chat:write:user" + // chat
+//                "+dnd:read+dnd:write" + // dnd
+//                "+emoji:read" + // emoji
+//                "+files:read+files:write:user" + // files
+//                "+groups:history+groups:read+groups:write" + // groups
+//                "+im:history+im:read+im:write" + // im
+//                "+links:read+links:write" + // links
+//                "+mpim:history+mpim:read+mpim:write" + // mpim
+//                "+pins:read+pins:write" + // pins
+//                "+reactions:read+reactions:write" + // reactions
+//                "+reminders:read+reminders:write" + // reminders
+//                "+search:read" + // search
+//                "+stars:read+stars:write" + // stars
+//                "+team:read" + // team
+//                "+usergroups:read+usergroups:write" + // user groups
+//                "+users.profile:read+users.profile:write" + // user's profile
+//                "+users:read+users:read.email+users:write" // users
+//        val SLACK_AUTHORIZE_SCOPE = "client"
 
         val LIMIT = 20
     }

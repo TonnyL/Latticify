@@ -3,6 +3,7 @@ package io.github.tonnyl.latticify.retrofit.service
 import io.github.tonnyl.latticify.data.ChatMessageWrapper
 import io.github.tonnyl.latticify.data.EphemeralChatMessageWrapper
 import io.github.tonnyl.latticify.data.PostMessageWrapper
+import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -122,8 +123,30 @@ interface ChatService {
                     @Field("thread_ts") threadTs: String = "",
                     @Field("unfurl_links") unfurlLinks: Boolean = true,
                     @Field("unfurl_media") unfurlMedia: Boolean = false,
-                    @Field("username") username: String): Observable<PostMessageWrapper>
+                    @Field("username") username: String? = null): Observable<PostMessageWrapper>
 
+    /**
+     * Provide custom unfurl behavior for user-posted URLs
+     *
+     * @param token Required. Authentication token bearing required scopes.
+     * @param channelId Required. Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. e.g. C1234567890.
+     * @param ts Required. Timestamp of the message to add unfurl behavior to.
+     * @param unfurls Required. URL-encoded JSON map with keys set to URLs featured in the the message, pointing to their unfurl message attachments.
+     * @param userAuthMessage Optional. Provide a simply-formatted string to send as an ephemeral message to the user as invitation to authenticate further and enable full unfurling behavior.
+     * @param userAuthRequired Optional, default=0. Set to true or 1 to indicate the user must install your Slack app to trigger unfurls for this domain.
+     * @param userAuthUrl Optional. Send users to this custom URL where they will complete authentication in your app to fully trigger unfurling. Value should be properly URL-encoded.
+     *
+     * @return If successful, the command returns an [ResponseWrapper] object.
+     */
+    @POST("chat.unfurl")
+    @FormUrlEncoded
+    fun unfurl(@Field("token") token: String,
+               @Field("channel") channelId: String,
+               @Field("ts") ts: String,
+               @Field("unfurls") unfurls: String,
+               @Field("user_auth_message") userAuthMessage: String = "",
+               @Field("user_auth_required") userAuthRequired: Int = 0,
+               @Field("user_auth_url") userAuthUrl: String = ""): Observable<ResponseWrapper>
 
     /**
      * Updates a message in a channel. Though related to [postMessage], some parameters of [update] are handled differently.
@@ -146,9 +169,9 @@ interface ChatService {
                @Field("channel") channelId: String,
                @Field("text") text: String,
                @Field("ts") ts: String,
-               @Field("as_user") asUser: Boolean,
-               @Field("attachments") attachments: String,
+               @Field("as_user") asUser: Boolean = true,
+               @Field("attachments") attachments: String = "",
                @Field("link_names") linkNames: Boolean = true,
-               @Field("parse") parse: String): Observable<ChatMessageWrapper>
+               @Field("parse") parse: String = ""): Observable<ChatMessageWrapper>
 
 }

@@ -32,12 +32,15 @@ data class RtmResponseMessageWrapper(
         val ok: Boolean,
 
         @SerializedName("url")
-        val url: String,
+        val url: String?,
 
         @SerializedName("team")
         val team: Team,
 
         @SerializedName("self")
-        val rtmSelf: RtmSelf
+        val rtmSelf: RtmSelf?,
+
+        @SerializedName("error")
+        val error: String?
 
 ) : Parcelable

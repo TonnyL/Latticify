@@ -109,8 +109,6 @@
     <string name="ignore_at_channel_and_at_here">Ignore @channel and @here</string>
     <string name="notifications_range">On mobile, notify me about…</string>
 
-    <string name="channel_members_1">1 member</string>
-    <string name="channel_members">%1$d members</string>
     <string name="search_hint">Search for messages or files</string>
     <string name="search_close">Close</string>
     <string name="star_file">Star file</string>
@@ -161,6 +159,20 @@
     <string name="contributors_summary">https://github.com/TonnyL/Latticify/graphs/contributors</string>
     <string name="display_typing_indicators_summary">Typing indicators will be displayed</string>
     <string name="display_typing_indicators">Display typing indicators</string>
+
+    <string name="connecting">Connecting…</string>
+
+    <plurals name="user_typing">
+        <item quantity="zero">%s</item>
+        <item quantity="one">%s is typing…</item>
+        <item quantity="two">%s and %s are typing…</item>
+        <item quantity="other">Many members are typing…</item>
+    </plurals>
+
+    <plurals name="member_count">
+        <item quantity="one">%d member</item>
+        <item quantity="other">%d members</item>
+    </plurals>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

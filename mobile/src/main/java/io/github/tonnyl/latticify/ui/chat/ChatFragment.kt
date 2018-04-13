@@ -1,9 +1,13 @@
 package io.github.tonnyl.latticify.ui.chat
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -18,6 +22,7 @@ import io.github.tonnyl.charles.Charles
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.data.event.UserTyping
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
 import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
@@ -26,8 +31,13 @@ import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
 import io.github.tonnyl.latticify.ui.message.MessageActivity
 import io.github.tonnyl.latticify.ui.message.MessagePresenter
+import io.github.tonnyl.latticify.util.Constants
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.layout_input.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -43,6 +53,46 @@ class ChatFragment : Fragment(), ChatContract.View {
     private val mAdapter = LatticifyEpoxyAdapter()
     private val mLoadMoreModel = LoadMoreModel_()
 
+    private val mCompositeDisposable = CompositeDisposable()
+
+    private var mSubTitle = ""
+
+    private val mUserTypingReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                val userTyping = it.getParcelableExtra<UserTyping>(Constants.BROADCAST_EXTRA)
+
+                activity?.let {
+                    (it as ChatActivity).supportActionBar?.subtitle = "${userTyping.user} is typing…"
+                }
+                val disposable = Observable.timer(2000L, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            activity?.let {
+                                (it as ChatActivity).supportActionBar?.subtitle = mSubTitle
+                            }
+                        }, {
+
+                        })
+                mCompositeDisposable.add(disposable)
+            }
+        }
+
+    }
+
+    private val mMessageReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                val message = it.getParcelableExtra<io.github.tonnyl.latticify.data.event.Message>(Constants.BROADCAST_EXTRA)
+
+                Log.d(TAG, "$message")
+            }
+        }
+
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(): ChatFragment = ChatFragment()
@@ -50,8 +100,9 @@ class ChatFragment : Fragment(), ChatContract.View {
         val REQUEST_CHOOSE_IMAGE = 101
         val REQUEST_CHOOSE_FILE = 102
 
-    }
+        const val TAG = "ChatFragment"
 
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_channel, container, false)
@@ -114,7 +165,6 @@ class ChatFragment : Fragment(), ChatContract.View {
         })
 
         sendMessageImageView.setOnClickListener {
-            Log.d("TAG", "${messageEditText.text.isNotBlank()}")
             if (!messageEditText.text.isNullOrBlank()) {
                 mPresenter.sendMessage(messageEditText.text.toString())
                 messageEditText.setText("")
@@ -130,10 +180,29 @@ class ChatFragment : Fragment(), ChatContract.View {
         mPresenter.subscribe()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        context?.let {
+            LocalBroadcastManager.getInstance(it).registerReceiver(mUserTypingReceiver, IntentFilter(Constants.FILTER_USER_TYPING))
+            LocalBroadcastManager.getInstance(it).registerReceiver(mMessageReceiver, IntentFilter(Constants.FILTER_MESSAGE))
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(mUserTypingReceiver)
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(mMessageReceiver)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         mPresenter.unsubscribe()
+        mCompositeDisposable.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -247,6 +316,9 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun showChannel(channel: Channel) {
         with(activity as ChatActivity) {
             supportActionBar?.title = channel.name
+
+            mSubTitle = "${channel.numMembers} members"
+            supportActionBar?.subtitle = mSubTitle
         }
     }
 
@@ -268,7 +340,6 @@ class ChatFragment : Fragment(), ChatContract.View {
             val view = layoutInflater.inflate(R.layout.layout_channel_bottom_sheet, null)
             dialog.setContentView(view)
 
-
             view.findViewById<TextView>(R.id.actionCamera).setOnClickListener {
                 dialog.dismiss()
             }
@@ -276,7 +347,6 @@ class ChatFragment : Fragment(), ChatContract.View {
             view.findViewById<TextView>(R.id.actionGallery).setOnClickListener {
                 dialog.dismiss()
 
-                // todo
                 Matisse.from(this)
                         .choose(MimeType.allOf())
                         .imageEngine(MatisseGlideV4Engine())

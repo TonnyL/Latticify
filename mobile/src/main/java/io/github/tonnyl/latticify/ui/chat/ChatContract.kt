@@ -49,8 +49,6 @@ interface ChatContract {
 
         fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>>
 
-        fun connectWebSocket()
-
         fun viewDetails()
 
         fun sendMessage(content: String)

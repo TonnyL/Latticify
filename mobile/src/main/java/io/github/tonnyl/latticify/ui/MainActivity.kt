@@ -1,10 +1,14 @@
 package io.github.tonnyl.latticify.ui
 
 import android.accounts.AccountManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +20,7 @@ import io.github.tonnyl.latticify.data.repository.TeamRepository
 import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
+import io.github.tonnyl.latticify.service.WebSocketService
 import io.github.tonnyl.latticify.ui.about.AboutActivity
 import io.github.tonnyl.latticify.ui.auth.AuthActivity
 import io.github.tonnyl.latticify.ui.auth.Authenticator
@@ -36,6 +41,7 @@ import io.github.tonnyl.latticify.ui.snooze.SnoozeNotificationsActivity
 import io.github.tonnyl.latticify.ui.starred.StarredItemsFragment
 import io.github.tonnyl.latticify.ui.starred.StarredItemsPresenter
 import io.github.tonnyl.latticify.ui.status.SetStatusActivity
+import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -61,6 +67,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val mCompositeDisposable = CompositeDisposable()
     private lateinit var mAccountManager: AccountManager
     private var mUserId: String? = null
+
+    private val mHelloReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            toolbar.setTitle(R.string.app_name)
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +108,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        LocalBroadcastManager.getInstance(this@MainActivity).registerReceiver(mHelloReceiver, IntentFilter(Constants.FILTER_HELLO))
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        LocalBroadcastManager.getInstance(this@MainActivity).unregisterReceiver(mHelloReceiver)
     }
 
     override fun onDestroy() {
@@ -178,6 +205,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initViews() {
+        toolbar.setTitle(R.string.connecting)
+
         val toggle = ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawerLayout.addDrawerListener(toggle)
@@ -296,6 +325,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         initViews()
 
                         getTeamInfo()
+
+                        startService(Intent(this@MainActivity, WebSocketService::class.java))
 
                     } else {
                         val i = Intent(this, AuthActivity::class.java)

@@ -1,21 +1,17 @@
 package io.github.tonnyl.latticify.ui.chat
 
-import android.util.Log
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
-import com.google.gson.Gson
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.repository.ChannelsRepository
+import io.github.tonnyl.latticify.data.repository.ChatRepository
 import io.github.tonnyl.latticify.data.repository.GroupsRepository
 import io.github.tonnyl.latticify.data.repository.IMRepository
-import io.github.tonnyl.latticify.data.repository.RtmRepository
 import io.github.tonnyl.latticify.epoxy.MessageModel_
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.*
-import okio.ByteString
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -26,13 +22,10 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
     override var mOldestMessageTs: String = ""
     override var mHasMore: Boolean = false
 
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mCompositeDisposable = CompositeDisposable()
     private val mView = view
     private var mChannelId = channelId
     private var mChannel: Channel? = null
-    private var mWebSocket: WebSocket? = null
-    private var mRtmResponseMessage: RtmResponseMessageWrapper? = null
-    private val mGson = Gson()
 
     companion object {
         @JvmField
@@ -43,7 +36,7 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
 
     init {
         mView.setPresenter(this)
-        mChannelId = mChannelId
+        mChannelId = channelId
     }
 
     constructor(view: ChatContract.View, channel: Channel) : this(view, channel.id) {
@@ -55,15 +48,11 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
 
         fetchData()
 
-//        connectWebSocket()
-
         mChannel?.let { if (it.isChannel == true) mView.showChannel(it) }
     }
 
     override fun unsubscribe() {
         mCompositeDisposable.clear()
-
-//        mWebSocket?.cancel()
     }
 
     override fun fetchData() {
@@ -163,57 +152,18 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
         }
     }
 
-    override fun connectWebSocket() {
-        val disposable = RtmRepository.connect(0)
+    override fun sendMessage(content: String) {
+        val disposable = ChatRepository.postMessage(mChannelId, content, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    mRtmResponseMessage = it
-                    mWebSocket = OkHttpClient().newWebSocket(Request.Builder().url(it.url).build(), object : WebSocketListener() {
-                        override fun onOpen(webSocket: WebSocket?, response: Response?) {
-                            super.onOpen(webSocket, response)
-                            Log.d("onOpen", "response -> $response")
-                        }
+                    if (it.ok) {
 
-                        override fun onMessage(webSocket: WebSocket?, text: String?) {
-                            super.onMessage(webSocket, text)
-                            Log.d("onMessage", "text -> $text")
-                            text?.let {
-                                val msg = mGson.fromJson<RtmReceivedMessage>(it, RtmReceivedMessage::class.java)
-                                Log.d("onMessage", "message -> $text")
-                                if (msg.type == "typing") {
-
-                                }
-                            }
-                        }
-
-                        override fun onMessage(webSocket: WebSocket?, bytes: ByteString?) {
-                            super.onMessage(webSocket, bytes)
-                            Log.d("onMessage", "bytes -> $bytes")
-                        }
-
-                        override fun onClosed(webSocket: WebSocket?, code: Int, reason: String?) {
-                            super.onClosed(webSocket, code, reason)
-                            Log.d("onClosed", "code -> $code reason -> $reason")
-                        }
-
-                        override fun onFailure(webSocket: WebSocket?, t: Throwable?, response: Response?) {
-                            super.onFailure(webSocket, t, response)
-                            Log.d("onFailure", "throwable -> ${t?.message} response -> $response")
-                        }
-
-                    })
+                    }
                 }, {
-                    it.printStackTrace()
-                    Log.d("error", "" + it.message)
+
                 })
         mCompositeDisposable.add(disposable)
-    }
-
-    override fun sendMessage(content: String) {
-        mRtmResponseMessage?.let {
-            mWebSocket?.send(mGson.toJson(RtmSendingMessage(it.rtmSelf.id, "message", mChannelId, content)))
-        }
     }
 
     private fun getLatestOneMessage() {

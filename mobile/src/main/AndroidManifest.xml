@@ -134,9 +134,7 @@
             android:label="@string/file"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name=".ui.loading.LoadingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <service android:name=".service.WebSocketService" />
 
         <service
             android:name=".ui.auth.AuthenticationService"
