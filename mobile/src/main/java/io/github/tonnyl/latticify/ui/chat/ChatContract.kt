@@ -35,11 +35,15 @@ interface ChatContract {
 
         fun gotoChannelDetails(channel: Channel)
 
+        fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int)
+
     }
 
     interface Presenter : BasePresenter {
 
         var mOldestMessageTs: String
+
+        var mLatestMessageTs: String
 
         var mHasMore: Boolean
 
@@ -52,6 +56,8 @@ interface ChatContract {
         fun viewDetails()
 
         fun sendMessage(content: String)
+
+        fun getLatestOneMessage()
 
     }
 

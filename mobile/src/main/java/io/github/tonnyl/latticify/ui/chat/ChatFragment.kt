@@ -10,9 +10,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyModel
@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit
  *
  */
 class ChatFragment : Fragment(), ChatContract.View {
+
 
     override var ignoreScrollChange: Boolean = false
 
@@ -86,8 +87,7 @@ class ChatFragment : Fragment(), ChatContract.View {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
                 val message = it.getParcelableExtra<io.github.tonnyl.latticify.data.event.Message>(Constants.BROADCAST_EXTRA)
-
-                Log.d(TAG, "$message")
+                mPresenter.getLatestOneMessage()
             }
         }
 
@@ -118,6 +118,7 @@ class ChatFragment : Fragment(), ChatContract.View {
             mPresenter.fetchData()
         }
 
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             adapter = mAdapter
@@ -154,11 +155,11 @@ class ChatFragment : Fragment(), ChatContract.View {
                 }
             }
 
-            override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
             }
 
@@ -332,6 +333,10 @@ class ChatFragment : Fragment(), ChatContract.View {
         activity?.let {
             context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) })
         }
+    }
+
+    override fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int) {
+        mAdapter.insertModel(epoxyModel, position)
     }
 
     private fun showBottomSheetDialog() {

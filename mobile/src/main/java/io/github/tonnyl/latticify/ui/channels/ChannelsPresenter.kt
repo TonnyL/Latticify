@@ -99,8 +99,9 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         .channel(channel as Channel)
                         .itemOnClickListener(View.OnClickListener {
                             with(it.context) {
-                                mView.gotoActivity(Intent(this, ChatActivity::class.java)
-                                        .apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })
+                                mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
+                                    putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                })
                             }
                         })
             }

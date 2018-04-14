@@ -96,7 +96,9 @@ class GroupsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                 ChannelModel_()
                         .channel(channel as Channel)
                         .itemOnClickListener(View.OnClickListener {
-                            mView.gotoActivity(Intent(it.context, ChatActivity::class.java).apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })
+                            mView.gotoActivity(Intent(it.context, ChatActivity::class.java).apply {
+                                putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                            })
                         })
             }
 

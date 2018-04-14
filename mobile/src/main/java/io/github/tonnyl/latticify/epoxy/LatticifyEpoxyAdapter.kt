@@ -38,4 +38,11 @@ class LatticifyEpoxyAdapter : EpoxyAdapter() {
         }
     }
 
+    fun insertModel(modelToInsert: EpoxyModel<*>, position: Int) {
+        models.add(position, modelToInsert)
+
+        // The recycler view layout is reversed. So the position to notify is models' size instead 0.
+        notifyItemInserted(models.size - 1)
+    }
+
 }

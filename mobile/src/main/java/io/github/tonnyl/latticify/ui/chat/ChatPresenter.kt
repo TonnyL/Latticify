@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.Presenter {
 
     override var mOldestMessageTs: String = ""
+    override var mLatestMessageTs: String = ""
     override var mHasMore: Boolean = false
 
     private val mCompositeDisposable = CompositeDisposable()
@@ -48,7 +49,11 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
 
         fetchData()
 
-        mChannel?.let { if (it.isChannel == true) mView.showChannel(it) }
+        mChannel?.let {
+            if (it.isChannel == true || it.isGroup == true) {
+                mView.showChannel(it)
+            }
+        }
     }
 
     override fun unsubscribe() {
@@ -56,13 +61,13 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
     }
 
     override fun fetchData() {
-        val disposable = ChannelsRepository.info(mChannelId)
+        val disposable = (if (mChannel?.isGroup == true) GroupsRepository.info(mChannelId) else ChannelsRepository.info(mChannelId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .flatMap {
-                    mChannel = it.channel
+                    mChannel = (it as? GroupWrapper)?.group ?: (it as ChannelWrapper).channel
                     (when {
-                        mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId)
+                        mChannel?.isGroup == true -> GroupsRepository.history(mChannelId)
                         mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId)
                         else -> IMRepository.history(mChannelId)
                     })
@@ -76,6 +81,7 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                             if (this.isNotEmpty()) {
                                 mView.showData(generateEpoxyModels(this))
                                 mOldestMessageTs = it.messages.last().ts
+                                mLatestMessageTs = it.messages.first().ts
                             } else {
                                 mView.showEmptyView()
                             }
@@ -96,9 +102,9 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
         if (mHasMore && mOldestMessageTs.isNotEmpty()) {
             mView.showLoadingMore(true)
             val disposable = (when {
-                mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, latest = mOldestMessageTs)
+                mChannel?.isGroup == true -> GroupsRepository.history(mChannelId, latest = mOldestMessageTs)
                 mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, latest = mOldestMessageTs)
-                else -> IMRepository.history(mChannelId, oldest = mOldestMessageTs)
+                else -> IMRepository.history(mChannelId, latest = mOldestMessageTs)
             }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -109,6 +115,7 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                                 mView.showDataOfNextPage(generateEpoxyModels(it.messages))
 
                                 mOldestMessageTs = it.messages.last().ts
+                                mLatestMessageTs = it.messages.first().ts
                             }
                         }
 
@@ -157,24 +164,28 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    if (it.ok) {
 
-                    }
                 }, {
 
                 })
         mCompositeDisposable.add(disposable)
     }
 
-    private fun getLatestOneMessage() {
+    override fun getLatestOneMessage() {
         val disposable = (when {
-            mChannel?.isPrivate == true -> GroupsRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
-            mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
-            else -> IMRepository.history(mChannelId, oldest = mOldestMessageTs, count = 1)
+            mChannel?.isGroup == true -> GroupsRepository.history(mChannelId, oldest = mLatestMessageTs, count = 1)
+            mChannel?.isChannel == true -> ChannelsRepository.history(mChannelId, oldest = mLatestMessageTs, count = 1)
+            else -> IMRepository.history(mChannelId, oldest = mLatestMessageTs, count = 1)
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    if (it.ok && it.messages != null) {
+                        if (it.messages.isNotEmpty()) {
+                            mView.insertNewMessage(generateEpoxyModels(it.messages).first(), 0)
 
+                            mLatestMessageTs = it.messages.first().ts
+                        }
+                    }
                 }, {
 
                 })
