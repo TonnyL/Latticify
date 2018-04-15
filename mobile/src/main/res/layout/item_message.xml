@@ -13,6 +13,7 @@
         android:id="@+id/avatar_image_view"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
+        android:contentDescription="avatar"
         android:padding="@dimen/avatar_padding" />
 
     <LinearLayout
@@ -74,12 +75,12 @@
             tools:visibility="visible" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/timeTextView"
+            android:id="@+id/msgExtraTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:textColor="@color/textColorSecondary"
-            android:textSize="11sp"
+            android:textSize="12sp"
             tools:text="12:25" />
 
     </LinearLayout>

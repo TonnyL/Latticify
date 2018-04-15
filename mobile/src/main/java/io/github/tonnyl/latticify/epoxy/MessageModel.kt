@@ -11,7 +11,6 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
-import io.github.tonnyl.latticify.glide.GlideLoader
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -44,16 +43,26 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
             message.botId?.let { botBadgeTextView.visibility = android.view.View.VISIBLE }
 
-            timeTextView.text = "${message.reactions?.let { if (it.size == 1) "1 reaction • " else "${it.size} reactions • " }
-                    ?: ""}${android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)}"
-
-            message.file?.let { file ->
-                if (file.mimeType == "image/jpeg") {
-                    imageMessageImageView.visibility = android.view.View.VISIBLE
-                    GlideLoader.loadNormal(imageMessageImageView, file.thumb1024 ?: file.thumb720
-                    ?: file.thumb360)
-                }
+            val time = android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
+            if (message.edited == null && message.reactions == null) {
+                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_0, time)
+            } else if (message.edited != null && message.reactions == null) {
+                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_1, time)
+            } else if (message.edited == null && message.reactions != null) {
+                val reactionCount = msgExtraTextView.context.resources.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
+                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_2, reactionCount, time)
+            } else {
+                val reactionCount = msgExtraTextView.context.resources.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
+                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_3, reactionCount, time)
             }
+
+            /*message.file?.let { file ->
+                if (file.mimeType == "image/png") {
+                    imageMessageImageView.visibility = android.view.View.VISIBLE
+                    GlideLoader.loadNormal(imageMessageImageView, (file.thumb1024 ?: file.thumb720
+                    ?: file.thumb360)?.replace("\\/", "/"))
+                }
+            }*/
         }
     }
 
@@ -64,7 +73,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         lateinit var usernameTextView: AppCompatTextView
         lateinit var messageContentLayout: LinearLayout
         lateinit var messageContentTextView: AppCompatTextView
-        lateinit var timeTextView: AppCompatTextView
+        lateinit var msgExtraTextView: AppCompatTextView
         lateinit var imageMessageImageView: ImageView
         lateinit var botBadgeTextView: TextView
         lateinit var placeHolderView: View
@@ -77,7 +86,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                     usernameTextView = findViewById(R.id.username_text_view)
                     messageContentLayout = findViewById(R.id.messageContentLayout)
                     messageContentTextView = findViewById(R.id.messageContentTextView)
-                    timeTextView = findViewById(R.id.timeTextView)
+                    msgExtraTextView = findViewById(R.id.msgExtraTextView)
                     imageMessageImageView = findViewById(R.id.imageMessageImageView)
                     botBadgeTextView = findViewById(R.id.botBadgeTextView)
                     placeHolderView = findViewById(R.id.placeHolderView)

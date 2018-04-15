@@ -1,4 +1,4 @@
-package io.github.tonnyl.latticify.data.event
+package io.github.tonnyl.latticify.data
 
 import android.annotation.SuppressLint
 import android.os.Parcelable

@@ -23,7 +23,6 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.data.event.UserTyping
-import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
 import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
@@ -45,13 +44,12 @@ import java.util.concurrent.TimeUnit
  */
 class ChatFragment : Fragment(), ChatContract.View {
 
-
     override var ignoreScrollChange: Boolean = false
 
     private lateinit var mPresenter: ChatContract.Presenter
 
     private var mIsLoading = false
-    private val mAdapter = LatticifyEpoxyAdapter()
+    private val mAdapter = ChatMessageAdapter()
     private val mLoadMoreModel = LoadMoreModel_()
 
     private val mCompositeDisposable = CompositeDisposable()
@@ -86,8 +84,7 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
-                val message = it.getParcelableExtra<io.github.tonnyl.latticify.data.event.Message>(Constants.BROADCAST_EXTRA)
-                mPresenter.getLatestOneMessage()
+                mPresenter.handleMessageEvent(it)
             }
         }
 
@@ -337,6 +334,14 @@ class ChatFragment : Fragment(), ChatContract.View {
 
     override fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int) {
         mAdapter.insertModel(epoxyModel, position)
+    }
+
+    override fun deleteMessage(epoxyModel: EpoxyModel<*>) {
+        mAdapter.removeModel(epoxyModel)
+    }
+
+    override fun updateMessage(epoxyModel: EpoxyModel<*>, message: Message) {
+        mAdapter.updateModel(epoxyModel, message)
     }
 
     private fun showBottomSheetDialog() {

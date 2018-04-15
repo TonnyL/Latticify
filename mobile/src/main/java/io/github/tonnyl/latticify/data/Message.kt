@@ -83,6 +83,9 @@ data class Message(
         @SerializedName("username")
         val username: String?,
 
+        @SerializedName("edited")
+        var edited: MessageEdited?,
+
         @SerializedName("icons")
         val icons: Icons?,
 
@@ -99,7 +102,7 @@ data class Message(
         val botId: String?,
 
         @SerializedName("text")
-        val text: String?,
+        var text: String?,
 
         @SerializedName("type")
         val type: String,
@@ -111,10 +114,10 @@ data class Message(
          * message, bot_message and more
          */
         @SerializedName("subtype")
-        val subtype: String?,
+        var subtype: String?,
 
         @SerializedName("ts")
-        val ts: String,
+        var ts: String,
 
         @SerializedName("reactions")
         val reactions: List<Reaction>?

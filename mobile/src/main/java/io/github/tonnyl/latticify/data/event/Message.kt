@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.github.tonnyl.latticify.data.Attachment
+import io.github.tonnyl.latticify.data.MessageEdited
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -70,8 +71,14 @@ data class Message(
         @SerializedName("hidden")
         val hidden: Boolean?,
 
+        @SerializedName("deleted_ts")
+        val deletedTs: String?,
+
         @SerializedName("previous_message")
         val previousMessage: Message?,
+
+        @SerializedName("message")
+        val message: Message?,
 
         @SerializedName("event_ts")
         val eventTs: String?,

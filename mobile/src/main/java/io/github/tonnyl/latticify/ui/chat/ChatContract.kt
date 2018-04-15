@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.ui.chat
 
+import android.content.Intent
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
@@ -37,6 +38,10 @@ interface ChatContract {
 
         fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int)
 
+        fun updateMessage(epoxyModel: EpoxyModel<*>, message: Message)
+
+        fun deleteMessage(epoxyModel: EpoxyModel<*>)
+
     }
 
     interface Presenter : BasePresenter {
@@ -57,7 +62,7 @@ interface ChatContract {
 
         fun sendMessage(content: String)
 
-        fun getLatestOneMessage()
+        fun handleMessageEvent(intent: Intent)
 
     }
 

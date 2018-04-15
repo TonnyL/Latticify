@@ -51,7 +51,7 @@ ext {
             liveDataVersion              : '1.1.1',
             charlesVersion               : '0.1.0-alpha5',
             okhttpLoggingInterceptor     : '3.10.0',
-            glideVersion                 : '4.6.1',
+            glideVersion                 : '4.7.1',
             matisseVersion               : '0.4.3',
             flexBoxVersion               : '0.3.2',
             deeplinkDispatchVersion      : '3.1.1',
