@@ -11,6 +11,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.glide.GlideLoader
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -56,13 +57,12 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                 msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_3, reactionCount, time)
             }
 
-            /*message.file?.let { file ->
+            message.file?.let { file ->
                 if (file.mimeType == "image/png") {
                     imageMessageImageView.visibility = android.view.View.VISIBLE
-                    GlideLoader.loadNormal(imageMessageImageView, (file.thumb1024 ?: file.thumb720
-                    ?: file.thumb360)?.replace("\\/", "/"))
+                    GlideLoader.loadNormal(imageMessageImageView, "https://files.slack.com/files-tmb/T4WLRK1UL-FA730GDLJ-6961834134/screen_shot_2018-04-15_at_10.09.06_pm_360.png")
                 }
-            }*/
+            }
         }
     }
 
