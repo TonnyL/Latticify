@@ -12,9 +12,10 @@
         android:layout_height="48dp"
         android:drawablePadding="32dp"
         android:drawableStart="@drawable/ic_camera_black_24dp"
-        android:drawableTint="#808080"
+        android:drawableTint="@color/textColorSecondary"
         android:gravity="center_vertical"
-        android:text="Camera" />
+        android:text="@string/camera"
+        android:textColor="@color/textColorPrimary" />
 
     <TextView
         android:id="@+id/actionGallery"
@@ -23,9 +24,10 @@
         android:layout_height="48dp"
         android:drawablePadding="32dp"
         android:drawableStart="@drawable/ic_gallery_black_24dp"
-        android:drawableTint="#808080"
+        android:drawableTint="@color/textColorSecondary"
         android:gravity="center_vertical"
-        android:text="Gallery" />
+        android:text="@string/gallery"
+        android:textColor="@color/textColorPrimary" />
 
     <TextView
         android:id="@+id/actionFile"
@@ -34,20 +36,10 @@
         android:layout_height="48dp"
         android:drawablePadding="32dp"
         android:drawableStart="@drawable/ic_folder_black_24dp"
-        android:drawableTint="#808080"
+        android:drawableTint="@color/textColorSecondary"
         android:gravity="center_vertical"
-        android:text="File" />
-
-    <TextView
-        android:id="@+id/actionCommand"
-        style="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawablePadding="32dp"
-        android:drawableStart="@drawable/ic_functions_black_24dp"
-        android:drawableTint="#808080"
-        android:gravity="center_vertical"
-        android:text="Command" />
+        android:text="@string/file"
+        android:textColor="@color/textColorPrimary" />
 
     <TextView
         android:id="@+id/actionAt"
@@ -55,8 +47,9 @@
         android:layout_height="48dp"
         android:drawablePadding="32dp"
         android:drawableStart="@drawable/ic_at_black_24dp"
-        android:drawableTint="#808080"
+        android:drawableTint="@color/textColorSecondary"
         android:gravity="center_vertical"
-        android:text="At" />
+        android:text="@string/at"
+        android:textColor="@color/textColorPrimary" />
 
 </LinearLayout>

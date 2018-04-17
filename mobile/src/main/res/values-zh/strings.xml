@@ -1,0 +1,220 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Latticify</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="button_ok_text">确定</string>
+    <string name="button_cancel_text">取消</string>
+
+    <string name="action_settings">设置</string>
+    <string name="nav_messages">消息</string>
+    <string name="nav_channels">频道</string>
+    <string name="nav_profile">Profile</string>
+    <string name="directory">Directory</string>
+    <string name="nav_starred">收藏</string>
+    <string name="nav_groups">群组</string>
+    <string name="profile">Profile</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_about">关于</string>
+    <string name="welcome_to_latticify">欢迎来到 Latticify</string>
+    <string name="get_started">开始吧</string>
+
+    <string name="action_search">搜索</string>
+    <string name="action_others">其他</string>
+
+    <string name="channel_summary">%1$s %2$s</string>
+
+    <string name="team_url">%1$s.slack.com</string>
+    <string name="channel">频道</string>
+    <string name="message">消息</string>
+    <string name="channel_name_with_hashtag"># %1$s</string>
+
+    <string name="message_in_channel">来自 %1$s 的消息</string>
+
+    <string name="real_name">真实姓名</string>
+    <string name="email">邮箱</string>
+    <string name="phone">电话</string>
+    <string name="status">状态</string>
+    <string name="locale">地址</string>
+    <string name="timezone">时区</string>
+    <string name="timezone_same">在你的时区(%1$s)</string>
+
+    <plurals name="timezone_head">
+        <item quantity="other">领先你%1$d个小时(%2$s)</item>
+    </plurals>
+
+    <plurals name="timezone_behind">
+        <item quantity="other">落后你%1$d个小时(%2$s)</item>
+    </plurals>
+
+    <string name="menu_edit">编辑</string>
+    <string name="menu_view_files">查看文件</string>
+    <string name="menu_invite_to_channel">邀请加入频道</string>
+    <string name="menu_invite_members_to_channel">邀请成员</string>
+    <string name="menu_directory">通讯录</string>
+
+    <string name="menu_set_status">设置状态</string>
+    <string name="menu_invite_members_to_team">Invite members</string>
+    <string name="menu_snooze">Snooze</string>
+
+    <string name="channel_details">频道详情</string>
+    <string name="set_status">设置状态</string>
+    <string name="add_channel">新增频道</string>
+    <string name="settings">设置</string>
+    <string name="about">光宇</string>
+    <string name="menu_view_details">查看详情</string>
+
+    <string name="no_purpose_set">未设置目标</string>
+    <string name="no_topic_set">未设置主题</string>
+    <string name="archive_description">Archiving will remove #%1$s from the channel list, and close it for all members. Everything will still be stored and searchable.</string>
+    <string name="channel_creation">%1$s create this channel on %2$s</string>
+    <string name="purpose">目标</string>
+    <string name="topic">主题</string>
+    <string name="edit">编辑</string>
+    <string name="actions">动作</string>
+    <string name="notifications">通知</string>
+    <string name="add_someone">添加成员</string>
+    <string name="member_list">成员列表 (%1$d)</string>
+    <string name="leave">离开</string>
+    <string name="advanced">高级</string>
+    <string name="archive">归档</string>
+    <string name="pinned_items">置顶项</string>
+
+    <string name="channel_name_description">名称必须为小写字母, 不能带有空格或者符号,且长度小于22.</string>
+    <string name="channel_name">频道名称</string>
+    <string name="channel_public">公开</string>
+    <string name="channel_public_description">团队中任何成员均可加入.</string>
+    <string name="channel_private">私密</string>
+    <string name="channel_private_description">私有频道 (群组) 只能邀请加入, 且不会出现在频道列表中.</string>
+    <string name="channel_add_members">添加成员</string>
+    <string name="optional">可选项</string>
+    <string name="channel_purpose">目标</string>
+    <string name="channel_purpose_description">可选. 为你的频道设置一个目标,用于描述频道的用途.</string>
+    <string name="menu_done">完成</string>
+    <string name="no_result">没有结果.</string>
+    <string name="files">文件</string>
+    <string name="messages">消息</string>
+
+    <string name="search">搜索</string>
+    <string name="search_file_description">%1$s • %2$s</string>
+
+    <string name="suggested">建议</string>
+    <string name="whats_your_status">你的状态是怎样的?</string>
+    <string name="in_a_meeting"> 🗓 会议</string>
+    <string name="commuting"> 🚌 通勤</string>
+    <string name="out_sick"> 🤒 生病</string>
+    <string name="vacationing"> 🏝 度假</string>
+    <string name="working_remotely"> 🏡 远程工作 </string>
+    <string name="name">名称</string>
+
+    <string name="edit_channel">编辑频道</string>
+    <string name="mute_channel">静音频道</string>
+    <string name="mute_channel_description">你将不再收到来自已静音频道的通知, 并且他们将在你的频道列表中变成灰色. 此项设置将应用于你的所有已登录设备.</string>
+    <string name="ignore_at_channel_and_at_here">忽略 @channel 和 @here</string>
+    <string name="notifications_range">在移动设备上, 通知我关于…</string>
+
+    <string name="search_hint">搜索消息或文件</string>
+    <string name="search_close">关闭</string>
+    <string name="star_file">收藏文件</string>
+    <string name="share_file">分享文件</string>
+    <string name="copy_link">复制链接</string>
+    <string name="delete">删除</string>
+    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="file">文件</string>
+    <string name="comment">评论</string>
+    <string name="add_reaction">Add reaction</string>
+    <string name="star_channel">收藏频道</string>
+    <string name="copy_text">复制消息内容</string>
+    <string name="copy_link_to_message">复制消息链接</string>
+    <string name="share_message">转发消息</string>
+    <string name="star">收藏</string>
+    <string name="unstar">取消收藏</string>
+    <string name="pin_to_conversation">在对话中置顶</string>
+    <string name="edit_message">编辑消息</string>
+    <string name="delete_message">删除消息</string>
+    <string name="avatar">头像</string>
+    <string name="dialog_delete_file_title">删除文件</string>
+    <string name="dialog_delete_file_msg">你确定想要永久删除这个文件吗?</string>
+
+    <string name="copied">已复制</string>
+    <string name="copy_failed">复制失败</string>
+    <string name="failed_to_delete_file">删除文件失败</string>
+
+    <string name="offline">离线</string>
+    <string name="online">在线</string>
+    <string name="availability">Availability</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="snooze">Snooze</string>
+    <string name="snooze_notifications">Snooze notifications</string>
+    <string name="what_i_do">我做什么</string>
+    <string name="info">信息</string>
+    <string name="slack_help_center">Slack 帮助中心</string>
+    <string name="slack_privacy">Slack 隐私政策</string>
+    <string name="open_source_licenses">开源许可证</string>
+    <string name="general">常规</string>
+    <string name="notification_settings">通知设置</string>
+    <string name="do_not_disturb">请勿打扰</string>
+    <string name="version">版本</string>
+    <string name="contributors">贡献者</string>
+    <string name="source_code">源代码</string>
+    <string name="support">支持</string>
+    <string name="open_web_pages_in_app">在应用内打开网页</string>
+    <string name="open_web_pages_in_app_summary">链接将会在 Latticify 内打开</string>
+    <string name="source_code_summary">https://github.com/TonnyL/Latticify</string>
+    <string name="contributors_summary">https://github.com/TonnyL/Latticify/graphs/contributors</string>
+    <string name="display_typing_indicators_summary">正在输入 指示器将会被展示</string>
+    <string name="display_typing_indicators">显示 正在输入 指示器</string>
+
+    <string name="connecting">连接中…</string>
+
+    <plurals name="user_typing" tools:ignore="UnusedQuantity">
+        <item quantity="zero">%s</item>
+        <item quantity="one">%s 正在输入…</item>
+        <item quantity="two">%s 和 %s 正在输入…</item>
+        <item quantity="other">多个成员正在输入…</item>
+    </plurals>
+
+    <plurals name="member_count">
+        <item quantity="other">%d成员</item>
+    </plurals>
+
+    <plurals name="reaction_count">
+        <item quantity="other">%d回应</item>
+    </plurals>
+
+    // 1小时前
+    <string name="message_extra_info_0">%1$s</string>
+    // edited • 1 hour ago
+    <string name="message_extra_info_1">edited • %1$s</string>
+    // 1 reaction • 1 hour ago
+    <string name="message_extra_info_2">%1$s • %2$s</string>
+    // edited • 1 reaction • 1 hour ago
+    <string name="message_extra_info_3">edited • %1$s • %2$s</string>
+    <string name="camera">相机</string>
+    <string name="gallery">相册</string>
+    <string name="at">提及</string>
+    <string name="emoji_ghost">👻</string>
+    <string name="bot">机器人</string>
+    <string name="msg_starred">Starred</string>
+    <string name="msg_unstarred">Unstarred</string>
+
+    <string-array name="snooze_notifications_entries">
+        <item>20 分钟</item>
+        <item>1 小时</item>
+        <item>2 小时</item>
+        <item>4 小时</item>
+        <item>8 小时</item>
+        <item>24 小时</item>
+    </string-array>
+
+    <string-array name="snooze_notifications_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+</resources>

@@ -42,6 +42,12 @@ interface ChatContract {
 
         fun deleteMessage(epoxyModel: EpoxyModel<*>)
 
+        fun showMessageActions(message: Message)
+
+        fun dismissMessageAction()
+
+        fun showMessageStarred(starred: Boolean)
+
     }
 
     interface Presenter : BasePresenter {
@@ -62,7 +68,11 @@ interface ChatContract {
 
         fun sendMessage(content: String)
 
+        fun updateMessage(content: String, message: Message)
+
         fun handleMessageEvent(intent: Intent)
+
+        fun starMessage(timestamp: String, starred: Boolean)
 
     }
 

@@ -104,19 +104,19 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             val hours = (TimeZone.getDefault().rawOffset / 1000 - Math.abs(tzOffset)) / 3600
             timezone_text_view.text = when {
                 hours > 0 -> {
-                    if (hours == 1L)
-                        context?.getString(R.string.timezone_behind_1_hour)?.format(tzLabel) ?: ""
+                    if (hours == -1L)
+                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), tzLabel)
                     else
-                        context?.getString(R.string.timezone_behind_n_hours)?.format(hours, tzLabel) ?: ""
+                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), hours.toInt(), tzLabel)
                 }
                 hours == 0L -> {
                     context?.getString(R.string.timezone_same)?.format(tzLabel) ?: ""
                 }
                 else -> {
                     if (hours == -1L)
-                        context?.getString(R.string.timezone_ahead_1_hour)?.format(tzLabel) ?: ""
+                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), tzLabel)
                     else
-                        context?.getString(R.string.timezone_ahead_n_hours)?.format(-hours, tzLabel) ?: ""
+                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), -hours.toInt(), tzLabel)
                 }
             }
         }

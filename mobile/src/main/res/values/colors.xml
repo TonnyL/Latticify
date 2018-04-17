@@ -6,4 +6,6 @@
 
     <color name="textColorPrimary">#131313</color>
     <color name="textColorSecondary">#848484</color>
+
+    <color name="colorWarning">#F44336</color>
 </resources>

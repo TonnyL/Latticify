@@ -3,15 +3,11 @@ package io.github.tonnyl.latticify.ui.chat
 import android.content.Intent
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
-import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.ChannelWrapper
 import io.github.tonnyl.latticify.data.GroupWrapper
 import io.github.tonnyl.latticify.data.Message
-import io.github.tonnyl.latticify.data.repository.ChannelsRepository
-import io.github.tonnyl.latticify.data.repository.ChatRepository
-import io.github.tonnyl.latticify.data.repository.GroupsRepository
-import io.github.tonnyl.latticify.data.repository.IMRepository
+import io.github.tonnyl.latticify.data.repository.*
 import io.github.tonnyl.latticify.epoxy.MessageModel_
 import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -143,19 +139,9 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                             .itemOnClickListener(View.OnClickListener {
                                 mView.gotoMessageDetails(message)
                             })
-                            .itemOnCreateContextMenuListener({ menu, _, _ ->
-                                menu.add(R.id.group_message_0, R.id.action_copy_text, 0, R.string.copy_text)
-                                menu.add(R.id.group_message_0, R.id.action_copy_link_to_message, 0, R.string.copy_link_to_message)
-                                menu.add(R.id.group_message_0, R.id.action_share_message, 0, R.string.share_message)
-
-                                menu.add(R.id.group_message_1, R.id.action_add_reaction, 0, R.string.add_reaction)
-
-                                menu.add(R.id.group_message_2, R.id.action_star, 0, R.string.star)
-                                menu.add(R.id.group_message_2, R.id.action_remind_me, 0, R.string.remind_me)
-                                menu.add(R.id.group_message_2, R.id.action_pin_to_conversation, 0, R.string.pin_to_conversation)
-
-                                menu.add(R.id.group_message_3, R.id.action_edit_message, 0, R.string.edit_message)
-                                menu.add(R.id.group_message_3, R.id.action_delete, 0, R.string.delete)
+                            .itemOnLongClickListener(View.OnLongClickListener {
+                                mView.showMessageActions(message)
+                                true
                             })
                             .directMessage(mChannel?.isIm ?: false)
                 }
@@ -183,6 +169,20 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
         mCompositeDisposable.add(disposable)
     }
 
+    override fun updateMessage(content: String, message: Message) {
+        val disposable = ChatRepository.update(mChannelId, content, message.ts, true, message.attachments.toString(), false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mView.dismissMessageAction()
+                    }
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
     override fun handleMessageEvent(intent: Intent) {
         val messageEvent = intent.getParcelableExtra<io.github.tonnyl.latticify.data.event.Message>(Constants.BROADCAST_EXTRA)
 
@@ -203,7 +203,7 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                     with(it as MessageModel_) {
                         message.edited = messageEvent.message?.edited
                         message.text = messageEvent.message?.text
-                        message.ts = messageEvent.ts
+                        message.ts = messageEvent.previousMessage?.ts ?: messageEvent.edited?.ts ?: messageEvent.ts
                         message.subtype = messageEvent.subtype
                     }
                     mView.updateMessage(it, it.message)
@@ -211,8 +211,30 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
             }
         } else {
             getLatestMessage()
+
+            mLatestMessageTs = messageEvent.ts
         }
 
+    }
+
+    override fun starMessage(timestamp: String, starred: Boolean) {
+        val disposable = (if (starred) StarredItemsRepository.add(mChannelId, "", "", timestamp = timestamp) else StarredItemsRepository.remove(mChannelId, "", "", timestamp))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mView.showMessageStarred(starred)
+
+                        mEpoxyModels.firstOrNull {
+                            it is MessageModel_ && it.message.ts == timestamp
+                        }?.let {
+                            (it as MessageModel_).message.isStarred = starred
+                        }
+                    }
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
     }
 
     private fun getLatestMessage() {
@@ -226,8 +248,6 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                     if (it.ok && it.messages != null) {
                         if (it.messages.isNotEmpty()) {
                             mView.insertNewMessage(generateEpoxyModels(it.messages).first(), 0)
-
-                            mLatestMessageTs = it.messages.first().ts
                         }
                     }
                 }, {

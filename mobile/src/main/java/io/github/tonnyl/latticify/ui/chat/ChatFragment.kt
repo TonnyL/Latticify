@@ -1,9 +1,6 @@
 package io.github.tonnyl.latticify.ui.chat
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
@@ -15,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import com.airbnb.epoxy.EpoxyModel
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -36,6 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.layout_input.*
+import kotlinx.android.synthetic.main.layout_message_action.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -55,6 +54,9 @@ class ChatFragment : Fragment(), ChatContract.View {
     private val mCompositeDisposable = CompositeDisposable()
 
     private var mSubTitle = ""
+
+    private var mIsEditingMessage = false
+    private var mEditingMessage: Message? = null
 
     private val mUserTypingReceiver = object : BroadcastReceiver() {
 
@@ -97,12 +99,10 @@ class ChatFragment : Fragment(), ChatContract.View {
         val REQUEST_CHOOSE_IMAGE = 101
         val REQUEST_CHOOSE_FILE = 102
 
-        const val TAG = "ChatFragment"
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_channel, container, false)
+            inflater.inflate(R.layout.fragment_chat, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -164,8 +164,14 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         sendMessageImageView.setOnClickListener {
             if (!messageEditText.text.isNullOrBlank()) {
-                mPresenter.sendMessage(messageEditText.text.toString())
-                messageEditText.setText("")
+                if (mIsEditingMessage && mEditingMessage != null) {
+                    mEditingMessage?.let {
+                        mPresenter.updateMessage(messageEditText.text.toString(), it)
+                    }
+                } else {
+                    mPresenter.sendMessage(messageEditText.text.toString())
+                    messageEditText.setText("")
+                }
             }
         }
 
@@ -243,12 +249,6 @@ class ChatFragment : Fragment(), ChatContract.View {
 
             }
             R.id.action_star -> {
-
-            }
-            R.id.action_remind_me -> {
-
-            }
-            R.id.action_mark_unread -> {
 
             }
             R.id.action_pin_to_conversation -> {
@@ -344,10 +344,104 @@ class ChatFragment : Fragment(), ChatContract.View {
         mAdapter.updateModel(epoxyModel, message)
     }
 
+    override fun showMessageActions(message: Message) {
+        context?.let {
+            val dialog = BottomSheetDialog(it)
+            val view = layoutInflater.inflate(R.layout.layout_message_actions, null)
+            dialog.setContentView(view)
+
+            view.findViewById<TextView>(R.id.actionCopyText).setOnClickListener {
+                dialog.dismiss()
+
+                context?.let { context ->
+                    (message.text
+                            ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" })?.let {
+                        val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipData = ClipData.newPlainText("text", it)
+                        manager.primaryClip = clipData
+
+                        Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show()
+                    } ?: run {
+                        Toast.makeText(context, R.string.copy_failed, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+
+            view.findViewById<TextView>(R.id.actionShareMessage).setOnClickListener {
+                dialog.dismiss()
+
+                messageActionLayout.visibility = View.VISIBLE
+                actionImageView.setImageResource(R.drawable.ic_forward_black_24dp)
+                userNameTextView.text = message.user
+                messageContentTextView.text = message.text
+                dismissImageView.setOnClickListener {
+                    messageActionLayout.visibility = View.GONE
+                }
+            }
+
+            view.findViewById<TextView>(R.id.actionStar).apply {
+                setText(if (message.isStarred != true) R.string.star else R.string.unstar)
+                setCompoundDrawablesWithIntrinsicBounds(context?.getDrawable(if (message.isStarred != true) R.drawable.ic_star_border_black_24dp else R.drawable.ic_star_black_24dp), null, null, null)
+
+                setOnClickListener {
+                    dialog.dismiss()
+
+                    mPresenter.starMessage(message.ts, message.isStarred != true)
+                }
+            }
+
+            view.findViewById<TextView>(R.id.actionPinToConversation).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            view.findViewById<TextView>(R.id.actionEditMessage).setOnClickListener {
+                mIsEditingMessage = true
+                mEditingMessage = message
+
+                dismissImageView.setOnClickListener {
+                    dismissMessageAction()
+                }
+
+                dialog.setOnDismissListener {
+                    actionImageView.setImageResource(R.drawable.ic_edit_black_24dp)
+                    userNameTextView.text = message.user
+                    messageContentTextView.text = message.text
+                    messageEditText.setText(message.text)
+                    // Move the cursor to end
+                    messageEditText.setSelection(messageEditText.text.length)
+                    sendMessageImageView.setImageResource(R.drawable.ic_done_black_24dp)
+                    messageActionLayout.visibility = View.VISIBLE
+                }
+
+                dialog.dismiss()
+            }
+
+            view.findViewById<TextView>(R.id.actionDeleteMessage).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
+
+    override fun dismissMessageAction() {
+        messageEditText.setText("")
+        sendMessageImageView.setImageResource(R.drawable.ic_send_black_24dp)
+        messageActionLayout.visibility = View.GONE
+
+        mIsEditingMessage = false
+        mEditingMessage = null
+    }
+
+    override fun showMessageStarred(starred: Boolean) {
+        Toast.makeText(context, if (starred) R.string.msg_starred else R.string.msg_unstarred, Toast.LENGTH_SHORT).show()
+    }
+
     private fun showBottomSheetDialog() {
         context?.let {
             val dialog = BottomSheetDialog(it)
-            val view = layoutInflater.inflate(R.layout.layout_channel_bottom_sheet, null)
+            val view = layoutInflater.inflate(R.layout.layout_chat_bottom_sheet, null)
             dialog.setContentView(view)
 
             view.findViewById<TextView>(R.id.actionCamera).setOnClickListener {
@@ -376,10 +470,6 @@ class ChatFragment : Fragment(), ChatContract.View {
                         .maxSelectable(1)
                         .theme(R.style.Latticify_CharlesStyle)
                         .forResult(REQUEST_CHOOSE_FILE)
-            }
-
-            view.findViewById<TextView>(R.id.actionCommand).setOnClickListener {
-                dialog.dismiss()
             }
 
             view.findViewById<TextView>(R.id.actionAt).setOnClickListener {

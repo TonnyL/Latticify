@@ -48,9 +48,9 @@ data class Attachment(
         val text: String,
 
         @SerializedName("fallback")
-        val fallback: String,
+        val fallback: String?,
 
         @SerializedName("mrkdwn_in")
-        val markdownIn: List<String>
+        val markdownIn: List<String>?
 
 ) : Parcelable

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/actionCopyText"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_content_copy_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/copy_text"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/actionShareMessage"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_forward_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/share_message"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/actionStar"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_star_border_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/star"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/actionPinToConversation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_pin_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/pin_to_conversation"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/actionEditMessage"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_edit_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/edit_message"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
+        android:id="@+id/actionDeleteMessage"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_delete_black_24dp"
+        android:drawableTint="@color/colorWarning"
+        android:gravity="center_vertical"
+        android:text="@string/delete_message"
+        android:textColor="@color/colorWarning" />
+
+</LinearLayout>

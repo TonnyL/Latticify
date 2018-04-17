@@ -110,6 +110,9 @@ data class Message(
         @SerializedName("file")
         val file: File?,
 
+        @SerializedName("is_starred")
+        var isStarred: Boolean?,
+
         /**
          * message, bot_message and more
          */

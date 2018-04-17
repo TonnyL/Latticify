@@ -26,7 +26,7 @@ object GlideLoader {
         GlideApp.with(imageView.context)
                 .asBitmap()
                 .load(url)
-                .centerCrop()
+                .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView)
     }

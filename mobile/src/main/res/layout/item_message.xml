@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@color/colorAccent"
-                android:text="APP"
+                android:text="@string/bot"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:visibility="gone"
@@ -71,8 +71,10 @@
             android:id="@+id/imageMessageImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:contentDescription="Image"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/msgExtraTextView"

@@ -12,6 +12,7 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.glide.GlideLoader
+import io.github.tonnyl.latticify.util.isImage
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -22,7 +23,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var itemOnClickListener: View.OnClickListener
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var itemOnCreateContextMenuListener: View.OnCreateContextMenuListener
+    lateinit var itemOnLongClickListener: View.OnLongClickListener
     @EpoxyAttribute
     lateinit var message: Message
     @EpoxyAttribute
@@ -37,12 +38,14 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
         with(holder) {
             messageContentLayout.setOnClickListener(itemOnClickListener)
-            messageContentLayout.setOnCreateContextMenuListener(itemOnCreateContextMenuListener)
+            messageContentLayout.setOnLongClickListener(itemOnLongClickListener)
 
-            usernameTextView.text = message.user ?: message.username ?: ""
-            messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
+            usernameTextView.text = message.username ?: message.user ?: ""
+            messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
 
-            message.botId?.let { botBadgeTextView.visibility = android.view.View.VISIBLE }
+            if (message.displayAsBot == true && message.botId != null) {
+                botBadgeTextView.visibility = android.view.View.VISIBLE
+            }
 
             val time = android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
             if (message.edited == null && message.reactions == null) {
@@ -58,8 +61,8 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
             }
 
             message.file?.let { file ->
-                if (file.mimeType == "image/png") {
-                    imageMessageImageView.visibility = android.view.View.VISIBLE
+                if (isImage(file.mimeType)) {
+                    imageMessageImageView.visibility = View.VISIBLE
                     GlideLoader.loadNormal(imageMessageImageView, "https://files.slack.com/files-tmb/T4WLRK1UL-FA730GDLJ-6961834134/screen_shot_2018-04-15_at_10.09.06_pm_360.png")
                 }
             }

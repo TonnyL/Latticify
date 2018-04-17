@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group
-        android:id="@+id/group_message_0"
-        android:checkableBehavior="single">
+    <group android:id="@+id/group_message_0">
 
         <item
             android:id="@+id/action_copy_text"
@@ -22,9 +20,7 @@
 
     </group>
 
-    <group
-        android:id="@+id/group_message_1"
-        android:checkableBehavior="single">
+    <group android:id="@+id/group_message_1">
 
         <item
             android:id="@+id/action_add_reaction"
@@ -33,24 +29,12 @@
 
     </group>
 
-    <group
-        android:id="@+id/group_message_2"
-        android:checkableBehavior="single">
+    <group android:id="@+id/group_message_2">
 
         <item
             android:id="@+id/action_star"
             android:icon="@drawable/ic_star_border_black_24dp"
             android:title="@string/star" />
-
-        <item
-            android:id="@+id/action_remind_me"
-            android:icon="@drawable/ic_timer_black_24dp"
-            android:title="@string/remind_me" />
-
-        <item
-            android:id="@+id/action_mark_unread"
-            android:icon="@drawable/ic_link_black_24dp"
-            android:title="@string/mark_unread" />
 
         <item
             android:id="@+id/action_pin_to_conversation"
@@ -59,9 +43,7 @@
 
     </group>
 
-    <group
-        android:id="@+id/group_message_3"
-        android:checkableBehavior="single">
+    <group android:id="@+id/group_message_3">
 
         <item
             android:id="@+id/action_edit_message"
