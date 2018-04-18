@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.ui.chat
 
 import android.content.Intent
-import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.ChannelWrapper
@@ -136,14 +135,17 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                 .map { message ->
                     MessageModel_()
                             .message(message as Message)
-                            .itemOnClickListener(View.OnClickListener {
-                                mView.gotoMessageDetails(message)
-                            })
-                            .itemOnLongClickListener(View.OnLongClickListener {
-                                mView.showMessageActions(message)
-                                true
-                            })
-                            .directMessage(mChannel?.isIm ?: false)
+                            .itemOnClickListener { _, _, _, _ ->
+                                if (message.subtype == null) {
+                                    mView.gotoMessageDetails(message)
+                                }
+                            }
+                            .itemOnLongClickListener { _, _, _, _ ->
+                                if (message.subtype == null) {
+                                    mView.showMessageActions(message, mChannelId)
+                                }
+                                message.subtype == null
+                            }
                 }
 
         mEpoxyModels.addAll(list)
@@ -164,7 +166,10 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                 .subscribe({
 
                 }, {
-
+                    it.printStackTrace()
+                    it.message?.let {
+                        mView.displayMessage(it)
+                    }
                 })
         mCompositeDisposable.add(disposable)
     }
@@ -178,7 +183,7 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                         mView.dismissMessageAction()
                     }
                 }, {
-
+                    it.printStackTrace()
                 })
         mCompositeDisposable.add(disposable)
     }
@@ -204,7 +209,6 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                         message.edited = messageEvent.message?.edited
                         message.text = messageEvent.message?.text
                         message.ts = messageEvent.previousMessage?.ts ?: messageEvent.edited?.ts ?: messageEvent.ts
-                        message.subtype = messageEvent.subtype
                     }
                     mView.updateMessage(it, it.message)
                 }
@@ -230,6 +234,54 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                         }?.let {
                             (it as MessageModel_).message.isStarred = starred
                         }
+                    }
+                }, {
+                    it.printStackTrace()
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun copyLinkToMessage(messageTimestamp: String) {
+        val disposable = ChatRepository.getPermalink(mChannelId, messageTimestamp)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok && it.permalink != null) {
+                        mView.copyLink(it.permalink)
+                    } else {
+                        it.error?.let {
+                            mView.displayMessage(it)
+                        }
+                    }
+                }, {
+                    it.printStackTrace()
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun deleteMessage(messageTimestamp: String) {
+        val disposable = ChatRepository.delete(mChannelId, messageTimestamp, true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+
+                }, {
+                    it.printStackTrace()
+
+                    it.message?.let {
+                        mView.displayMessage(it)
+                    }
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun pinMessage(timestamp: String, toPin: Boolean) {
+        val disposable = (if (toPin) PinsRepository().add(mChannelId, "", "", timestamp) else PinsRepository().remove(mChannelId, "", "", timestamp))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+
                     }
                 }, {
 

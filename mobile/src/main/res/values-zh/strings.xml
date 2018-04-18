@@ -10,11 +10,11 @@
     <string name="action_settings">设置</string>
     <string name="nav_messages">消息</string>
     <string name="nav_channels">频道</string>
-    <string name="nav_profile">Profile</string>
+    <string name="nav_profile">资料</string>
     <string name="directory">Directory</string>
     <string name="nav_starred">收藏</string>
     <string name="nav_groups">群组</string>
-    <string name="profile">Profile</string>
+    <string name="profile">资料</string>
     <string name="nav_settings">设置</string>
     <string name="nav_about">关于</string>
     <string name="welcome_to_latticify">欢迎来到 Latticify</string>
@@ -79,7 +79,7 @@
     <string name="leave">离开</string>
     <string name="advanced">高级</string>
     <string name="archive">归档</string>
-    <string name="pinned_items">置顶项</string>
+    <string name="pinned_items">置顶</string>
 
     <string name="channel_name_description">名称必须为小写字母, 不能带有空格或者符号,且长度小于22.</string>
     <string name="channel_name">频道名称</string>
@@ -131,6 +131,7 @@
     <string name="star">收藏</string>
     <string name="unstar">取消收藏</string>
     <string name="pin_to_conversation">在对话中置顶</string>
+    <string name="unpin_to_conversation">取消在对话中置顶</string>
     <string name="edit_message">编辑消息</string>
     <string name="delete_message">删除消息</string>
     <string name="avatar">头像</string>
@@ -144,7 +145,7 @@
     <string name="offline">离线</string>
     <string name="online">在线</string>
     <string name="availability">Availability</string>
-    <string name="edit_profile">Edit profile</string>
+    <string name="edit_profile">编辑资料</string>
     <string name="snooze">Snooze</string>
     <string name="snooze_notifications">Snooze notifications</string>
     <string name="what_i_do">我做什么</string>
@@ -165,6 +166,9 @@
     <string name="contributors_summary">https://github.com/TonnyL/Latticify/graphs/contributors</string>
     <string name="display_typing_indicators_summary">正在输入 指示器将会被展示</string>
     <string name="display_typing_indicators">显示 正在输入 指示器</string>
+
+    <string name="pinned">已置顶</string>
+    <string name="unpinned">已取消置顶</string>
 
     <string name="connecting">连接中…</string>
 

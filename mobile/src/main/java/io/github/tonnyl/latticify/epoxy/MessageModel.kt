@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.epoxy
 
 import android.support.v7.widget.AppCompatTextView
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,10 +27,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
     lateinit var itemOnLongClickListener: View.OnLongClickListener
     @EpoxyAttribute
     lateinit var message: Message
-    @EpoxyAttribute
-    var replyMessage: Message? = null
-    @EpoxyAttribute
-    var directMessage: Boolean = false
 
     override fun createNewHolder(): MessageHolder = MessageHolder()
 
@@ -37,33 +34,35 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         super.bind(holder)
 
         with(holder) {
-            messageContentLayout.setOnClickListener(itemOnClickListener)
-            messageContentLayout.setOnLongClickListener(itemOnLongClickListener)
+            messageContentLayout?.setOnClickListener(itemOnClickListener)
+            messageContentLayout?.setOnLongClickListener(itemOnLongClickListener)
 
-            usernameTextView.text = message.username ?: message.user ?: ""
-            messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
+            usernameTextView?.text = message.username ?: message.user ?: ""
+            messageContentTextView?.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
 
             if (message.displayAsBot == true && message.botId != null) {
-                botBadgeTextView.visibility = android.view.View.VISIBLE
+                botBadgeTextView?.visibility = android.view.View.VISIBLE
             }
 
-            val time = android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
+            val time = DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
             if (message.edited == null && message.reactions == null) {
-                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_0, time)
+                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_0, time)
             } else if (message.edited != null && message.reactions == null) {
-                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_1, time)
+                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_1, time)
             } else if (message.edited == null && message.reactions != null) {
-                val reactionCount = msgExtraTextView.context.resources.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
-                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_2, reactionCount, time)
+                val reactionCount = msgExtraTextView?.context?.resources?.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
+                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_2, reactionCount, time)
             } else {
-                val reactionCount = msgExtraTextView.context.resources.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
-                msgExtraTextView.text = msgExtraTextView.context.getString(R.string.message_extra_info_3, reactionCount, time)
+                val reactionCount = msgExtraTextView?.context?.resources?.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
+                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_3, reactionCount, time)
             }
 
             message.file?.let { file ->
                 if (isImage(file.mimeType)) {
-                    imageMessageImageView.visibility = View.VISIBLE
-                    GlideLoader.loadNormal(imageMessageImageView, "https://files.slack.com/files-tmb/T4WLRK1UL-FA730GDLJ-6961834134/screen_shot_2018-04-15_at_10.09.06_pm_360.png")
+                    imageMessageImageView?.let {
+                        it.visibility = View.VISIBLE
+                        GlideLoader.loadNormal(it, file.urlPrivate)
+                    }
                 }
             }
         }
@@ -71,15 +70,15 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
     class MessageHolder : EpoxyHolder() {
 
-        lateinit var itemLayout: LinearLayout
-        lateinit var avatarImageView: ImageView
-        lateinit var usernameTextView: AppCompatTextView
-        lateinit var messageContentLayout: LinearLayout
-        lateinit var messageContentTextView: AppCompatTextView
-        lateinit var msgExtraTextView: AppCompatTextView
-        lateinit var imageMessageImageView: ImageView
-        lateinit var botBadgeTextView: TextView
-        lateinit var placeHolderView: View
+        var itemLayout: LinearLayout? = null
+        var avatarImageView: ImageView? = null
+        var usernameTextView: AppCompatTextView? = null
+        var messageContentLayout: LinearLayout? = null
+        var messageContentTextView: AppCompatTextView? = null
+        var msgExtraTextView: AppCompatTextView? = null
+        var imageMessageImageView: ImageView? = null
+        var botBadgeTextView: TextView? = null
+        var placeHolderView: View? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {
@@ -98,4 +97,11 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         }
 
     }
+
+    override fun unbind(holder: MessageHolder) {
+        super.unbind(holder)
+        holder.messageContentLayout?.setOnClickListener(null)
+        holder.messageContentLayout?.setOnLongClickListener(null)
+    }
+
 }

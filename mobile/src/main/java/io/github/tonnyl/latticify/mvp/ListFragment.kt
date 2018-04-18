@@ -105,10 +105,12 @@ abstract class ListFragment : Fragment(), ListContract.View {
 
     override fun showEmptyView() {
         emptyView.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
     }
 
     override fun showErrorView() {
         errorView.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
     }
 
     override fun gotoActivity(intent: Intent) {

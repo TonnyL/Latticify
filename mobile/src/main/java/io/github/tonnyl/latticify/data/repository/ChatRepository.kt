@@ -1,9 +1,6 @@
 package io.github.tonnyl.latticify.data.repository
 
-import io.github.tonnyl.latticify.data.ChatMessageWrapper
-import io.github.tonnyl.latticify.data.EphemeralChatMessageWrapper
-import io.github.tonnyl.latticify.data.PostMessageWrapper
-import io.github.tonnyl.latticify.data.ResponseWrapper
+import io.github.tonnyl.latticify.data.*
 import io.github.tonnyl.latticify.data.datasource.ChatDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.ChatService
@@ -16,6 +13,10 @@ object ChatRepository : ChatDataSource {
 
     override fun delete(channelId: String, ts: String, asUser: Boolean): Observable<ChatMessageWrapper> {
         return mChatService.delete(mToken, channelId, ts, asUser)
+    }
+
+    override fun getPermalink(channelId: String, messageTs: String): Observable<MessagePermalinkWrapper> {
+        return mChatService.getPermalink(mToken, channelId, messageTs)
     }
 
     override fun meMessage(channelId: String, text: String): Observable<ChatMessageWrapper> {

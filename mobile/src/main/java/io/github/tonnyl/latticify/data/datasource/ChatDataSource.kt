@@ -1,9 +1,6 @@
 package io.github.tonnyl.latticify.data.datasource
 
-import io.github.tonnyl.latticify.data.ChatMessageWrapper
-import io.github.tonnyl.latticify.data.EphemeralChatMessageWrapper
-import io.github.tonnyl.latticify.data.PostMessageWrapper
-import io.github.tonnyl.latticify.data.ResponseWrapper
+import io.github.tonnyl.latticify.data.*
 import io.reactivex.Observable
 
 /**
@@ -14,6 +11,9 @@ interface ChatDataSource {
     fun delete(channelId: String,
                ts: String,
                asUser: Boolean = true): Observable<ChatMessageWrapper>
+
+    fun getPermalink(channelId: String,
+                     messageTs: String): Observable<MessagePermalinkWrapper>
 
     fun meMessage(channelId: String,
                   text: String): Observable<ChatMessageWrapper>

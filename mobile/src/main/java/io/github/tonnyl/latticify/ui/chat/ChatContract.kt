@@ -42,11 +42,17 @@ interface ChatContract {
 
         fun deleteMessage(epoxyModel: EpoxyModel<*>)
 
-        fun showMessageActions(message: Message)
+        fun showMessageActions(message: Message, channelId: String)
 
         fun dismissMessageAction()
 
         fun showMessageStarred(starred: Boolean)
+
+        fun copyLink(url: String)
+
+        fun displayMessage(content: String)
+
+        fun showMessagePinned(pinned: Boolean)
 
     }
 
@@ -73,6 +79,12 @@ interface ChatContract {
         fun handleMessageEvent(intent: Intent)
 
         fun starMessage(timestamp: String, starred: Boolean)
+
+        fun copyLinkToMessage(messageTimestamp: String)
+
+        fun deleteMessage(messageTimestamp: String)
+
+        fun pinMessage(timestamp: String, toPin: Boolean)
 
     }
 

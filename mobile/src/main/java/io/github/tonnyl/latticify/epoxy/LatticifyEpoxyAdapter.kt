@@ -8,7 +8,7 @@ import com.airbnb.epoxy.EpoxyModel
  */
 class LatticifyEpoxyAdapter : EpoxyAdapter() {
 
-    private val mLoadMoreModel = LoadMoreModel_()
+    private val mLoadMoreModel = LoadingModel_()
 
     public override fun addModel(modelToAdd: EpoxyModel<*>) {
         super.addModel(modelToAdd)

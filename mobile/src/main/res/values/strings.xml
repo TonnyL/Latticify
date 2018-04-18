@@ -133,6 +133,7 @@
     <string name="star">Star</string>
     <string name="unstar">Unstar</string>
     <string name="pin_to_conversation">Pin to conversation</string>
+    <string name="unpin_to_conversation">Unpin to conversation</string>
     <string name="edit_message">Edit message</string>
     <string name="delete_message">Delete Message</string>
     <string name="avatar">Avatar</string>
@@ -167,6 +168,9 @@
     <string name="contributors_summary">https://github.com/TonnyL/Latticify/graphs/contributors</string>
     <string name="display_typing_indicators_summary">Typing indicators will be displayed</string>
     <string name="display_typing_indicators">Display typing indicators</string>
+
+    <string name="pinned">Pinned</string>
+    <string name="unpinned">Unpinned</string>
 
     <string name="connecting">Connecting…</string>
 

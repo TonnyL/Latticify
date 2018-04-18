@@ -123,6 +123,9 @@ data class Message(
         var ts: String,
 
         @SerializedName("reactions")
-        val reactions: List<Reaction>?
+        val reactions: List<Reaction>?,
+
+        @SerializedName("pinned_to")
+        var pinnedTo: MutableList<String>?
 
 ) : Parcelable

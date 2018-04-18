@@ -1,13 +1,8 @@
 package io.github.tonnyl.latticify.retrofit.service
 
-import io.github.tonnyl.latticify.data.ChatMessageWrapper
-import io.github.tonnyl.latticify.data.EphemeralChatMessageWrapper
-import io.github.tonnyl.latticify.data.PostMessageWrapper
-import io.github.tonnyl.latticify.data.ResponseWrapper
+import io.github.tonnyl.latticify.data.*
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -30,6 +25,20 @@ interface ChatService {
                @Field("channel") channelId: String,
                @Field("ts") ts: String,
                @Field("as_user") asUser: Boolean = true): Observable<ChatMessageWrapper>
+
+    /**
+     * Retrieve a permalink URL for a specific extant message
+     *
+     * @param token Required. Authentication token bearing required scopes.
+     * @param channelId Required. The ID of the conversation or channel containing the message.
+     * @param messageTs Required. A message's ts value, uniquely identifying it within a channel.
+     *
+     * @return If successful, the command returns a [MessagePermalinkWrapper] object.
+     */
+    @GET("chat.getPermalink")
+    fun getPermalink(@Query("token") token: String,
+                     @Query("channel") channelId: String,
+                     @Query("message_ts") messageTs: String): Observable<MessagePermalinkWrapper>
 
     /**
      * Share a me message into a channel.

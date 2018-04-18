@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.ui.chat
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
@@ -21,7 +22,7 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.data.event.UserTyping
-import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
+import io.github.tonnyl.latticify.epoxy.LoadingModel_
 import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
@@ -49,7 +50,7 @@ class ChatFragment : Fragment(), ChatContract.View {
 
     private var mIsLoading = false
     private val mAdapter = ChatMessageAdapter()
-    private val mLoadMoreModel = LoadMoreModel_()
+    private val mLoadMoreModel = LoadingModel_()
 
     private val mCompositeDisposable = CompositeDisposable()
 
@@ -344,7 +345,8 @@ class ChatFragment : Fragment(), ChatContract.View {
         mAdapter.updateModel(epoxyModel, message)
     }
 
-    override fun showMessageActions(message: Message) {
+    @SuppressLint("InflateParams")
+    override fun showMessageActions(message: Message, channelId: String) {
         context?.let {
             val dialog = BottomSheetDialog(it)
             val view = layoutInflater.inflate(R.layout.layout_message_actions, null)
@@ -366,6 +368,12 @@ class ChatFragment : Fragment(), ChatContract.View {
                     }
                 }
 
+            }
+
+            view.findViewById<TextView>(R.id.actionCopyLinkToMessage).setOnClickListener {
+                dialog.dismiss()
+
+                mPresenter.copyLinkToMessage(message.ts)
             }
 
             view.findViewById<TextView>(R.id.actionShareMessage).setOnClickListener {
@@ -391,8 +399,12 @@ class ChatFragment : Fragment(), ChatContract.View {
                 }
             }
 
-            view.findViewById<TextView>(R.id.actionPinToConversation).setOnClickListener {
+            val pinTextView = view.findViewById<TextView>(R.id.actionPinToConversation)
+            pinTextView.text = getString(if (message.pinnedTo?.contains(channelId) == true) R.string.unpin_to_conversation else R.string.pin_to_conversation)
+            pinTextView.setOnClickListener {
                 dialog.dismiss()
+
+                mPresenter.pinMessage(message.ts, message.pinnedTo?.contains(message.ts) != true)
             }
 
             view.findViewById<TextView>(R.id.actionEditMessage).setOnClickListener {
@@ -419,6 +431,8 @@ class ChatFragment : Fragment(), ChatContract.View {
 
             view.findViewById<TextView>(R.id.actionDeleteMessage).setOnClickListener {
                 dialog.dismiss()
+
+                mPresenter.deleteMessage(message.ts)
             }
 
             dialog.show()
@@ -438,6 +452,25 @@ class ChatFragment : Fragment(), ChatContract.View {
         Toast.makeText(context, if (starred) R.string.msg_starred else R.string.msg_unstarred, Toast.LENGTH_SHORT).show()
     }
 
+    override fun copyLink(url: String) {
+        context?.let {
+            val manager = it.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("text", url)
+            manager.primaryClip = clipData
+
+            Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun displayMessage(content: String) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showMessagePinned(pinned: Boolean) {
+        Toast.makeText(context, if (pinned) R.string.pinned else R.string.unpinned, Toast.LENGTH_SHORT).show()
+    }
+
+    @SuppressLint("InflateParams")
     private fun showBottomSheetDialog() {
         context?.let {
             val dialog = BottomSheetDialog(it)

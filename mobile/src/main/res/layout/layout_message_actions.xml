@@ -18,6 +18,18 @@
         android:textColor="@color/textColorPrimary" />
 
     <TextView
+        android:id="@+id/actionCopyLinkToMessage"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawablePadding="32dp"
+        android:drawableStart="@drawable/ic_link_black_24dp"
+        android:drawableTint="@color/textColorSecondary"
+        android:gravity="center_vertical"
+        android:text="@string/copy_link_to_message"
+        android:textColor="@color/textColorPrimary" />
+
+    <TextView
         android:id="@+id/actionShareMessage"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"

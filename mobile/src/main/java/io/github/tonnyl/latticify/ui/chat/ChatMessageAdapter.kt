@@ -3,12 +3,12 @@ package io.github.tonnyl.latticify.ui.chat
 import com.airbnb.epoxy.EpoxyAdapter
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Message
-import io.github.tonnyl.latticify.epoxy.LoadMoreModel_
+import io.github.tonnyl.latticify.epoxy.LoadingModel_
 import io.github.tonnyl.latticify.epoxy.MessageModel_
 
 class ChatMessageAdapter : EpoxyAdapter() {
 
-    private val mLoadMoreModel = LoadMoreModel_()
+    private val mLoadMoreModel = LoadingModel_()
 
     init {
         enableDiffing()
