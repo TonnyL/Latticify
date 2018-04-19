@@ -17,6 +17,7 @@ import android.view.MenuItem
 import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.repository.TeamRepository
+import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
@@ -107,6 +108,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+
+        UserPoolRepository.init(this@MainActivity)
 
     }
 

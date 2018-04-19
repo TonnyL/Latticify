@@ -30,7 +30,7 @@
     <string name="message">Message</string>
     <string name="channel_name_with_hashtag"># %1$s</string>
 
-    <string name="message_in_channel">Message in %1$s</string>
+    <string name="message_in_channel">Message in #%1$s</string>
 
     <string name="real_name">Real name</string>
     <string name="email">Email</string>

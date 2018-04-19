@@ -59,6 +59,8 @@ class ChatFragment : Fragment(), ChatContract.View {
     private var mIsEditingMessage = false
     private var mEditingMessage: Message? = null
 
+    private lateinit var mChannel: Channel
+
     private val mUserTypingReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -319,17 +321,24 @@ class ChatFragment : Fragment(), ChatContract.View {
             mSubTitle = "${channel.numMembers} members"
             supportActionBar?.subtitle = mSubTitle
         }
+
+        mChannel = channel
     }
 
     override fun gotoChannelDetails(channel: Channel) {
         activity?.let {
-            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply { putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel) })
+            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply {
+                putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
+            })
         }
     }
 
     override fun gotoMessageDetails(message: Message) {
         activity?.let {
-            context?.startActivity(Intent(context, MessageActivity::class.java).apply { putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message) })
+            context?.startActivity(Intent(context, MessageActivity::class.java).apply {
+                putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message)
+                putExtra(MessagePresenter.KEY_EXTRA_CHANNEL, mChannel)
+            })
         }
     }
 

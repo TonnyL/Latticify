@@ -23,7 +23,11 @@ class MessageActivity : AppCompatActivity() {
 
         mMessageFragment = MessageFragment.newInstance()
 
-        MessagePresenter(mMessageFragment, intent.getParcelableExtra(MessagePresenter.KEY_EXTRA_MESSAGE))
+        MessagePresenter(
+                mMessageFragment,
+                intent.getParcelableExtra(MessagePresenter.KEY_EXTRA_MESSAGE),
+                intent.getParcelableExtra(MessagePresenter.KEY_EXTRA_CHANNEL)
+        )
 
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, mMessageFragment, MessageFragment::class.java.simpleName)

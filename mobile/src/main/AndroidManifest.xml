@@ -77,7 +77,8 @@
         <activity
             android:name=".ui.message.MessageActivity"
             android:label="@string/message"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".ui.profile.ProfileActivity"

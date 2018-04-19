@@ -30,7 +30,7 @@
     <string name="message">消息</string>
     <string name="channel_name_with_hashtag"># %1$s</string>
 
-    <string name="message_in_channel">来自 %1$s 的消息</string>
+    <string name="message_in_channel">来自 #%1$s 的消息</string>
 
     <string name="real_name">真实姓名</string>
     <string name="email">邮箱</string>

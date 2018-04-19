@@ -136,12 +136,12 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                     MessageModel_()
                             .message(message as Message)
                             .itemOnClickListener { _, _, _, _ ->
-                                if (message.subtype == null) {
+                                if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
                                     mView.gotoMessageDetails(message)
                                 }
                             }
                             .itemOnLongClickListener { _, _, _, _ ->
-                                if (message.subtype == null) {
+                                if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
                                     mView.showMessageActions(message, mChannelId)
                                 }
                                 message.subtype == null

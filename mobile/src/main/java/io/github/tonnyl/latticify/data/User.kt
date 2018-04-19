@@ -49,7 +49,7 @@ import kotlinx.android.parcel.Parcelize
  * "has_2fa": false,
  * "locale": "en-US"
  */
-@Entity(tableName = "directory")
+@Entity(tableName = "user")
 @Parcelize
 @SuppressLint("ParcelCreator")
 data class User(
@@ -61,7 +61,7 @@ data class User(
          * Though the ID field usually begins with U, it is also possible to encounter user IDs beginning with W.
          */
         @ColumnInfo(name = "id")
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         @SerializedName("id")
         val id: String,
 

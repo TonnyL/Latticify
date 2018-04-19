@@ -69,7 +69,7 @@ data class UsersProfile(
         @SerializedName("title")
         val title: String?,
 
-        @ColumnInfo(name = "real_name")
+        @ColumnInfo(name = "profile_real_name")
         @SerializedName("real_name")
         val realName: String,
 

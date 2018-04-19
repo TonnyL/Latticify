@@ -12,8 +12,12 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.github.tonnyl.latticify.util.isImage
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by lizhaotailang on 07/10/2017.
@@ -28,6 +32,8 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
     @EpoxyAttribute
     lateinit var message: Message
 
+    private val mCompositeDisposable = CompositeDisposable()
+
     override fun createNewHolder(): MessageHolder = MessageHolder()
 
     override fun bind(holder: MessageHolder) {
@@ -37,7 +43,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
             messageContentLayout?.setOnClickListener(itemOnClickListener)
             messageContentLayout?.setOnLongClickListener(itemOnLongClickListener)
 
-            usernameTextView?.text = message.username ?: message.user ?: ""
             messageContentTextView?.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
 
             if (message.displayAsBot == true && message.botId != null) {
@@ -65,6 +70,32 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                     }
                 }
             }
+
+            message.icons?.let { icons ->
+                usernameTextView?.text = message.username
+
+                avatarImageView?.let {
+                    GlideLoader.loadAvatar(it, icons.image72)
+                }
+            } ?: run {
+                message.user?.let {
+                    val disposable = UserPoolRepository.getUser(it)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                it?.let { user ->
+                                    usernameTextView?.text = user.name
+
+                                    avatarImageView?.let {
+                                        GlideLoader.loadAvatar(it, user.profile.image192)
+                                    }
+                                }
+                            }, {
+
+                            })
+                    mCompositeDisposable.add(disposable)
+                }
+            }
         }
     }
 
@@ -78,7 +109,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         var msgExtraTextView: AppCompatTextView? = null
         var imageMessageImageView: ImageView? = null
         var botBadgeTextView: TextView? = null
-        var placeHolderView: View? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {
@@ -91,7 +121,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                     msgExtraTextView = findViewById(R.id.msgExtraTextView)
                     imageMessageImageView = findViewById(R.id.imageMessageImageView)
                     botBadgeTextView = findViewById(R.id.botBadgeTextView)
-                    placeHolderView = findViewById(R.id.placeHolderView)
                 }
             }
         }
@@ -102,6 +131,8 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         super.unbind(holder)
         holder.messageContentLayout?.setOnClickListener(null)
         holder.messageContentLayout?.setOnLongClickListener(null)
+
+        mCompositeDisposable.clear()
     }
 
 }

@@ -5,7 +5,10 @@ import android.support.v4.app.Fragment
 import android.text.format.DateUtils
 import android.view.*
 import io.github.tonnyl.latticify.R
+import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
+import io.github.tonnyl.latticify.data.User
+import io.github.tonnyl.latticify.glide.GlideLoader
 import kotlinx.android.synthetic.main.fragment_message.*
 
 /**
@@ -57,10 +60,21 @@ class MessageFragment : Fragment(), MessageContract.View {
     }
 
     override fun showMessage(message: Message) {
-        fromChannelTextView.text = getString(R.string.message_in_channel).format("#general")
         messengerNameTextView.text = message.username
-        messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: run { "" }
+        messageContentTextView.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
         messageTimeTextView.text = DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+        message.icons?.let {
+            GlideLoader.loadAvatar(messengerAvatarImageView, it.image72)
+        }
+    }
+
+    override fun showChannel(channel: Channel) {
+        fromChannelTextView.text = getString(R.string.message_in_channel).format(channel.name)
+    }
+
+    override fun showUser(user: User) {
+        messengerNameTextView.text = user.name
+        GlideLoader.loadAvatar(messengerAvatarImageView, user.profile.image192)
     }
 
 }
