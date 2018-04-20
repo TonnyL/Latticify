@@ -19,11 +19,25 @@ interface MessageContract {
 
         fun showUser(user: User)
 
+        fun copyLink(url: String)
+
+        fun displayMessage(content: String)
+
     }
 
     interface Presenter : BasePresenter {
 
         fun addAReply(message: String)
+
+        fun updateMessage(content: String, message: Message)
+
+        fun starMessage(timestamp: String, starred: Boolean)
+
+        fun copyLinkToMessage(messageTimestamp: String)
+
+        fun deleteMessage(messageTimestamp: String)
+
+        fun pinMessage(timestamp: String, toPin: Boolean)
 
     }
 

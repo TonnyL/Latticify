@@ -7,6 +7,7 @@ import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 
 /**
@@ -118,7 +119,7 @@ interface FilesService {
      *
      * @return If successful, the command returns a [FileWrapper] object.
      */
-    // todo
+    @Multipart
     @POST("files.upload")
     @FormUrlEncoded
     fun upload(@Field("token") token: String,

@@ -1,9 +1,13 @@
 package io.github.tonnyl.latticify.ui.message
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.format.DateUtils
 import android.view.*
+import android.widget.Toast
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
@@ -17,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_message.*
 class MessageFragment : Fragment(), MessageContract.View {
 
     private lateinit var mPresenter: MessageContract.Presenter
+    private lateinit var mMessage: Message
 
     companion object {
         @JvmStatic
@@ -51,6 +56,38 @@ class MessageFragment : Fragment(), MessageContract.View {
             android.R.id.home -> {
                 activity?.onBackPressed()
             }
+            R.id.action_copy_text -> {
+                context?.let { context ->
+                    (mMessage.text
+                            ?: mMessage.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" })?.let {
+                        val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipData = ClipData.newPlainText("text", it)
+                        manager.primaryClip = clipData
+
+                        Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show()
+                    } ?: run {
+                        Toast.makeText(context, R.string.copy_failed, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            R.id.action_copy_link_to_message -> {
+                mPresenter.copyLinkToMessage(mMessage.ts)
+            }
+            R.id.action_share_message -> {
+
+            }
+            R.id.action_star -> {
+
+            }
+            R.id.action_pin_to_conversation -> {
+
+            }
+            R.id.action_edit_message -> {
+
+            }
+            R.id.action_delete_message -> {
+
+            }
         }
         return true
     }
@@ -66,6 +103,8 @@ class MessageFragment : Fragment(), MessageContract.View {
         message.icons?.let {
             GlideLoader.loadAvatar(messengerAvatarImageView, it.image72)
         }
+
+        mMessage = message
     }
 
     override fun showChannel(channel: Channel) {
@@ -73,8 +112,22 @@ class MessageFragment : Fragment(), MessageContract.View {
     }
 
     override fun showUser(user: User) {
-        messengerNameTextView.text = user.name
+        messengerNameTextView.text = user.realName
         GlideLoader.loadAvatar(messengerAvatarImageView, user.profile.image192)
+    }
+
+    override fun copyLink(url: String) {
+        context?.let {
+            val manager = it.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("text", url)
+            manager.primaryClip = clipData
+
+            Toast.makeText(context, R.string.copied, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun displayMessage(content: String) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
     }
 
 }
