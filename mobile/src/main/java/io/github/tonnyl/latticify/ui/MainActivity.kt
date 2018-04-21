@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.repository.TeamRepository
 import io.github.tonnyl.latticify.data.repository.UserPoolRepository
@@ -52,7 +51,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
-@DeepLink("slack://open", "slack://open?team={TEAM_ID}")
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mChannelsFragment: ChannelsFragment
@@ -85,8 +83,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mAccountManager = AccountManager.get(this)
 
         getToken()
-
-        getMyInfo()
 
         navView.getHeaderView(0).accountActionImageView.setOnClickListener {
             startActivity(Intent(this, AuthActivity::class.java))
@@ -328,6 +324,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         initViews()
 
                         getTeamInfo()
+
+                        getMyInfo()
 
                         startService(Intent(this@MainActivity, WebSocketService::class.java))
 

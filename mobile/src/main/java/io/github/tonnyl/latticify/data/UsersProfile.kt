@@ -15,11 +15,11 @@ data class UsersProfile(
 
         @ColumnInfo(name = "first_name")
         @SerializedName("first_name")
-        val firstName: String,
+        val firstName: String?,
 
         @ColumnInfo(name = "last_name")
         @SerializedName("last_name")
-        val lastName: String,
+        val lastName: String?,
 
         @ColumnInfo(name = "avatar_hash")
         @SerializedName("avatar_hash")

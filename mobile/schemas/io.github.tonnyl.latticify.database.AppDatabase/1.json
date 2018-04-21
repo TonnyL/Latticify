@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c37e9f3b116feaecc6fe52937b586230",
+    "identityHash": "6623dfa8526fca870ce5fe30f1333f57",
     "entities": [
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `team_id` TEXT NOT NULL, `name` TEXT NOT NULL, `deleted` INTEGER NOT NULL, `color` TEXT NOT NULL, `real_name` TEXT NOT NULL, `tz` TEXT, `tz_label` TEXT NOT NULL, `tz_offset` INTEGER NOT NULL, `is_admin` INTEGER NOT NULL, `is_owner` INTEGER NOT NULL, `is_primary_owner` INTEGER NOT NULL, `is_restricted` INTEGER NOT NULL, `is_ultra_restricted` INTEGER NOT NULL, `is_bot` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `is_app_user` INTEGER NOT NULL, `has_2fa` INTEGER NOT NULL, `locale` TEXT, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `avatar_hash` TEXT NOT NULL, `image_24` TEXT NOT NULL, `image_32` TEXT NOT NULL, `image_48` TEXT NOT NULL, `image_72` TEXT NOT NULL, `image_192` TEXT NOT NULL, `image_512` TEXT, `image_1024` TEXT, `image_original` TEXT, `status_text` TEXT, `status_emoji` TEXT, `title` TEXT, `profile_real_name` TEXT NOT NULL, `display_name` TEXT NOT NULL, `real_name_normalized` TEXT NOT NULL, `display_name_normalized` TEXT NOT NULL, `email` TEXT, `phone` TEXT, `skype` TEXT, `team` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `team_id` TEXT NOT NULL, `name` TEXT NOT NULL, `deleted` INTEGER NOT NULL, `color` TEXT NOT NULL, `real_name` TEXT NOT NULL, `tz` TEXT, `tz_label` TEXT NOT NULL, `tz_offset` INTEGER NOT NULL, `is_admin` INTEGER NOT NULL, `is_owner` INTEGER NOT NULL, `is_primary_owner` INTEGER NOT NULL, `is_restricted` INTEGER NOT NULL, `is_ultra_restricted` INTEGER NOT NULL, `is_bot` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `is_app_user` INTEGER NOT NULL, `has_2fa` INTEGER NOT NULL, `locale` TEXT, `first_name` TEXT, `last_name` TEXT, `avatar_hash` TEXT NOT NULL, `image_24` TEXT NOT NULL, `image_32` TEXT NOT NULL, `image_48` TEXT NOT NULL, `image_72` TEXT NOT NULL, `image_192` TEXT NOT NULL, `image_512` TEXT, `image_1024` TEXT, `image_original` TEXT, `status_text` TEXT, `status_emoji` TEXT, `title` TEXT, `profile_real_name` TEXT NOT NULL, `display_name` TEXT NOT NULL, `real_name_normalized` TEXT NOT NULL, `display_name_normalized` TEXT NOT NULL, `email` TEXT, `phone` TEXT, `skype` TEXT, `team` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -126,13 +126,13 @@
             "fieldPath": "profile.firstName",
             "columnName": "first_name",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "profile.lastName",
             "columnName": "last_name",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "profile.avatarHash",
@@ -267,7 +267,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c37e9f3b116feaecc6fe52937b586230\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6623dfa8526fca870ce5fe30f1333f57\")"
     ]
   }
 }

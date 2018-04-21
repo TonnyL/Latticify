@@ -2,7 +2,6 @@ package io.github.tonnyl.latticify.ui.chat
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.airbnb.deeplinkdispatch.DeepLink
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import kotlinx.android.synthetic.main.activity_common.*
@@ -10,7 +9,6 @@ import kotlinx.android.synthetic.main.activity_common.*
 /**
  * Created by lizhaotailang on 06/10/2017.
  */
-@DeepLink("slack://channel?team={TEAM_ID}&id={CHANNEL_ID}")
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var mChannelFragment: ChatFragment

@@ -19,7 +19,7 @@
     </style>
 
     <style name="AppTheme.CollapsedAppBar" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppTheme.ExpandedAppBar" parent="TextAppearance.AppCompat.Display1">

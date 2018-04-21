@@ -2,7 +2,6 @@ package io.github.tonnyl.latticify.mvp
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -115,7 +114,7 @@ abstract class ListFragment : Fragment(), ListContract.View {
 
     override fun gotoActivity(intent: Intent) {
         activity?.let {
-            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(it).toBundle())
+            startActivity(intent)
         }
     }
 

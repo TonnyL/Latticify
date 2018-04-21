@@ -116,10 +116,6 @@ dependencies {
     // Charles
     implementation "io.github.tonnyl:charles:${libraries.charlesVersion}"
 
-    // DeepLink dispatch
-    implementation "com.airbnb:deeplinkdispatch:${libraries.deeplinkDispatchVersion}"
-    kapt "com.airbnb:deeplinkdispatch-processor:${libraries.deeplinkDispatchVersion}"
-
     // GMS
     implementation "com.google.android.gms:play-services-wearable:${libraries.gmsWearableVersion}"
 

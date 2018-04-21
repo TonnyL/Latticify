@@ -52,7 +52,6 @@ ext {
             glideVersion                 : '4.7.1',
             matisseVersion               : '0.4.3',
             flexBoxVersion               : '0.3.2',
-            deeplinkDispatchVersion      : '3.1.1',
             wearableVersion              : '2.3.0',
             gmsWearableVersion           : '15.0.0',
             junitVersion                 : '4.12',

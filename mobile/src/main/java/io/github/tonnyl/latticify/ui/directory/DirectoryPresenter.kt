@@ -21,7 +21,7 @@ class DirectoryPresenter(mView: ListContract.View) : ListPresenter(mView) {
 
     override var mCursor: String = ""
 
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mCompositeDisposable = CompositeDisposable()
 
     override fun subscribe() {
         mView.setLoadingIndicator(true)
