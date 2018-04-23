@@ -84,7 +84,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
                                 it?.let { user ->
-                                    usernameTextView?.text = user.name
+                                    usernameTextView?.text = user.profile.displayName
 
                                     avatarImageView?.let {
                                         GlideLoader.loadAvatar(it, user.profile.image192)

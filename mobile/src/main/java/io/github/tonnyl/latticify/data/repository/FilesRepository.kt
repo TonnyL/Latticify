@@ -7,6 +7,7 @@ import io.github.tonnyl.latticify.data.datasource.FilesDataSource
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.retrofit.service.FilesService
 import io.reactivex.Observable
+import okhttp3.MultipartBody
 
 /**
  * Created by lizhaotailang on 30/12/2017.
@@ -36,7 +37,7 @@ class FilesRepository : FilesDataSource {
         return mFilesService.sharedPublicURL(mToken, fileId)
     }
 
-    override fun upload(channels: List<String>, content: String, file: String, filename: String, fileType: String, initialComment: String, title: String): Observable<FileWrapper> {
+    override fun upload(channels: List<String>, content: String, file: MultipartBody.Part?, filename: String, fileType: String, initialComment: String, title: String): Observable<FileWrapper> {
         return mFilesService.upload(mToken, channels, content, file, filename, fileType, initialComment, title)
     }
 

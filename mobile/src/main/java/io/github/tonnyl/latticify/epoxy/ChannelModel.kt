@@ -9,11 +9,12 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created by lizhaotailang on 24/09/2017.
  */
-@EpoxyModelClass(layout = R.layout.item_channel_im)
+@EpoxyModelClass(layout = R.layout.item_channel)
 abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
@@ -21,48 +22,48 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
     @EpoxyAttribute
     lateinit var channel: Channel
 
+    private val mCompositeDisposable = CompositeDisposable()
+
     override fun createNewHolder(): ChannelHolder = ChannelHolder()
 
-     override fun bind(holder: ChannelHolder) {
+    override fun bind(holder: ChannelHolder) {
         super.bind(holder)
 
-         with(holder) {
-             item?.setOnClickListener(itemOnClickListener)
-             username?.text = channel.name
+        with(holder) {
+            item?.setOnClickListener(itemOnClickListener)
+            username?.text = channel.name
 
-             if (channel.latest?.type == "message") {
-                 summary?.text = summary?.context?.getString(io.github.tonnyl.latticify.R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
-             } else {
-                 summary?.text = channel.purpose?.value ?: channel.topic?.value
-             }
+            if (channel.latest?.type == "message") {
+                summary?.text = summary?.context?.getString(io.github.tonnyl.latticify.R.string.channel_summary)?.format(channel.latest?.user, channel.latest?.text
+                        ?: channel.latest?.attachments?.getOrNull(0)?.title ?: "")
+            } else {
+                summary?.text = channel.purpose?.value ?: channel.topic?.value
+            }
 
-             avatar?.setImageResource(when {
-                 channel.isPrivate == true -> {
-                     io.github.tonnyl.latticify.R.drawable.ic_lock_black_24dp
-                 }
-                 channel.isChannel == true -> {
-                     io.github.tonnyl.latticify.R.drawable.ic_hashtag_black_24dp
-                 }
-                 else -> {
-                     io.github.tonnyl.latticify.R.drawable.ic_message_black_24dp
-                 }
-             })
+            avatar?.setImageResource(when {
+                channel.isPrivate == true -> {
+                    io.github.tonnyl.latticify.R.drawable.ic_lock_black_24dp
+                }
+                channel.isChannel == true -> {
+                    R.drawable.ic_hashtag_black_24dp
+                }
+                else -> {
+                    R.drawable.ic_message_black_24dp
+                }
+            })
 
-             if (channel.isPrivate == true) {
-                 avatar?.setImageResource(io.github.tonnyl.latticify.R.drawable.ic_lock_black_24dp)
-             }
+            if (channel.isPrivate == true) {
+                avatar?.setImageResource(R.drawable.ic_lock_black_24dp)
+            }
+        }
+    }
 
-             if (channel.isIm == true) {
-                 username?.text = channel.user
-             }
+    override fun unbind(holder: ChannelHolder) {
+        super.unbind(holder)
 
-             channel.unreadCountDisplay?.let {
-                 if (it != 0) {
-                     unreadCount?.visibility = android.view.View.VISIBLE
-                     unreadCount?.text = channel.unreadCount?.toString()
-                 }
-             }
-         }
+        holder.item?.setOnClickListener(null)
+
+        mCompositeDisposable.clear()
     }
 
     class ChannelHolder : EpoxyHolder() {
@@ -70,9 +71,7 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
         var item: View? = null
         var avatar: ImageView? = null
         var username: TextView? = null
-        var time: TextView? = null
         var summary: TextView? = null
-        var unreadCount: TextView? = null
 
         override fun bindView(itemView: View?) {
             itemView?.let {
@@ -80,9 +79,7 @@ abstract class ChannelModel : EpoxyModelWithHolder<ChannelModel.ChannelHolder>()
                     item = findViewById(R.id.channelLayout)
                     avatar = findViewById(R.id.avatar)
                     username = findViewById(R.id.username_text_view)
-                    time = findViewById(R.id.timeTextView)
                     summary = findViewById(R.id.messageSummaryTextView)
-                    unreadCount = findViewById(R.id.unreadCountTextView)
                 }
             }
         }

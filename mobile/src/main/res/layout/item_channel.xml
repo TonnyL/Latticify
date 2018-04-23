@@ -39,24 +39,11 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/text_body_size"
         app:layout_constraintBottom_toTopOf="@+id/messageSummaryTextView"
-        app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Tonny L" />
-
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColorSecondary"
-        android:textSize="@dimen/text_body_size"
-        app:layout_constraintBottom_toTopOf="@+id/messageSummaryTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/username_text_view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="03:00 PM" />
 
     <TextView
         android:id="@+id/messageSummaryTextView"
@@ -68,25 +55,9 @@
         android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/text_body_size"
         app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/unreadCountTextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space"
         app:layout_constraintTop_toBottomOf="@id/username_text_view"
         tools:text="Are you sure that the notes include that? I'm pretty sure they ..." />
-
-    <TextView
-        android:id="@+id/unreadCountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_unread_button"
-        android:paddingLeft="@dimen/activity_horizontal_margin_half"
-        android:paddingRight="@dimen/activity_horizontal_margin_half"
-        android:textColor="@android:color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/messageSummaryTextView"
-        app:layout_constraintTop_toBottomOf="@id/timeTextView"
-        tools:text="3"
-        tools:visibility="visible" />
 
 </android.support.constraint.ConstraintLayout>

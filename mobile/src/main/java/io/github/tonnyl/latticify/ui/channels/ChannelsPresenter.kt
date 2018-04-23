@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.ui.channels
 
 import android.content.Intent
-import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.repository.ConversationsRepository
@@ -97,12 +96,13 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
             }.map { channel ->
                 ChannelModel_()
                         .channel(channel as Channel)
-                        .itemOnClickListener(View.OnClickListener {
-                            with(it.context) {
+                        .itemOnClickListener { _, _, clickedView, _ ->
+                            with(clickedView.context) {
                                 mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
                                     putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
                                 })
                             }
-                        })
+                        }
+
             }
 }

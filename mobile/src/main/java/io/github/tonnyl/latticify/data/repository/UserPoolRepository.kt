@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.data.repository
 
 import android.content.Context
+import android.support.v4.util.LruCache
 import io.github.tonnyl.latticify.data.User
 import io.github.tonnyl.latticify.data.datasource.UserPoolDataSource
 import io.github.tonnyl.latticify.data.local.UserPoolLocalDataSource
@@ -9,21 +10,21 @@ import io.reactivex.Observable
 
 object UserPoolRepository : UserPoolDataSource {
 
-    private val mUserPool = mutableMapOf<String, User>()
+    private var mUserPool = LruCache<String, User>(100)
 
     override fun init(context: Context) {
         UserPoolLocalDataSource.init(context)
     }
 
     override fun addUser(user: User) {
-        mUserPool[user.id] = user
+        mUserPool.put(user.id, user)
 
         UserPoolLocalDataSource.addUser(user)
     }
 
     override fun addUsers(users: List<User>) {
         users.forEach {
-            mUserPool[it.id] = it
+            mUserPool.put(it.id, it)
         }
 
         UserPoolLocalDataSource.addUsers(users)
@@ -53,7 +54,7 @@ object UserPoolRepository : UserPoolDataSource {
                 .doOnNext {
                     it?.let {
                         // put it into cache
-                        mUserPool[it.id] = it
+                        mUserPool.put(it.id, it)
 
                         // put it into database
                         UserPoolLocalDataSource.addUser(it)
@@ -70,7 +71,7 @@ object UserPoolRepository : UserPoolDataSource {
 
     override fun updateUser(user: User) {
         // put user into map or just update it.
-        mUserPool[user.id] = user
+        mUserPool.put(user.id, user)
 
         UserPoolLocalDataSource.updateUser(user)
     }

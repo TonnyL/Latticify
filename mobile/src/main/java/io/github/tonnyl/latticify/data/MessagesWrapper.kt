@@ -65,6 +65,9 @@ data class MessagesWrapper(
         val messages: ArrayList<Message>?,
 
         @SerializedName("has_more")
-        val hasMore: Boolean?
+        val hasMore: Boolean?,
+
+        @SerializedName("unread_count_display")
+        val unreadCountDisplay: Int?
 
 )

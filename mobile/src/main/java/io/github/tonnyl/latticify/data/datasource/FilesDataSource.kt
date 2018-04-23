@@ -5,6 +5,7 @@ import io.github.tonnyl.latticify.data.FileWrapper
 import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
+import okhttp3.MultipartBody
 
 /**
  * Created by lizhaotailang on 30/12/2017.
@@ -31,7 +32,7 @@ interface FilesDataSource {
 
     fun upload(channels: List<String> = listOf(),
                content: String = "",
-               file: String = "",
+               file: MultipartBody.Part? = null,
                filename: String = "",
                fileType: String = "",
                initialComment: String = "",

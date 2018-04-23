@@ -5,7 +5,7 @@ import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.repository.ConversationsRepository
-import io.github.tonnyl.latticify.epoxy.ChannelModel_
+import io.github.tonnyl.latticify.epoxy.IMModel_
 import io.github.tonnyl.latticify.mvp.ListContract
 import io.github.tonnyl.latticify.mvp.ListPresenter
 import io.github.tonnyl.latticify.ui.chat.ChatActivity
@@ -45,7 +45,6 @@ class IMsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         } else {
                             mView.showEmptyView()
                         }
-
 
                     }
 
@@ -87,7 +86,7 @@ class IMsPresenter(mView: ListContract.View) : ListPresenter(mView) {
     override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> =
             dataList.filter { it is Channel && it.isUserDeleted == false }
                     .map { channel ->
-                        ChannelModel_()
+                        IMModel_()
                                 .channel(channel as Channel)
                                 .itemOnClickListener(View.OnClickListener {
                                     mView.gotoActivity(Intent(it.context, ChatActivity::class.java).apply { putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel) })

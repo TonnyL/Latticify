@@ -5,6 +5,7 @@ import io.github.tonnyl.latticify.data.FileWrapper
 import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
+import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Multipart
@@ -125,7 +126,7 @@ interface FilesService {
     fun upload(@Field("token") token: String,
                @Field("channels") channels: List<String> = listOf(),
                @Field("content") content: String = "",
-               @Field("file") file: String = "",
+               @Field("file") file: MultipartBody.Part? = null,
                @Field("filename") filename: String = "",
                @Field("filetype") fileType: String = "",
                @Field("initial_comment") initialComment: String = "",
