@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.ui.directory
 
 import android.content.Intent
-import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.User
 import io.github.tonnyl.latticify.data.repository.UsersRepository
@@ -89,9 +88,12 @@ class DirectoryPresenter(mView: ListContract.View) : ListPresenter(mView) {
                     .map { user ->
                         UserModel_()
                                 .user(user as User)
-                                .itemOnClickListener(View.OnClickListener {
-                                    mView.gotoActivity(Intent(it.context, ProfileActivity::class.java).apply { putExtra(ProfilePresenter.KEY_EXTRA_USER, user) })
-                                })
+                                .itemOnClickListener { _, _, clickedView, _ ->
+                                    mView.gotoActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
+                                        putExtra(ProfilePresenter.KEY_EXTRA_USER, user)
+                                    })
+                                }
+
                     }
 
 }

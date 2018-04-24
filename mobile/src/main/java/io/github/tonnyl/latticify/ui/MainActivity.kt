@@ -21,7 +21,6 @@ import io.github.tonnyl.latticify.data.repository.UsersRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.github.tonnyl.latticify.retrofit.RetrofitClient
 import io.github.tonnyl.latticify.service.WebSocketService
-import io.github.tonnyl.latticify.ui.about.AboutActivity
 import io.github.tonnyl.latticify.ui.auth.AuthActivity
 import io.github.tonnyl.latticify.ui.auth.Authenticator
 import io.github.tonnyl.latticify.ui.channels.ChannelsFragment
@@ -36,8 +35,6 @@ import io.github.tonnyl.latticify.ui.ims.IMsPresenter
 import io.github.tonnyl.latticify.ui.profile.ProfileActivity
 import io.github.tonnyl.latticify.ui.profile.ProfilePresenter
 import io.github.tonnyl.latticify.ui.search.SearchActivity
-import io.github.tonnyl.latticify.ui.settings.SettingsActivity
-import io.github.tonnyl.latticify.ui.snooze.SnoozeNotificationsActivity
 import io.github.tonnyl.latticify.ui.starred.StarredItemsFragment
 import io.github.tonnyl.latticify.ui.starred.StarredItemsPresenter
 import io.github.tonnyl.latticify.ui.status.SetStatusActivity
@@ -149,9 +146,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_set_status -> {
                 startActivity(Intent(this, SetStatusActivity::class.java))
             }
-            R.id.action_snooze -> {
-                showSnoozeNotificationsDialog()
-            }
         }
         return true
     }
@@ -190,12 +184,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 showFragmentAndHideRest(mStarredItemsFragment)
                 toolbar.title = getString(R.string.nav_starred)
                 mCheckedItemId = R.id.nav_starred_items
-            }
-            R.id.nav_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
-            R.id.nav_about -> {
-                startActivity(Intent(this, AboutActivity::class.java))
             }
         }
 
@@ -297,10 +285,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     it.printStackTrace()
                 })
         mCompositeDisposable.add(disposable)
-    }
-
-    private fun showSnoozeNotificationsDialog() {
-        startActivity(Intent(this@MainActivity, SnoozeNotificationsActivity::class.java))
     }
 
     private fun getToken() {

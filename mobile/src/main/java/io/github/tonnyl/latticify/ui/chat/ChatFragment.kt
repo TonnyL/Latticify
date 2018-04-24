@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.ui.chat
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
@@ -27,8 +28,6 @@ import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
-import io.github.tonnyl.latticify.ui.message.MessageActivity
-import io.github.tonnyl.latticify.ui.message.MessagePresenter
 import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -59,7 +58,8 @@ class ChatFragment : Fragment(), ChatContract.View {
     private var mIsEditingMessage = false
     private var mEditingMessage: Message? = null
 
-    private lateinit var mChannel: Channel
+    private var mChannel: Channel? = null
+    private var mIsIM: Boolean? = false
 
     private val mUserTypingReceiver = object : BroadcastReceiver() {
 
@@ -111,6 +111,9 @@ class ChatFragment : Fragment(), ChatContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         swipeRefreshLayout.isEnabled = false
+
+        mIsIM = activity?.intent?.getBooleanExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
+
         context?.let {
             swipeRefreshLayout.setColorSchemeColors(it.getColor(R.color.colorAccent))
         }
@@ -185,23 +188,10 @@ class ChatFragment : Fragment(), ChatContract.View {
         setHasOptionsMenu(true)
 
         mPresenter.subscribe()
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         context?.let {
             LocalBroadcastManager.getInstance(it).registerReceiver(mUserTypingReceiver, IntentFilter(Constants.FILTER_USER_TYPING))
             LocalBroadcastManager.getInstance(it).registerReceiver(mMessageReceiver, IntentFilter(Constants.FILTER_MESSAGE))
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(mUserTypingReceiver)
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(mMessageReceiver)
         }
     }
 
@@ -210,6 +200,11 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         mPresenter.unsubscribe()
         mCompositeDisposable.clear()
+
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(mUserTypingReceiver)
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(mMessageReceiver)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -218,12 +213,26 @@ class ChatFragment : Fragment(), ChatContract.View {
         inflater?.inflate(R.menu.menu_channel, menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+
+        listOf(menu?.getItem(0), menu?.getItem(1), menu?.getItem(2)).forEach {
+            it?.isVisible = mIsIM != true
+        }
+        listOf(menu?.getItem(3), menu?.getItem(4)).forEach {
+            it?.isVisible = mIsIM == true
+        }
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item?.itemId
         when (id) {
             android.R.id.home -> {
                 activity?.onBackPressed()
             }
+
+        // Channel
             R.id.action_view_details -> {
                 mPresenter.viewDetails()
             }
@@ -232,6 +241,14 @@ class ChatFragment : Fragment(), ChatContract.View {
             }
             R.id.action_directory -> {
 
+            }
+
+        // IM
+            R.id.action_view_user_profile -> {
+
+            }
+            R.id.action_close_im -> {
+                mPresenter.closeIM()
             }
         }
         return true
@@ -266,6 +283,21 @@ class ChatFragment : Fragment(), ChatContract.View {
         }
 
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CHOOSE_IMAGE) {
+                val paths = Matisse.obtainResult(data)
+
+
+            } else if (requestCode == REQUEST_CHOOSE_FILE) {
+                val paths = Charles.obtainPathResult(data)
+
+            }
+        }
     }
 
     override fun setPresenter(presenter: ChatContract.Presenter) {
@@ -317,27 +349,22 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun showChannel(channel: Channel) {
         with(activity as ChatActivity) {
             supportActionBar?.title = channel.name
-
-            mSubTitle = "${channel.numMembers} members"
-            supportActionBar?.subtitle = mSubTitle
         }
 
         mChannel = channel
     }
 
-    override fun gotoChannelDetails(channel: Channel) {
-        activity?.let {
-            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply {
-                putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
-            })
+    override fun showUsername(username: String) {
+        with(activity as ChatActivity) {
+            supportActionBar?.title = username
         }
     }
 
-    override fun gotoMessageDetails(message: Message) {
+    override fun gotoChannelDetails(channel: Channel) {
         activity?.let {
-            context?.startActivity(Intent(context, MessageActivity::class.java).apply {
-                putExtra(MessagePresenter.KEY_EXTRA_MESSAGE, message)
-                putExtra(MessagePresenter.KEY_EXTRA_CHANNEL, mChannel)
+            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply {
+
+                putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
             })
         }
     }
@@ -477,6 +504,10 @@ class ChatFragment : Fragment(), ChatContract.View {
 
     override fun showMessagePinned(pinned: Boolean) {
         Toast.makeText(context, if (pinned) R.string.pinned else R.string.unpinned, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun finishActivity() {
+        activity?.onBackPressed()
     }
 
     @SuppressLint("InflateParams")

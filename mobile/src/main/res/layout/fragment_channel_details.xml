@@ -115,20 +115,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/notificationsTextView"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin_half"
-                    android:drawablePadding="@dimen/activity_horizontal_margin"
-                    android:drawableStart="@drawable/ic_notifications_black_24dp"
-                    android:drawableTint="@color/colorAccent"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin_half"
-                    android:text="@string/notifications" />
-
-                <TextView
                     android:id="@+id/addMembersTextView"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"

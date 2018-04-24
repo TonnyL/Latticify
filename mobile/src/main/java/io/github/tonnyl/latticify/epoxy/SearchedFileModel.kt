@@ -1,6 +1,5 @@
 package io.github.tonnyl.latticify.epoxy
 
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
@@ -31,6 +30,12 @@ abstract class SearchedFileModel : EpoxyModelWithHolder<SearchedFileModel.Search
             fileDescriptionTextView?.text = fileDescriptionTextView?.context?.getString(io.github.tonnyl.latticify.R.string.search_file_description)
                     ?.format(if (file.username.isNotEmpty()) file.user else file.user, android.text.format.DateUtils.getRelativeTimeSpanString(file.created * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS))
         }
+    }
+
+    override fun unbind(holder: SearchFileHolder) {
+        super.unbind(holder)
+
+        holder.itemLayout?.setOnClickListener(null)
     }
 
     override fun createNewHolder(): SearchFileHolder = SearchFileHolder()

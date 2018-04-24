@@ -27,8 +27,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
     lateinit var itemOnClickListener: View.OnClickListener
-    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var itemOnLongClickListener: View.OnLongClickListener
     @EpoxyAttribute
     lateinit var message: Message
 
@@ -41,7 +39,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
 
         with(holder) {
             messageContentLayout?.setOnClickListener(itemOnClickListener)
-            messageContentLayout?.setOnLongClickListener(itemOnLongClickListener)
+            avatarImageView?.setOnClickListener(itemOnClickListener)
 
             messageContentTextView?.text = message.text ?: message.attachments?.getOrNull(0)?.let { "${it.title}\n${it.text}" } ?: ""
 
@@ -50,16 +48,10 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
             }
 
             val time = DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
-            if (message.edited == null && message.reactions == null) {
+            if (message.edited == null) {
                 msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_0, time)
-            } else if (message.edited != null && message.reactions == null) {
-                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_1, time)
-            } else if (message.edited == null && message.reactions != null) {
-                val reactionCount = msgExtraTextView?.context?.resources?.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
-                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_2, reactionCount, time)
             } else {
-                val reactionCount = msgExtraTextView?.context?.resources?.getQuantityString(R.plurals.reaction_count, message.reactions!!.size, message.reactions!!.size)
-                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_3, reactionCount, time)
+                msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_1, time)
             }
 
             message.file?.let { file ->
@@ -78,7 +70,7 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                     GlideLoader.loadAvatar(it, icons.image72)
                 }
             } ?: run {
-                message.user?.let {
+                (message.user ?: message.comment?.user)?.let {
                     val disposable = UserPoolRepository.getUser(it)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -97,6 +89,14 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                 }
             }
         }
+    }
+
+    override fun unbind(holder: MessageHolder) {
+        super.unbind(holder)
+        holder.messageContentLayout?.setOnClickListener(null)
+        holder.avatarImageView?.setOnClickListener(null)
+
+        mCompositeDisposable.clear()
     }
 
     class MessageHolder : EpoxyHolder() {
@@ -125,14 +125,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
             }
         }
 
-    }
-
-    override fun unbind(holder: MessageHolder) {
-        super.unbind(holder)
-        holder.messageContentLayout?.setOnClickListener(null)
-        holder.messageContentLayout?.setOnLongClickListener(null)
-
-        mCompositeDisposable.clear()
     }
 
 }

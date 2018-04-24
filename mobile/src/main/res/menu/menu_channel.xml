@@ -17,5 +17,14 @@
         android:title="@string/menu_directory"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_view_user_profile"
+        android:title="@string/view_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_close_im"
+        android:title="@string/close_conversation"
+        app:showAsAction="never" />
 
 </menu>

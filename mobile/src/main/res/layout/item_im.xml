@@ -28,15 +28,14 @@
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/username_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/text_body_size"
-        android:theme="@style/Base.TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space"

@@ -46,6 +46,12 @@ abstract class StarredItemModel : EpoxyModelWithHolder<StarredItemModel.StarredI
         }
     }
 
+    override fun unbind(holder: StarredItemHolder) {
+        super.unbind(holder)
+
+        holder.itemLayout?.setOnClickListener(null)
+    }
+
     class StarredItemHolder : EpoxyHolder() {
 
         var itemLayout: View? = null

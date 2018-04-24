@@ -1,6 +1,5 @@
 package io.github.tonnyl.latticify.epoxy
 
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -38,6 +37,12 @@ abstract class PinnedItemModel : EpoxyModelWithHolder<PinnedItemModel.PinnedItem
             pinTimeTextView?.text = android.text.format.DateUtils.getRelativeTimeSpanString(pin.created * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
             pinContentTextView?.text = pin.message?.text ?: pin.comment?.comment ?: pin.file?.title
         }
+    }
+
+    override fun unbind(holder: PinnedItemHolder) {
+        super.unbind(holder)
+
+        holder.itemLayout?.setOnClickListener(null)
     }
 
     class PinnedItemHolder : EpoxyHolder() {

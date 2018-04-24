@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.ui.chat
 
 import android.content.Intent
+import android.widget.ImageView
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.ChannelWrapper
@@ -8,6 +9,8 @@ import io.github.tonnyl.latticify.data.GroupWrapper
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.data.repository.*
 import io.github.tonnyl.latticify.epoxy.MessageModel_
+import io.github.tonnyl.latticify.ui.profile.ProfileActivity
+import io.github.tonnyl.latticify.ui.profile.ProfilePresenter
 import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,32 +20,34 @@ import io.reactivex.schedulers.Schedulers
  * Created by lizhaotailang on 06/10/2017.
  *
  */
-class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.Presenter {
+class ChatPresenter(
+
+        private val mView: ChatContract.View,
+        private val mChannelId: String,
+        private val mIsIM: Boolean
+
+) : ChatContract.Presenter {
 
     override var mOldestMessageTs: String = ""
     override var mLatestMessageTs: String = ""
     override var mHasMore: Boolean = false
 
     private val mCompositeDisposable = CompositeDisposable()
-    private val mView = view
-    private var mChannelId = channelId
     private var mChannel: Channel? = null
 
     private val mEpoxyModels = mutableListOf<EpoxyModel<*>>()
 
     companion object {
-        @JvmField
         val KEY_EXTRA_CHANNEL = "KEY_EXTRA_CHANNEL"
-        @JvmField
         val KEY_EXTRA_CHANNEL_ID = "KEY_EXTRA_CHANNEL_ID"
+        val KEY_EXTRA_IS_IM = "KEY_EXTRA_IS_IM"
     }
 
     init {
         mView.setPresenter(this)
-        mChannelId = channelId
     }
 
-    constructor(view: ChatContract.View, channel: Channel) : this(view, channel.id) {
+    constructor(view: ChatContract.View, channel: Channel, isIM: Boolean) : this(view, channel.id, isIM) {
         mChannel = channel
     }
 
@@ -54,6 +59,24 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
         mChannel?.let {
             if (it.isChannel == true || it.isGroup == true) {
                 mView.showChannel(it)
+            } else {
+                mChannel?.user?.let {
+                    val disposable = UserPoolRepository.getUser(it)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({ user ->
+                                with(user.profile.displayName) {
+                                    if (this.trim().isNotEmpty()) {
+                                        mView.showUsername(this)
+                                    } else {
+                                        mView.showUsername(user.realName)
+                                    }
+                                }
+                            }, {
+
+                            })
+                    mCompositeDisposable.add(disposable)
+                }
             }
         }
     }
@@ -135,17 +158,27 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                 .map { message ->
                     MessageModel_()
                             .message(message as Message)
-                            .itemOnClickListener { _, _, _, _ ->
-                                if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
-                                    mView.gotoMessageDetails(message)
-                                }
-                            }
-                            .itemOnLongClickListener { _, _, _, _ ->
-                                if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
+                            .itemOnClickListener { _, _, clickedView, _ ->
+                                if (clickedView is ImageView) {
+                                    message.user?.let {
+                                        val disposable = UserPoolRepository.getUser(it)
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe({
+                                                    clickedView.context.startActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
+                                                        putExtra(ProfilePresenter.KEY_EXTRA_USER, it)
+                                                    })
+                                                }, {
+
+                                                })
+                                        mCompositeDisposable.add(disposable)
+                                    }
+                                } else if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
                                     mView.showMessageActions(message, mChannelId)
                                 }
-                                message.subtype == null
                             }
+
+
                 }
 
         mEpoxyModels.addAll(list)
@@ -282,6 +315,20 @@ class ChatPresenter(view: ChatContract.View, channelId: String) : ChatContract.P
                 .subscribe({
                     if (it.ok) {
 
+                    }
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun closeIM() {
+        val disposable = IMRepository.close(mChannelId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mView.finishActivity()
                     }
                 }, {
 

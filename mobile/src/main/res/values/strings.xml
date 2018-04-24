@@ -31,6 +31,7 @@
     <string name="channel_name_with_hashtag"># %1$s</string>
 
     <string name="message_in_channel">Message in #%1$s</string>
+    <string name="direct_message">Direct message</string>
 
     <string name="real_name">Real name</string>
     <string name="email">Email</string>
@@ -186,19 +187,10 @@
         <item quantity="other">%d members</item>
     </plurals>
 
-    <plurals name="reaction_count">
-        <item quantity="one">%d reaction</item>
-        <item quantity="other">%d reactions</item>
-    </plurals>
-
     // 1 hour ago
     <string name="message_extra_info_0">%1$s</string>
     // edited • 1 hour ago
     <string name="message_extra_info_1">edited • %1$s</string>
-    // 1 reaction • 1 hour ago
-    <string name="message_extra_info_2">%1$s • %2$s</string>
-    // edited • 1 reaction • 1 hour ago
-    <string name="message_extra_info_3">edited • %1$s • %2$s</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="at">At</string>
@@ -206,6 +198,8 @@
     <string name="bot">BOT</string>
     <string name="msg_starred">Starred</string>
     <string name="msg_unstarred">Unstarred</string>
+    <string name="view_profile">View profile</string>
+    <string name="close_conversation">Close conversation</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

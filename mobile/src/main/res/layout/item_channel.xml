@@ -30,7 +30,7 @@
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/username_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Tonny L" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/messageSummaryTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

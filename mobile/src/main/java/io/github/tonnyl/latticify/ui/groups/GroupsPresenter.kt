@@ -1,7 +1,6 @@
 package io.github.tonnyl.latticify.ui.groups
 
 import android.content.Intent
-import android.view.View
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.repository.GroupsRepository
@@ -95,11 +94,12 @@ class GroupsPresenter(mView: ListContract.View) : ListPresenter(mView) {
             }.map { channel ->
                 ChannelModel_()
                         .channel(channel as Channel)
-                        .itemOnClickListener(View.OnClickListener {
-                            mView.gotoActivity(Intent(it.context, ChatActivity::class.java).apply {
+                        .itemOnClickListener { _, _, clickedView, _ ->
+                            mView.gotoActivity(Intent(clickedView.context, ChatActivity::class.java).apply {
                                 putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
                             })
-                        })
+                        }
             }
 
 }

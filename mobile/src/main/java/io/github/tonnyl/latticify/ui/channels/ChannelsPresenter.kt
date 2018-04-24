@@ -100,6 +100,7 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                             with(clickedView.context) {
                                 mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
                                     putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                    putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
                                 })
                             }
                         }

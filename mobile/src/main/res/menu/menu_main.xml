@@ -14,9 +14,4 @@
         android:title="@string/menu_set_status"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_snooze"
-        android:title="@string/menu_snooze"
-        app:showAsAction="never" />
-
 </menu>

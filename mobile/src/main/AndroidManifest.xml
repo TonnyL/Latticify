@@ -50,33 +50,8 @@
         </activity>
 
         <activity
-            android:name=".DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="dribbble.com"
-                    android:pathPattern="/shots/.*"
-                    android:scheme="https" />
-
-            </intent-filter>
-
-        </activity>
-
-        <activity
             android:name=".ui.chat.ChatActivity"
             android:label="@string/channel"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name=".ui.message.MessageActivity"
-            android:label="@string/message"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
@@ -101,21 +76,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="@string/settings"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".ui.about.AboutActivity"
-            android:label="@string/about"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".ui.snooze.SnoozeNotificationsActivity"
-            android:label="@string/snooze_notifications"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".ui.search.SearchActivity"
             android:label="@string/search"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -123,11 +83,6 @@
         <activity
             android:name=".ui.channel.edit.EditChannelActivity"
             android:label="@string/edit_channel"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".ui.channel.notifications.NotificationsActivity"
-            android:label="@string/notifications"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

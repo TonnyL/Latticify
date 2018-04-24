@@ -1,6 +1,5 @@
 package io.github.tonnyl.latticify.epoxy
 
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,6 +35,12 @@ abstract class SearchedMessageModel : EpoxyModelWithHolder<SearchedMessageModel.
             messageContentTextView?.text = message.text
 
         }
+    }
+
+    override fun unbind(holder: SearchMessageHolder) {
+        super.unbind(holder)
+
+        holder.itemLayout?.setOnClickListener(null)
     }
 
     class SearchMessageHolder : EpoxyHolder() {

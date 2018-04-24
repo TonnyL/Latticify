@@ -9,7 +9,6 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.User
-import io.github.tonnyl.latticify.glide.GlideLoader
 
 /**
  * Created by lizhaotailang on 11/10/2017.
@@ -39,6 +38,12 @@ abstract class UserModel : EpoxyModelWithHolder<UserModel.UserHolder>() {
             titleTextView?.text = user.profile.title
 
         }
+    }
+
+    override fun unbind(holder: UserHolder) {
+        super.unbind(holder)
+
+        holder.itemLayout?.setOnClickListener(null)
     }
 
     class UserHolder : EpoxyHolder() {

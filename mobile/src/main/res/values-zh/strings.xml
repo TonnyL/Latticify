@@ -31,6 +31,7 @@
     <string name="channel_name_with_hashtag"># %1$s</string>
 
     <string name="message_in_channel">来自 #%1$s 的消息</string>
+    <string name="direct_message">私有信息</string>
 
     <string name="real_name">真实姓名</string>
     <string name="email">邮箱</string>
@@ -62,13 +63,13 @@
     <string name="set_status">设置状态</string>
     <string name="add_channel">新增频道</string>
     <string name="settings">设置</string>
-    <string name="about">光宇</string>
+    <string name="about">关于</string>
     <string name="menu_view_details">查看详情</string>
 
     <string name="no_purpose_set">未设置目标</string>
     <string name="no_topic_set">未设置主题</string>
-    <string name="archive_description">Archiving will remove #%1$s from the channel list, and close it for all members. Everything will still be stored and searchable.</string>
-    <string name="channel_creation">%1$s create this channel on %2$s</string>
+    <string name="archive_description">归档会将 #%1$s 从频道列表中移除, 并且对所有成员都将关闭. 一切资料仍将被存储且可被搜索.</string>
+    <string name="channel_creation">%1$s 在 %2$s 创建了此频道</string>
     <string name="purpose">目标</string>
     <string name="topic">主题</string>
     <string name="edit">编辑</string>
@@ -183,25 +184,19 @@
         <item quantity="other">%d成员</item>
     </plurals>
 
-    <plurals name="reaction_count">
-        <item quantity="other">%d回应</item>
-    </plurals>
-
     // 1小时前
     <string name="message_extra_info_0">%1$s</string>
     // edited • 1 hour ago
-    <string name="message_extra_info_1">edited • %1$s</string>
-    // 1 reaction • 1 hour ago
-    <string name="message_extra_info_2">%1$s • %2$s</string>
-    // edited • 1 reaction • 1 hour ago
-    <string name="message_extra_info_3">edited • %1$s • %2$s</string>
+    <string name="message_extra_info_1">已编辑 • %1$s</string>
     <string name="camera">相机</string>
     <string name="gallery">相册</string>
     <string name="at">提及</string>
     <string name="emoji_ghost">👻</string>
     <string name="bot">机器人</string>
-    <string name="msg_starred">Starred</string>
-    <string name="msg_unstarred">Unstarred</string>
+    <string name="msg_starred">添加收藏</string>
+    <string name="msg_unstarred">移除收藏</string>
+    <string name="view_profile">查看资料</string>
+    <string name="close_conversation">关闭对话</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 分钟</item>

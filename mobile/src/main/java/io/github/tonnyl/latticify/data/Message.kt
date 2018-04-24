@@ -126,6 +126,12 @@ data class Message(
         val reactions: List<Reaction>?,
 
         @SerializedName("pinned_to")
-        var pinnedTo: MutableList<String>?
+        var pinnedTo: MutableList<String>?,
+
+        @SerializedName("is_intro")
+        val is_intro: Boolean?,
+
+        @SerializedName("comment")
+        val comment: FileComment?
 
 ) : Parcelable

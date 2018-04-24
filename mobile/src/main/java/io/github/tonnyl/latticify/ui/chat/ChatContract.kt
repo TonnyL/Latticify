@@ -32,7 +32,7 @@ interface ChatContract {
 
         fun showChannel(channel: Channel)
 
-        fun gotoMessageDetails(message: Message)
+        fun showUsername(username: String)
 
         fun gotoChannelDetails(channel: Channel)
 
@@ -53,6 +53,8 @@ interface ChatContract {
         fun displayMessage(content: String)
 
         fun showMessagePinned(pinned: Boolean)
+
+        fun finishActivity()
 
     }
 
@@ -85,6 +87,8 @@ interface ChatContract {
         fun deleteMessage(messageTimestamp: String)
 
         fun pinMessage(timestamp: String, toPin: Boolean)
+
+        fun closeIM()
 
     }
 

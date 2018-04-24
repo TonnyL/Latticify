@@ -18,7 +18,7 @@
         android:tint="@android:color/white"
         tools:src="@drawable/ic_message_black_24dp" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -12,8 +12,6 @@ import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelActivity
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelPresenter
-import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsActivity
-import io.github.tonnyl.latticify.ui.channel.notifications.NotificationsPresenter
 import kotlinx.android.synthetic.main.fragment_channel_details.*
 
 /**
@@ -86,12 +84,6 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         editTextView.setOnClickListener {
             activity?.let {
                 startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
-            }
-        }
-
-        notificationsTextView.setOnClickListener {
-            activity?.let {
-                startActivity(Intent(context, NotificationsActivity::class.java).apply { putExtra(NotificationsPresenter.KEY_EXTRA_CHANNEL, channel) })
             }
         }
 

@@ -22,7 +22,11 @@ class ChatActivity : AppCompatActivity() {
 
         mChannelFragment = ChatFragment.newInstance()
 
-        ChatPresenter(mChannelFragment, intent.getParcelableExtra<Channel>(ChatPresenter.KEY_EXTRA_CHANNEL))
+        ChatPresenter(
+                mChannelFragment,
+                intent.getParcelableExtra<Channel>(ChatPresenter.KEY_EXTRA_CHANNEL),
+                intent.getBooleanExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
+        )
 
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, mChannelFragment, ChatFragment::class.java.simpleName)

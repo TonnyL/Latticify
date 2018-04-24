@@ -14,7 +14,9 @@
     <ImageView
         android:id="@+id/avatar_image_view"
         android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size" />
+        android:layout_height="@dimen/avatar_size"
+        android:background="@drawable/bg_avatar"
+        android:contentDescription="@string/avatar" />
 
     <Space
         android:id="@+id/space"

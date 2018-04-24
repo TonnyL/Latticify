@@ -3,11 +3,7 @@ package io.github.tonnyl.latticify.ui.auth
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Intent
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
-import android.graphics.drawable.Icon
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -19,8 +15,6 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.AccessToken
 import io.github.tonnyl.latticify.retrofit.Api
 import io.github.tonnyl.latticify.ui.MainActivity
-import io.github.tonnyl.latticify.ui.search.SearchActivity
-import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -109,8 +103,6 @@ class AuthFragment : Fragment(), AuthContract.View {
 
                         activity?.finish()
                     } else {
-                        enableShortcuts()
-
                         val account = Account(accessToken.teamName, Authenticator.KEY_ACCOUNT_TYPE)
                         mAccountManager.addAccountExplicitly(account, "",
                                 Bundle().apply {
@@ -129,38 +121,6 @@ class AuthFragment : Fragment(), AuthContract.View {
                 }, {
 
                 })
-    }
-
-    // Enable the App Shortcuts for devices running Android 7.1 and above.
-    // See [https://developer.android.com/guide/topics/ui/shortcuts.html].
-    private fun enableShortcuts() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            val searchShortcut = ShortcutInfo.Builder(context, Constants.SHORTCUT_ID_SEARCH)
-                    .apply {
-                        setShortLabel(getString(R.string.search))
-                        setLongLabel(getString(R.string.search))
-                        setIcon(Icon.createWithResource(context, R.drawable.ic_shortcut_search))
-                        setIntent(Intent(context?.applicationContext, SearchActivity::class.java)
-                                .apply {
-                                    action = Constants.INTENT_ACTION_SEARCH
-                                    addCategory(ShortcutInfo.SHORTCUT_CATEGORY_CONVERSATION)
-                                })
-                    }.build()
-
-            val snoozeShortcut = ShortcutInfo.Builder(context, Constants.SHORTCUT_ID_SNOOZE)
-                    .apply {
-                        setShortLabel(getString(R.string.snooze))
-                        setLongLabel(getString(R.string.snooze))
-                        setIcon(Icon.createWithResource(context, R.drawable.ic_shortcut_notifications_off))
-                        setIntent(Intent(context?.applicationContext, SearchActivity::class.java)
-                                .apply {
-                                    action = Constants.INTENT_ACTION_SNOOZE
-                                    addCategory(ShortcutInfo.SHORTCUT_CATEGORY_CONVERSATION)
-                                })
-                    }.build()
-
-            activity?.getSystemService(ShortcutManager::class.java)?.dynamicShortcuts = mutableListOf<ShortcutInfo>(searchShortcut, snoozeShortcut)
-        }
     }
 
 }
