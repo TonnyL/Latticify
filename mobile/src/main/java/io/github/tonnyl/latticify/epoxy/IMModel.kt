@@ -12,7 +12,6 @@ import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 @EpoxyModelClass(layout = R.layout.item_im)
@@ -22,8 +21,6 @@ abstract class IMModel : EpoxyModelWithHolder<IMModel.IMHolder>() {
     lateinit var itemOnClickListener: View.OnClickListener
     @EpoxyAttribute
     lateinit var channel: Channel
-
-    private val mCompositeDisposable = CompositeDisposable()
 
     override fun createNewHolder(): IMHolder = IMHolder()
 
@@ -35,7 +32,7 @@ abstract class IMModel : EpoxyModelWithHolder<IMModel.IMHolder>() {
 
             if (channel.isIm == true) {
                 channel.user?.let {
-                    val disposable = UserPoolRepository.getUser(it)
+                    UserPoolRepository.getUser(it)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({ user ->
@@ -47,7 +44,6 @@ abstract class IMModel : EpoxyModelWithHolder<IMModel.IMHolder>() {
                             }, {
 
                             })
-                    mCompositeDisposable.add(disposable)
                 }
 
             }
@@ -58,8 +54,6 @@ abstract class IMModel : EpoxyModelWithHolder<IMModel.IMHolder>() {
         super.unbind(holder)
 
         holder.item?.setOnClickListener(null)
-
-        mCompositeDisposable.clear()
     }
 
     class IMHolder : EpoxyHolder() {

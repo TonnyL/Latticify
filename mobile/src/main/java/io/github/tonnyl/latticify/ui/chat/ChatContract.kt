@@ -56,6 +56,8 @@ interface ChatContract {
 
         fun finishActivity()
 
+        fun gotoFileDetails(fileId: String)
+
     }
 
     interface Presenter : BasePresenter {

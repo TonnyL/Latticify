@@ -119,11 +119,10 @@
 
     <string name="search_hint">Search for messages or files</string>
     <string name="search_close">Close</string>
-    <string name="star_file">Star file</string>
     <string name="share_file">Share file</string>
     <string name="copy_link">Copy link</string>
     <string name="delete">Delete</string>
-    <string name="open_in_browser">Open in browser</string>
+    <string name="download_file">Download</string>
     <string name="file">File</string>
     <string name="comment">Comment</string>
     <string name="add_reaction">Add reaction</string>
@@ -200,6 +199,20 @@
     <string name="msg_unstarred">Unstarred</string>
     <string name="view_profile">View profile</string>
     <string name="close_conversation">Close conversation</string>
+    <string name="hint_comment">Comment…</string>
+    <string name="desc_send">Send</string>
+    <string name="hint_message">Message…</string>
+
+    <string name="download_desc">Downloading %1$s</string>
+    <string name="notification_channel_download">Download</string>
+    <string name="notification_channel_download_desc">Notify when download completed</string>
+    <string name="download_complete">Download complete</string>
+    <string name="comment_added">Comment added</string>
+    <string name="file_deleted">Deleted</string>
+    // Dec 27th at 4:00 PM • APK • 2 MB • Private file
+    <string name="file_info">%1$s • %2$s • %3$s • %4$s</string>
+    <string name="private_file">Private file</string>
+    <string name="public_file">Public file</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

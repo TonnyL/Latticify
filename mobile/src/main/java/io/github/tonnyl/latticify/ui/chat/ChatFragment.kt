@@ -28,6 +28,8 @@ import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
+import io.github.tonnyl.latticify.ui.file.FileActivity
+import io.github.tonnyl.latticify.ui.file.FilePresenter
 import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -263,9 +265,6 @@ class ChatFragment : Fragment(), ChatContract.View {
 
             }
             R.id.action_share_message -> {
-
-            }
-            R.id.action_add_reaction -> {
 
             }
             R.id.action_star -> {
@@ -508,6 +507,12 @@ class ChatFragment : Fragment(), ChatContract.View {
 
     override fun finishActivity() {
         activity?.onBackPressed()
+    }
+
+    override fun gotoFileDetails(fileId: String) {
+        startActivity(Intent(context, FileActivity::class.java).apply {
+            putExtra(FilePresenter.KEY_EXTRA_FILE_ID, fileId)
+        })
     }
 
     @SuppressLint("InflateParams")

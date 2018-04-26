@@ -9,6 +9,9 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.StarredPinnedItem
+import io.github.tonnyl.latticify.data.repository.UserPoolRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by lizhaotailang on 12/10/2017.
@@ -29,13 +32,24 @@ abstract class PinnedItemModel : EpoxyModelWithHolder<PinnedItemModel.PinnedItem
         with(holder) {
             itemLayout?.setOnClickListener(itemClickListener)
             avatarImageView?.setImageResource(when (pin.type) {
-                "message" -> io.github.tonnyl.latticify.R.drawable.ic_message_black_24dp
-                "file" -> io.github.tonnyl.latticify.R.drawable.ic_folder_black_24dp
-                else -> io.github.tonnyl.latticify.R.drawable.ic_comment_black_24dp
+                "message" -> R.drawable.ic_message_black_24dp
+                "file" -> R.drawable.ic_folder_black_24dp
+                else -> R.drawable.ic_comment_black_24dp
             })
-            pinCreatorTextView?.text = pin.createdBy
             pinTimeTextView?.text = android.text.format.DateUtils.getRelativeTimeSpanString(pin.created * 1000, java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
             pinContentTextView?.text = pin.message?.text ?: pin.comment?.comment ?: pin.file?.title
+
+            pin.createdBy?.let {
+                UserPoolRepository.getUser(it)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            pinCreatorTextView?.text = it.profile.displayName
+                        }, {
+
+                        })
+            }
+
         }
     }
 

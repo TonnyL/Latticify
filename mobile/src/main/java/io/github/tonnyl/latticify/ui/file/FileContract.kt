@@ -22,26 +22,25 @@ interface FileContract {
 
         fun finishActivity()
 
+        fun showFileDeleted()
+
         fun showDeleteFileError()
 
-        fun copyLink(link: String)
+        fun showCommendAdded()
+
+        fun showFileStarred(starred: Boolean)
+
+        fun showMessage(msg: String)
+
     }
 
     interface Presenter : BasePresenter {
-
-        fun addReaction(name: String)
 
         fun comment(comment: String)
 
         fun starUnstar()
 
-        fun share()
-
-        fun copyLink()
-
         fun delete()
-
-        fun openInBrowser()
 
     }
 

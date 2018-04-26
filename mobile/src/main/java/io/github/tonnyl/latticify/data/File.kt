@@ -425,7 +425,7 @@ data class File(
         val numStars: Int,
 
         @SerializedName("is_starred")
-        val isStarred: Boolean,
+        var isStarred: Boolean,
 
         /**
          * The [pinnedTo] array contains the IDs of any channels to which the file is currently pinned.

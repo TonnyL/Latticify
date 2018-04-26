@@ -117,11 +117,10 @@
 
     <string name="search_hint">搜索消息或文件</string>
     <string name="search_close">关闭</string>
-    <string name="star_file">收藏文件</string>
     <string name="share_file">分享文件</string>
     <string name="copy_link">复制链接</string>
     <string name="delete">删除</string>
-    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="download_file">下载</string>
     <string name="file">文件</string>
     <string name="comment">评论</string>
     <string name="add_reaction">Add reaction</string>
@@ -197,6 +196,20 @@
     <string name="msg_unstarred">移除收藏</string>
     <string name="view_profile">查看资料</string>
     <string name="close_conversation">关闭对话</string>
+    <string name="hint_comment">评论…</string>
+    <string name="desc_send">发送</string>
+    <string name="hint_message">信息…</string>
+
+    <string name="download_desc">正在下载 %1$s</string>
+    <string name="notification_channel_download">下载</string>
+    <string name="notification_channel_download_desc">当下载完成时发出通知</string>
+    <string name="download_complete">下载完成</string>
+    <string name="comment_added">评论成功</string>
+    <string name="file_deleted">已删除</string>
+    // Dec 27th at 4:00 PM • APK • 2 MB • 私密文件
+    <string name="file_info">%1$s • %2$s • %3$s • %4$s</string>
+    <string name="private_file">私密文件</string>
+    <string name="public_file">公开文件</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 分钟</item>

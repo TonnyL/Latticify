@@ -3,7 +3,6 @@ package io.github.tonnyl.latticify.ui.file
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.github.tonnyl.latticify.R
-import io.github.tonnyl.latticify.data.File
 import kotlinx.android.synthetic.main.activity_common.*
 
 /**
@@ -20,7 +19,7 @@ class FileActivity : AppCompatActivity() {
 
         val fragment = FileFragment.newInstance()
 
-        FilePresenter(fragment, intent.getParcelableExtra(FilePresenter.KEY_EXTRA_FILE) as File)
+        FilePresenter(fragment, intent.getStringExtra(FilePresenter.KEY_EXTRA_FILE_ID))
 
         supportFragmentManager?.beginTransaction()
                 ?.add(R.id.container, fragment, FileFragment::class.java.simpleName)

@@ -38,8 +38,9 @@ class FilePresenter(
     override fun subscribe() {
         mFile?.let {
             mView.showFileData(it)
+        } ?: run {
+            fetchFileData()
         }
-        fetchFileData()
     }
 
     override fun unsubscribe() {
@@ -58,6 +59,8 @@ class FilePresenter(
                     if (fileWrapper.ok) {
                         mView.showContent(fileWrapper)
 
+                        mView.showFileData(fileWrapper.file)
+
                         mFile = fileWrapper.file
                     } else {
                         mView.showFetchDataError()
@@ -69,47 +72,49 @@ class FilePresenter(
         mCompositeDisposable.add(disposable)
     }
 
-    override fun addReaction(name: String) {
-
-    }
-
     override fun comment(comment: String) {
         val disposable = FilesCommentsRepository()
                 .add(comment, mFileId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    if (it.ok) {
+                        mView.showCommendAdded()
+                    }
                 }, {
-
+                    it.printStackTrace()
+                    it.message?.let {
+                        mView.showMessage(it)
+                    }
                 })
         mCompositeDisposable.add(disposable)
     }
 
     override fun starUnstar() {
         val disposable = if (mFile?.isStarred == true) {
-            StarredItemsRepository
-                    .remove(fileId = mFileId)
+            StarredItemsRepository.remove("", mFileId, "", "")
         } else {
-            StarredItemsRepository.add(file = mFileId)
+            StarredItemsRepository.add("", mFileId, "", "")
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    if (it.ok) {
+                        mFile?.isStarred = mFile?.isStarred != true
+                        mFile?.let {
+                            mView.showFileStarred(it.isStarred)
+                        }
+                    } else {
+                        it.error?.let {
+                            mView.showMessage(it)
+                        }
+                    }
                 }, {
-
+                    it.printStackTrace()
+                    it.message?.let {
+                        mView.showMessage(it)
+                    }
                 })
         mCompositeDisposable.add(disposable)
-    }
-
-    override fun share() {
-
-    }
-
-    override fun copyLink() {
-        mFile?.let {
-            mView.copyLink(it.permalinkPublic)
-        }
     }
 
     override fun delete() {
@@ -118,6 +123,8 @@ class FilePresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ responseWrapper ->
                     if (responseWrapper.ok) {
+                        mView.showFileDeleted()
+
                         mView.finishActivity()
                     } else {
                         mView.showDeleteFileError()
@@ -127,10 +134,6 @@ class FilePresenter(
                     mView.showDeleteFileError()
                 })
         mCompositeDisposable.add(disposable)
-    }
-
-    override fun openInBrowser() {
-
     }
 
 }

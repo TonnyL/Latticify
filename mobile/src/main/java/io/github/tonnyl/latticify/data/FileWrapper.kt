@@ -20,10 +20,13 @@ data class FileWrapper(
         val isTruncated: Boolean,
 
         @SerializedName("content_highlight_html")
-        val contentHighlightHtml: String,
+        val contentHighlightHtml: String?,
 
         @SerializedName("content_highlight_css")
-        val contentHighlightCss: String,
+        val contentHighlightCss: String?,
+
+        @SerializedName("content_html")
+        val contentHtml: String?,
 
         @SerializedName("comments")
         val comments: List<FileComment>,

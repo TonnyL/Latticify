@@ -173,8 +173,12 @@ class ChatPresenter(
                                                 })
                                         mCompositeDisposable.add(disposable)
                                     }
-                                } else if (message.subtype == null || message.subtype == "file_share" || message.subtype == "bot_message") {
+                                } else if (message.subtype == null || message.subtype == "bot_message") {
                                     mView.showMessageActions(message, mChannelId)
+                                } else if (message.subtype == "file_share") {
+                                    message.file?.let {
+                                        mView.gotoFileDetails(it.id)
+                                    }
                                 }
                             }
 

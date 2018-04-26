@@ -1,11 +1,17 @@
 package io.github.tonnyl.latticify.service
 
-import android.app.Service
+import android.app.*
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.Color
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.gson.Gson
+import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.RtmReceivedMessage
 import io.github.tonnyl.latticify.data.event.Hello
 import io.github.tonnyl.latticify.data.event.Message
@@ -17,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.*
 import okio.ByteString
+import java.util.*
 
 class WebSocketService : Service() {
 
@@ -26,12 +33,37 @@ class WebSocketService : Service() {
 
     private val mGson = Gson()
 
+    private val mDownloadReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == intent.action) {
+                val query = DownloadManager.Query()
+                val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+                query.setFilterById(id)
+                val c = manager.query(query)
+                if (c.moveToFirst()) {
+                    val columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS)
+                    if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+                        val name = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE))
+                        pushNotification(name)
+
+                        Log.d(TAG, "A file download completed. File name $name")
+                    }
+                }
+            }
+        }
+
+    }
+
     val TAG = "WebSocketService"
 
     override fun onCreate() {
         super.onCreate()
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this@WebSocketService)
+
+        registerReceiver(mDownloadReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
         Log.d(TAG, "onCreate")
 
@@ -44,6 +76,8 @@ class WebSocketService : Service() {
         mCompositeDisposable.clear()
 
         mWebSocket?.cancel()
+
+        unregisterReceiver(mDownloadReceiver)
 
         Log.d(TAG, "onDestroy")
     }
@@ -148,6 +182,35 @@ class WebSocketService : Service() {
                     Log.d(tag, "error $it")
                 })
         mCompositeDisposable.add(disposable)
+    }
+
+    // Push a notification when the download job completed.
+    private fun pushNotification(title: String) {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channelID = "CHANNEL_ID_01"
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val name = getString(R.string.notification_channel_download)
+            val desc = getString(R.string.notification_channel_download_desc)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelID, name, importance)
+            channel.description = desc
+            channel.enableVibration(true)
+            channel.enableLights(true)
+            channel.lightColor = Color.GREEN
+            channel.setShowBadge(false)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(this, channelID)
+        builder.setContentTitle(title)
+        builder.setContentText(getString(R.string.download_complete))
+        builder.priority = NotificationCompat.PRIORITY_MAX
+        builder.setSmallIcon(R.drawable.ic_app_notification)
+        builder.setContentIntent(PendingIntent.getActivity(applicationContext, 0, Intent(DownloadManager.ACTION_VIEW_DOWNLOADS), 0))
+        builder.setWhen(System.currentTimeMillis())
+        builder.setAutoCancel(true)
+        val n = builder.build()
+        notificationManager.notify(Random().nextInt() + 1, n)
     }
 
 }
