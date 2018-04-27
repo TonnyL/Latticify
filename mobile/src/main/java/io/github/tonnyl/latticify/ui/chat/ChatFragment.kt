@@ -1,11 +1,16 @@
 package io.github.tonnyl.latticify.ui.chat
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,6 +21,7 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.airbnb.epoxy.EpoxyModel
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import io.github.tonnyl.charles.Charles
@@ -37,6 +43,10 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.layout_input.*
 import kotlinx.android.synthetic.main.layout_message_action.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -62,6 +72,8 @@ class ChatFragment : Fragment(), ChatContract.View {
 
     private var mChannel: Channel? = null
     private var mIsIM: Boolean? = false
+
+    private var imageFilePath: String? = null
 
     private val mUserTypingReceiver = object : BroadcastReceiver() {
 
@@ -103,6 +115,7 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         val REQUEST_CHOOSE_IMAGE = 101
         val REQUEST_CHOOSE_FILE = 102
+        val REQUEST_TAKE_PHOTO = 103
 
     }
 
@@ -288,13 +301,17 @@ class ChatFragment : Fragment(), ChatContract.View {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CHOOSE_IMAGE) {
-                val paths = Matisse.obtainResult(data)
+            when (requestCode) {
+                REQUEST_TAKE_PHOTO -> {
+                    val uri = Uri.parse(imageFilePath)
 
-
-            } else if (requestCode == REQUEST_CHOOSE_FILE) {
-                val paths = Charles.obtainPathResult(data)
-
+                }
+                REQUEST_CHOOSE_IMAGE -> {
+                    val paths = Matisse.obtainResult(data)
+                }
+                REQUEST_CHOOSE_FILE -> {
+                    val paths = Charles.obtainPathResult(data)
+                }
             }
         }
     }
@@ -524,30 +541,71 @@ class ChatFragment : Fragment(), ChatContract.View {
 
             view.findViewById<TextView>(R.id.actionCamera).setOnClickListener {
                 dialog.dismiss()
+
+                activity?.let {
+                    RxPermissions(it).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe({
+                                openCameraIntent()
+                            }, {
+
+                            }, {
+
+                            }, {
+
+                            })
+
+                }
+
             }
 
             view.findViewById<TextView>(R.id.actionGallery).setOnClickListener {
                 dialog.dismiss()
 
-                Matisse.from(this)
-                        .choose(MimeType.allOf())
-                        .imageEngine(MatisseGlideV4Engine())
-                        .countable(true)
-                        .maxSelectable(1)
-                        .theme(R.style.Latticify_MatisseStyle)
-                        .forResult(REQUEST_CHOOSE_IMAGE)
+                activity?.let {
+                    RxPermissions(it).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe({
+                                Matisse.from(this)
+                                        .choose(MimeType.allOf())
+                                        .imageEngine(MatisseGlideV4Engine())
+                                        .countable(true)
+                                        .maxSelectable(1)
+                                        .theme(R.style.Latticify_MatisseStyle)
+                                        .forResult(REQUEST_CHOOSE_IMAGE)
+                            }, {
+
+                            }, {
+
+                            }, {
+
+                            })
+
+                }
+
             }
 
             view.findViewById<TextView>(R.id.actionFile).setOnClickListener {
                 dialog.dismiss()
 
-                Charles.from(this)
-                        .choose()
-                        .imageEngine(CharlesGlideV4Engine())
-                        .progressRate(true)
-                        .maxSelectable(1)
-                        .theme(R.style.Latticify_CharlesStyle)
-                        .forResult(REQUEST_CHOOSE_FILE)
+                activity?.let {
+                    RxPermissions(it).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe({
+                                Charles.from(this)
+                                        .choose()
+                                        .imageEngine(CharlesGlideV4Engine())
+                                        .progressRate(true)
+                                        .maxSelectable(1)
+                                        .theme(R.style.Latticify_CharlesStyle)
+                                        .forResult(REQUEST_CHOOSE_FILE)
+                            }, {
+
+                            }, {
+
+                            }, {
+
+                            })
+
+                }
+
             }
 
             view.findViewById<TextView>(R.id.actionAt).setOnClickListener {
@@ -555,6 +613,36 @@ class ChatFragment : Fragment(), ChatContract.View {
             }
 
             dialog.show()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = "IMG_" + timeStamp + "_"
+        val storageDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(imageFileName, ".jpg", storageDir)
+        imageFilePath = image.absolutePath
+        return image
+    }
+
+    private fun openCameraIntent() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (cameraIntent.resolveActivity(activity?.packageManager) != null) {
+            val photoFile: File?
+            try {
+                photoFile = createImageFile()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return
+            }
+
+            context?.let {
+                val photoURI = FileProvider.getUriForFile(it, "${it.packageName}.provider", photoFile)
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO)
+            }
         }
     }
 

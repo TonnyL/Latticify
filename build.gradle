@@ -30,7 +30,7 @@ ext {
             package          : "io.github.tonnyl.latticify",
             compileSdkVersion: 27,
             targetSdkVersion : 27,
-            minSdkVersion    : 23,
+            minSdkVersion    : 24,
             buildToolsVersion: '27.0.3',
             versionCode      : 1,
             versionName      : "1.0"
@@ -46,6 +46,7 @@ ext {
             rxAndroidVersion             : '2.0.1',
             retrofitVersion              : '2.4.0',
             epoxyVersion                 : '2.10.0',
+            rxpermissionsVersion         : '0.9.5@aar',
             fcmVersion                   : '15.0.0',
             charlesVersion               : '0.1.0-alpha5',
             okhttpLoggingInterceptor     : '3.10.0',

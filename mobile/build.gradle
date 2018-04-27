@@ -120,6 +120,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:${libraries.roomVersion}"
     kapt "android.arch.persistence.room:compiler:${libraries.roomVersion}"
 
+    implementation "com.tbruyelle.rxpermissions2:rxpermissions:${libraries.rxpermissionsVersion}"
+
     // FCM
 //    implementation "com.google.firebase:firebase-messaging:15.0.0"
 
