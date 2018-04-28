@@ -10,7 +10,7 @@ class MatisseGlideV4Engine : ImageEngine {
 
     override fun loadAnimatedGifThumbnail(context: Context?, resize: Int, placeholder: Drawable?, imageView: ImageView?, uri: Uri?) {
         imageView?.let {
-            GlideLoader.loadNormal(it, uri.toString())
+            GlideLoader.loadMatisseThumbnailAsGif(it, uri.toString())
         }
     }
 
@@ -30,7 +30,7 @@ class MatisseGlideV4Engine : ImageEngine {
 
     override fun loadThumbnail(context: Context?, resize: Int, placeholder: Drawable?, imageView: ImageView?, uri: Uri?) {
         imageView?.let {
-            GlideLoader.loadNormal(it, uri.toString())
+            GlideLoader.loadMatisseThumbnail(it, uri.toString())
         }
     }
 

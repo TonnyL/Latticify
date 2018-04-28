@@ -8,7 +8,7 @@ import io.github.tonnyl.charles.engine.ImageEngine
 class CharlesGlideV4Engine : ImageEngine {
 
     override fun loadImage(context: Context, imageView: ImageView, uri: Uri) {
-        GlideLoader.loadNormal(imageView, uri.toString())
+        GlideLoader.loadCharlesThumbnail(imageView, uri.toString())
     }
 
 }

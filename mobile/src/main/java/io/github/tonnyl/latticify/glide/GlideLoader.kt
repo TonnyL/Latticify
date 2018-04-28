@@ -31,11 +31,35 @@ object GlideLoader {
                 .into(imageView)
     }
 
+    fun loadCharlesThumbnail(imageView: ImageView, url: String?) {
+        GlideApp.with(imageView.context)
+                .load(url)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView)
+    }
+
     fun loadMatissePreview(imageView: ImageView, url: String?) {
         GlideApp.with(imageView.context)
                 .asBitmap()
                 .load(url)
                 .fitCenter()
+                .into(imageView)
+    }
+
+    fun loadMatisseThumbnail(imageView: ImageView, url: String?) {
+        GlideApp.with(imageView.context)
+                .asBitmap()
+                .load(url)
+                .centerCrop()
+                .into(imageView)
+    }
+
+    fun loadMatisseThumbnailAsGif(imageView: ImageView, url: String?) {
+        GlideApp.with(imageView.context)
+                .asGif()
+                .load(url)
+                .centerCrop()
                 .into(imageView)
     }
 
