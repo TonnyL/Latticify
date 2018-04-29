@@ -92,6 +92,8 @@ interface ChatContract {
 
         fun closeIM()
 
+        fun uploadFile(path: String)
+
     }
 
 }

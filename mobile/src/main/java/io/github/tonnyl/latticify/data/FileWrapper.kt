@@ -32,6 +32,9 @@ data class FileWrapper(
         val comments: List<FileComment>,
 
         @SerializedName("paging")
-        val paging: Paging
+        val paging: Paging,
+
+        @SerializedName("error")
+        val error: String?
 
 )

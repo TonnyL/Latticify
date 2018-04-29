@@ -210,6 +210,10 @@
     <string name="file_info">%1$s • %2$s • %3$s • %4$s</string>
     <string name="private_file">私密文件</string>
     <string name="public_file">公开文件</string>
+    <string name="menu_done_with_progress">完全 (%1$d / %2$d)</string>
+
+    <string name="channel_archived">已归档</string>
+    <string name="channel_left">已离开频道</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 分钟</item>

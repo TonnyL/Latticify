@@ -41,15 +41,4 @@
         android:text="@string/file"
         android:textColor="@color/textColorPrimary" />
 
-    <TextView
-        android:id="@+id/actionAt"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawablePadding="32dp"
-        android:drawableStart="@drawable/ic_at_black_24dp"
-        android:drawableTint="@color/textColorSecondary"
-        android:gravity="center_vertical"
-        android:text="@string/at"
-        android:textColor="@color/textColorPrimary" />
-
 </LinearLayout>

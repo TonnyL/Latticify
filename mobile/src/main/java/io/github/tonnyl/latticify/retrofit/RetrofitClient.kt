@@ -50,6 +50,8 @@ object RetrofitClient {
                 httpClientBuilder.addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             }
 
+            httpClientBuilder.retryOnConnectionFailure(true)
+
             // Set the corresponding convert factory and call adapter factory.
             val retrofitBuilder = Retrofit.Builder()
                     .baseUrl(Api.SLACK_API_BASE_URL)

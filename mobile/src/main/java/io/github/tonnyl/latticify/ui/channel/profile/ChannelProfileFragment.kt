@@ -1,10 +1,12 @@
 package io.github.tonnyl.latticify.ui.channel.profile
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import android.widget.Toast
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
@@ -94,15 +96,16 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
             mCompositeDisposable.add(disposable)
         }
 
-        /*if (channel.creator == AccessTokenManager.getAccessToken().userId) {
-            advancedLayout.visibility = View.VISIBLE
-        }*/
         archiveDescriptionTextView.text = getString(R.string.archive_description).format(channel.name)
 
         editTextView.setOnClickListener {
             activity?.let {
                 startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
             }
+        }
+
+        leaveTextView.setOnClickListener {
+            mPresenter.leaveChannel()
         }
 
     }
@@ -123,6 +126,54 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
     override fun setIfChannelStarred(starred: Boolean) {
         mMenu?.getItem(0)?.setIcon(if (starred) R.drawable.ic_star_black_24dp else R.drawable.ic_star_border_black_24dp)
         onPrepareOptionsMenu(mMenu)
+    }
+
+    override fun showChannelArchived() {
+        Toast.makeText(context, getString(R.string.channel_archived), Toast.LENGTH_SHORT).show()
+
+        val result = Intent().apply {
+            putExtra(ChannelProfileActivity.EXTRA_RESULT_ARCHIVE, true)
+        }
+
+        activity?.let {
+            it.setResult(Activity.RESULT_OK, result)
+            it.finish()
+        }
+
+    }
+
+    override fun showLeftChannel() {
+        Toast.makeText(context, getString(R.string.channel_left), Toast.LENGTH_SHORT).show()
+
+        val result = Intent().apply {
+            putExtra(ChannelProfileActivity.EXTRA_RESULT_LEAVE, true)
+        }
+
+        activity?.let {
+            it.setResult(Activity.RESULT_OK, result)
+            it.finish()
+        }
+
+    }
+
+    override fun showArchiveOptions(boolean: Boolean) {
+        if (boolean) {
+            advancedLayout.visibility = View.VISIBLE
+
+            archiveTextView.setOnClickListener {
+                mPresenter.archiveChannel()
+            }
+        } else {
+            advancedLayout.visibility = View.GONE
+        }
+    }
+
+    override fun showLeaveOption(boolean: Boolean) {
+        leaveTextView.visibility = if (boolean) View.VISIBLE else View.GONE
+    }
+
+    override fun showEditOption(boolean: Boolean) {
+        editTextView.visibility = if (boolean) View.VISIBLE else View.GONE
     }
 
 }

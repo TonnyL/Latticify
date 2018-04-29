@@ -25,6 +25,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import io.github.tonnyl.charles.Charles
+import io.github.tonnyl.charles.utils.PathUtils
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
@@ -116,6 +117,8 @@ class ChatFragment : Fragment(), ChatContract.View {
         val REQUEST_CHOOSE_IMAGE = 101
         val REQUEST_CHOOSE_FILE = 102
         val REQUEST_TAKE_PHOTO = 103
+
+        val REQUEST_CHANNEL_DETAILS = 110
 
     }
 
@@ -269,48 +272,38 @@ class ChatFragment : Fragment(), ChatContract.View {
         return true
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_copy_text -> {
-
-            }
-            R.id.action_copy_link_to_message -> {
-
-            }
-            R.id.action_share_message -> {
-
-            }
-            R.id.action_star -> {
-
-            }
-            R.id.action_pin_to_conversation -> {
-
-            }
-            R.id.action_edit_message -> {
-
-            }
-            R.id.action_delete_message -> {
-
-            }
-        }
-
-        return true
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_TAKE_PHOTO -> {
                     val uri = Uri.parse(imageFilePath)
-
+                    imageFilePath?.let {
+                        mPresenter.uploadFile(it)
+                    }
                 }
                 REQUEST_CHOOSE_IMAGE -> {
                     val paths = Matisse.obtainResult(data)
+                    paths.firstOrNull()?.let { uri ->
+                        context?.let {
+                            PathUtils.getPath(it, uri)?.let {
+                                mPresenter.uploadFile(it)
+                            }
+                        }
+                    }
                 }
                 REQUEST_CHOOSE_FILE -> {
                     val paths = Charles.obtainPathResult(data)
+                    paths?.firstOrNull()?.let {
+                        mPresenter.uploadFile(it)
+                    }
+                }
+                REQUEST_CHANNEL_DETAILS -> {
+                    val exitBecauseLeftChannel = data?.getBooleanExtra(ChannelProfileActivity.EXTRA_RESULT_LEAVE, false)
+                    val exitBecauseChannelArchived = data?.getBooleanExtra(ChannelProfileActivity.EXTRA_RESULT_ARCHIVE, false)
+                    if (exitBecauseChannelArchived == true || exitBecauseLeftChannel == true) {
+                        activity?.finish()
+                    }
                 }
             }
         }
@@ -377,12 +370,10 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun gotoChannelDetails(channel: Channel) {
-        activity?.let {
-            context?.startActivity(Intent(context, ChannelProfileActivity::class.java).apply {
-
-                putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
-            })
+        val intent = Intent(activity, ChannelProfileActivity::class.java).apply {
+            putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
         }
+        activity?.startActivityForResult(intent, REQUEST_CHANNEL_DETAILS)
     }
 
     override fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int) {
@@ -606,10 +597,6 @@ class ChatFragment : Fragment(), ChatContract.View {
 
                 }
 
-            }
-
-            view.findViewById<TextView>(R.id.actionAt).setOnClickListener {
-                dialog.dismiss()
             }
 
             dialog.show()

@@ -15,6 +15,10 @@ import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -336,6 +340,32 @@ class ChatPresenter(
                     }
                 }, {
 
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun uploadFile(path: String) {
+        val file = File(path)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val fileName = RequestBody.create(MediaType.parse("text/plain"), file.name)
+        val title = RequestBody.create(MediaType.parse("text/plain"), file.name)
+        val channelIds = RequestBody.create(MediaType.parse("text/plain"), mChannelId)
+        val fileType = RequestBody.create(MediaType.parse("text/plain"), "auto")
+        val comment = RequestBody.create(MediaType.parse("text/plain"), "")
+
+        val disposable = FilesRepository().upload(channelIds, null, body, fileName, fileType, comment, title)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+
+                    } else {
+
+                    }
+                }, {
+                    it.printStackTrace()
                 })
         mCompositeDisposable.add(disposable)
     }

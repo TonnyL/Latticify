@@ -36,8 +36,6 @@
     <style name="Latticify.MatisseStyle" parent="Matisse.Zhihu">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
     </style>
 
     // Custom style of Charles

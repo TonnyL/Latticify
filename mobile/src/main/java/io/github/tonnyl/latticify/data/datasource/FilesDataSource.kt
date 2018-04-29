@@ -6,6 +6,7 @@ import io.github.tonnyl.latticify.data.ResponseWrapper
 import io.github.tonnyl.latticify.retrofit.Api
 import io.reactivex.Observable
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 /**
  * Created by lizhaotailang on 30/12/2017.
@@ -30,12 +31,12 @@ interface FilesDataSource {
 
     fun sharedPublicURL(fileId: String): Observable<FileWrapper>
 
-    fun upload(channels: List<String> = listOf(),
-               content: String = "",
+    fun upload(channels: RequestBody,
+               content: RequestBody?,
                file: MultipartBody.Part? = null,
-               filename: String = "",
-               fileType: String = "",
-               initialComment: String = "",
-               title: String = ""): Observable<FileWrapper>
+               filename: RequestBody,
+               fileType: RequestBody,
+               initialComment: RequestBody,
+               title: RequestBody): Observable<FileWrapper>
 
 }

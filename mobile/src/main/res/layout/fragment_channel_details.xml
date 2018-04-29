@@ -83,7 +83,9 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:text="@string/edit"
                     android:textAllCaps="true"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccent"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -147,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:drawableStart="@drawable/ic_exit_to_app_black_24dp"
-                    android:drawableTint="@android:color/holo_red_light"
+                    android:drawableTint="@color/colorWarning"
                     android:gravity="center_vertical"
                     android:paddingTop="@dimen/activity_vertical_margin_half"
                     android:text="@string/leave" />

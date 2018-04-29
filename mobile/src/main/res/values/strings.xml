@@ -213,6 +213,10 @@
     <string name="file_info">%1$s • %2$s • %3$s • %4$s</string>
     <string name="private_file">Private file</string>
     <string name="public_file">Public file</string>
+    <string name="menu_done_with_progress">Done (%1$d / %2$d)</string>
+
+    <string name="channel_archived">Archived</string>
+    <string name="channel_left">Left channel</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

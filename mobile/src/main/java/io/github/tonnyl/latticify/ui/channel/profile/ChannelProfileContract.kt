@@ -18,6 +18,16 @@ interface ChannelProfileContract {
 
         fun setIfChannelStarred(starred: Boolean)
 
+        fun showArchiveOptions(boolean: Boolean)
+
+        fun showLeaveOption(boolean: Boolean)
+
+        fun showEditOption(boolean: Boolean)
+
+        fun showChannelArchived()
+
+        fun showLeftChannel()
+
     }
 
     interface Presenter : BasePresenter {
@@ -25,6 +35,10 @@ interface ChannelProfileContract {
         fun fetchPinnedItems()
 
         fun starUnstarChannel()
+
+        fun archiveChannel()
+
+        fun leaveChannel()
 
         fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>>
 
