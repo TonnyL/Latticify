@@ -217,6 +217,8 @@
 
     <string name="channel_archived">Archived</string>
     <string name="channel_left">Left channel</string>
+    <string name="update_error">Update error</string>
+    <string name="update_success">Update success</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

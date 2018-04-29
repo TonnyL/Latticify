@@ -1,9 +1,14 @@
 package io.github.tonnyl.latticify.ui.channel.edit
 
 import io.github.tonnyl.latticify.data.Channel
+import io.github.tonnyl.latticify.data.ChannelWrapper
+import io.github.tonnyl.latticify.data.SetPurposeResultWrapper
+import io.github.tonnyl.latticify.data.SetTopicWrapper
 import io.github.tonnyl.latticify.data.repository.ChannelsRepository
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -33,25 +38,25 @@ class EditChannelPresenter(view: EditChannelContract.View, channel: Channel) : E
     }
 
     override fun update(name: String, purpose: String, topic: String) {
-        val disposable = ChannelsRepository.rename(mChannel.id, name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    ChannelsRepository.setPurpose(mChannel.id, purpose)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    ChannelsRepository.setTopic(mChannel.id, topic)
-                }
-                .subscribeOn(Schedulers.io())
+        val disposable = Observable.zip(
+                ChannelsRepository.rename(mChannel.id, name).subscribeOn(Schedulers.io()),
+                ChannelsRepository.setPurpose(mChannel.id, purpose).subscribeOn(Schedulers.io()),
+                ChannelsRepository.setTopic(mChannel.id, topic).subscribeOn(Schedulers.io()),
+                Function3<ChannelWrapper, SetPurposeResultWrapper, SetTopicWrapper, Triple<ChannelWrapper, SetPurposeResultWrapper, SetTopicWrapper>> { a1, a2, a3 ->
+                    Triple(a1, a2, a3)
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    if (it.ok) {
-
+                    if (it.first.ok && it.second.ok && it.third.ok) {
+                        mView.showUpdateSuccess()
+                    } else {
+                        mView.showUpdateError()
                     }
                 }, {
                     it.printStackTrace()
+                    it.message?.let {
+                        mView.showError(it)
+                    }
                 })
         mCompositeDisposable.add(disposable)
     }

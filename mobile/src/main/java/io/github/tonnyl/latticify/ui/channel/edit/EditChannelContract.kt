@@ -13,6 +13,12 @@ interface EditChannelContract {
 
         fun showChanelInfo(channel: Channel)
 
+        fun showUpdateError()
+
+        fun showError(errorMessage: String)
+
+        fun showUpdateSuccess()
+
     }
 
     interface Presenter : BasePresenter {

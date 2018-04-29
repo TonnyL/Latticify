@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.airbnb.epoxy.EpoxyModel
@@ -34,6 +35,8 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
     companion object {
         @JvmStatic
         fun newInstance() = ChannelProfileFragment()
+
+        const val REQUEST_EDIT_CHANNEL = 101
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -73,6 +76,20 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_EDIT_CHANNEL) {
+                val update = data?.getBooleanExtra(EditChannelActivity.EXTRA_RESULT_UPDATE, false)
+                if (update == true) {
+                    mPresenter.fetchLastedInfo()
+                }
+                Log.d("XXXX", "XXXX")
+            }
+        }
+    }
+
     override fun setPresenter(presenter: ChannelProfileContract.Presenter) {
         mPresenter = presenter
     }
@@ -99,9 +116,9 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         archiveDescriptionTextView.text = getString(R.string.archive_description).format(channel.name)
 
         editTextView.setOnClickListener {
-            activity?.let {
-                startActivity(Intent(context, EditChannelActivity::class.java).apply { putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel) })
-            }
+            startActivityForResult(Intent(context, EditChannelActivity::class.java).apply {
+                putExtra(EditChannelPresenter.KEY_EXTRA_CHANNEL, channel)
+            }, REQUEST_EDIT_CHANNEL)
         }
 
         leaveTextView.setOnClickListener {

@@ -12,6 +12,10 @@ class EditChannelActivity : AppCompatActivity() {
 
     private lateinit var mEditChannelFragment: EditChannelFragment
 
+    companion object {
+        const val EXTRA_RESULT_UPDATE = "EXTRA_RESULT_UPDATE"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common)

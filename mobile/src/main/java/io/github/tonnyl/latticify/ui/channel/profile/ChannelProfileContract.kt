@@ -32,6 +32,8 @@ interface ChannelProfileContract {
 
     interface Presenter : BasePresenter {
 
+        fun fetchLastedInfo()
+
         fun fetchPinnedItems()
 
         fun starUnstarChannel()

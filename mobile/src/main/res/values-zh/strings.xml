@@ -214,6 +214,8 @@
 
     <string name="channel_archived">已归档</string>
     <string name="channel_left">已离开频道</string>
+    <string name="update_error">更新出错</string>
+    <string name="update_success">更新成功</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 分钟</item>

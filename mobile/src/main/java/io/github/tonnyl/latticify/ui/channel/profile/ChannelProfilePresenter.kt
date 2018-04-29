@@ -147,4 +147,19 @@ class ChannelProfilePresenter(private val mView: ChannelProfileContract.View, ch
         mCompositeDisposable.add(disposable)
     }
 
+    override fun fetchLastedInfo() {
+        val disposable = ChannelsRepository.info(mChannelId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mView.showChannelDetails(it.channel)
+                        mChannel = it.channel
+                    }
+                }, {
+
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
 }
