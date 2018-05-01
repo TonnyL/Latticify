@@ -55,6 +55,8 @@ class StarredItemsPresenter(mView: ListContract.View) : ListPresenter(mView) {
     }
 
     override fun fetchDataOfNextPage() {
+        mView.showLoadingMore(true)
+
         val disposable = StarredItemsRepository.list(page = mPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

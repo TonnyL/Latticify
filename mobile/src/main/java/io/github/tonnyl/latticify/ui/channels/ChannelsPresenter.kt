@@ -2,9 +2,11 @@ package io.github.tonnyl.latticify.ui.channels
 
 import android.content.Intent
 import com.airbnb.epoxy.EpoxyModel
+import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.repository.ConversationsRepository
 import io.github.tonnyl.latticify.epoxy.ChannelModel_
+import io.github.tonnyl.latticify.epoxy.LabelModel_
 import io.github.tonnyl.latticify.mvp.ListContract
 import io.github.tonnyl.latticify.mvp.ListPresenter
 import io.github.tonnyl.latticify.ui.chat.ChatActivity
@@ -20,7 +22,7 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
 
     override var mCursor: String = ""
 
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mCompositeDisposable = CompositeDisposable()
 
     override fun subscribe() {
         mView.setLoadingIndicator(true)
@@ -86,24 +88,71 @@ class ChannelsPresenter(mView: ListContract.View) : ListPresenter(mView) {
         }
     }
 
-    override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> =
-            dataList.filter {
-                it is Channel
-                        && it.isIm == false
-                        && it.isArchived == false
-                        && it.isMember == true
-                        && it.isPrivate == false
-            }.map { channel ->
-                ChannelModel_()
-                        .channel(channel as Channel)
-                        .itemOnClickListener { _, _, clickedView, _ ->
-                            with(clickedView.context) {
-                                mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
-                                    putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
-                                    putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
-                                })
-                            }
-                        }
+    override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> {
+        val models = mutableListOf<EpoxyModel<*>>()
 
-            }
+        models.add(LabelModel_().labelResId(R.string.public_channel))
+
+        models.addAll(dataList.filter {
+            it is Channel
+                    && it.isIm == false
+                    && it.isArchived == false
+                    && it.isMember == true
+                    && it.isGroup == false
+        }.map { channel ->
+            ChannelModel_()
+                    .channel(channel as Channel)
+                    .itemOnClickListener { _, _, clickedView, _ ->
+                        with(clickedView.context) {
+                            mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
+                                putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
+                            })
+                        }
+                    }
+        })
+
+        models.add(LabelModel_().labelResId(R.string.private_channel))
+
+        models.addAll(dataList.filter {
+            it is Channel
+                    && it.isIm == false
+                    && it.isArchived == false
+                    && it.isMember == true
+                    && it.isGroup == true
+        }.map { channel ->
+            ChannelModel_()
+                    .channel(channel as Channel)
+                    .itemOnClickListener { _, _, clickedView, _ ->
+                        with(clickedView.context) {
+                            mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
+                                putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
+                            })
+                        }
+                    }
+        })
+
+        models.add(LabelModel_().labelResId(R.string.channel_archived))
+
+        models.addAll(dataList.filter {
+            it is Channel
+                    && it.isIm == false
+                    && it.isArchived == true
+                    && it.isMember == true
+        }.map { channel ->
+            ChannelModel_()
+                    .channel(channel as Channel)
+                    .itemOnClickListener { _, _, clickedView, _ ->
+                        with(clickedView.context) {
+                            mView.gotoActivity(Intent(this, ChatActivity::class.java).apply {
+                                putExtra(ChatPresenter.KEY_EXTRA_CHANNEL, channel)
+                                putExtra(ChatPresenter.KEY_EXTRA_IS_IM, false)
+                            })
+                        }
+                    }
+        })
+
+        return models
+    }
 }

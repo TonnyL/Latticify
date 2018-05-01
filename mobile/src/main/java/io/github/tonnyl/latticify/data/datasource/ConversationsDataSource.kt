@@ -41,7 +41,7 @@ interface ConversationsDataSource {
              types: String): Observable<ChannelsWrapper>
 
     fun members(channelId: String,
-                cursor: String,
+                cursor: String = "",
                 limit: Int = Api.LIMIT): Observable<MembersWrapper>
 
     fun open(channelId: String,

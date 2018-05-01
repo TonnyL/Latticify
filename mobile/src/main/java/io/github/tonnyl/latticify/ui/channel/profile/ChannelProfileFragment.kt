@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.airbnb.epoxy.EpoxyModel
@@ -15,6 +14,10 @@ import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelActivity
 import io.github.tonnyl.latticify.ui.channel.edit.EditChannelPresenter
+import io.github.tonnyl.latticify.ui.channel.invite.InviteMemberActivity
+import io.github.tonnyl.latticify.ui.channel.invite.InviteMemberPresenter
+import io.github.tonnyl.latticify.ui.channel.members.ChannelMembersActivity
+import io.github.tonnyl.latticify.ui.channel.members.ChannelMembersPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -37,6 +40,7 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         fun newInstance() = ChannelProfileFragment()
 
         const val REQUEST_EDIT_CHANNEL = 101
+        const val REQUEST_INVITE_MEMBER = 102
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -80,12 +84,18 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_EDIT_CHANNEL) {
-                val update = data?.getBooleanExtra(EditChannelActivity.EXTRA_RESULT_UPDATE, false)
-                if (update == true) {
-                    mPresenter.fetchLastedInfo()
+            when (requestCode) {
+                REQUEST_EDIT_CHANNEL -> {
+                    val update = data?.getBooleanExtra(EditChannelActivity.EXTRA_RESULT_UPDATE, false)
+                    if (update == true) {
+                        mPresenter.fetchLastedInfo()
+                    }
                 }
-                Log.d("XXXX", "XXXX")
+                REQUEST_INVITE_MEMBER -> {
+                    if (data?.getBooleanExtra(InviteMemberActivity.EXTRA_RESULT_INVITE_MEMBER, false) == true) {
+                        mPresenter.fetchLastedInfo()
+                    }
+                }
             }
         }
     }
@@ -98,7 +108,7 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
         channelNameTextView.text = getString(R.string.channel_name_with_hashtag).format(channel.name)
         purposeTextView.text = if (channel.purpose?.value.isNullOrEmpty()) getString(R.string.no_purpose_set) else channel.purpose?.value
         topicTextView.text = if (channel.topic?.value.isNullOrEmpty()) getString(R.string.no_topic_set) else channel.topic?.value
-        memberListTextView.text = getString(R.string.member_list).format(channel.numMembers
+        memberListTextView.text = getString(R.string.member_list_with_number).format(channel.numMembers
                 ?: channel.members?.size)
 
         channel.creator?.let {
@@ -123,6 +133,18 @@ class ChannelProfileFragment : Fragment(), ChannelProfileContract.View {
 
         leaveTextView.setOnClickListener {
             mPresenter.leaveChannel()
+        }
+
+        addMembersTextView.setOnClickListener {
+            startActivityForResult(Intent(context, InviteMemberActivity::class.java).apply {
+                putExtra(InviteMemberPresenter.KEY_EXTRA_CHANNEL_ID, channel.id)
+            }, REQUEST_INVITE_MEMBER)
+        }
+
+        memberListTextView.setOnClickListener {
+            startActivity(Intent(context, ChannelMembersActivity::class.java).apply {
+                putExtra(ChannelMembersPresenter.KEY_EXTRA_CHANNEL_ID, channel.id)
+            })
         }
 
     }

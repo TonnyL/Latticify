@@ -1,6 +1,7 @@
 package io.github.tonnyl.latticify.ui
 
 import android.accounts.AccountManager
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -25,11 +26,10 @@ import io.github.tonnyl.latticify.ui.auth.AuthActivity
 import io.github.tonnyl.latticify.ui.auth.Authenticator
 import io.github.tonnyl.latticify.ui.channels.ChannelsFragment
 import io.github.tonnyl.latticify.ui.channels.ChannelsPresenter
-import io.github.tonnyl.latticify.ui.channels.add.AddChannelActivity
+import io.github.tonnyl.latticify.ui.channels.create.CreateChannelActivity
+import io.github.tonnyl.latticify.ui.channels.create.CreateChannelPresenter
 import io.github.tonnyl.latticify.ui.directory.DirectoryFragment
 import io.github.tonnyl.latticify.ui.directory.DirectoryPresenter
-import io.github.tonnyl.latticify.ui.groups.GroupsFragment
-import io.github.tonnyl.latticify.ui.groups.GroupsPresenter
 import io.github.tonnyl.latticify.ui.ims.IMsFragment
 import io.github.tonnyl.latticify.ui.ims.IMsPresenter
 import io.github.tonnyl.latticify.ui.profile.ProfileActivity
@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var mChannelsFragment: ChannelsFragment
     private lateinit var mImsFragment: IMsFragment
-    private lateinit var mGroupsFragment: GroupsFragment
     private lateinit var mStarredItemsFragment: StarredItemsFragment
     private lateinit var mDirectoryFragment: DirectoryFragment
 
@@ -70,6 +69,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             toolbar.setTitle(R.string.app_name)
         }
 
+    }
+
+    companion object {
+        const val REQUEST_CREATE_IM = 101
+        const val REQUEST_CREATE_CHANNEL = 102
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,13 +95,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 }
                 R.id.nav_channels -> {
-                    startActivity(Intent(this, AddChannelActivity::class.java))
-                }
-                R.id.nav_groups -> {
-
-                }
-                R.id.nav_directory -> {
-
+                    startActivityForResult(Intent(this, CreateChannelActivity::class.java).apply {
+                        putExtra(CreateChannelPresenter.KEY_CREATE_CHANNEL, true)
+                    }, REQUEST_CREATE_CHANNEL)
                 }
             }
         }
@@ -164,31 +164,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 showFragmentAndHideRest(mImsFragment)
                 toolbar.title = getString(R.string.nav_messages)
                 mCheckedItemId = R.id.nav_direct_messages
+
+                fab.show()
             }
             R.id.nav_channels -> {
                 showFragmentAndHideRest(mChannelsFragment)
                 toolbar.title = getString(R.string.nav_channels)
                 mCheckedItemId = R.id.nav_channels
-            }
-            R.id.nav_groups -> {
-                showFragmentAndHideRest(mGroupsFragment)
-                toolbar.title = getString(R.string.nav_groups)
-                mCheckedItemId = R.id.nav_groups
+
+                fab.show()
             }
             R.id.nav_directory -> {
                 showFragmentAndHideRest(mDirectoryFragment)
                 toolbar.title = getString(R.string.directory)
                 mCheckedItemId = R.id.nav_directory
+
+                fab.hide()
             }
             R.id.nav_starred_items -> {
                 showFragmentAndHideRest(mStarredItemsFragment)
                 toolbar.title = getString(R.string.nav_starred)
                 mCheckedItemId = R.id.nav_starred_items
+
+                fab.hide()
             }
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CREATE_IM -> {
+                    mImsFragment.onActivityResult(requestCode, resultCode, data)
+                }
+                REQUEST_CREATE_CHANNEL -> {
+                    mChannelsFragment.onActivityResult(requestCode, resultCode, data)
+                }
+            }
+        }
     }
 
     private fun initViews() {
@@ -210,17 +228,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mImsFragment = IMsFragment.newInstance()
         mDirectoryFragment = DirectoryFragment.newInstance()
         mStarredItemsFragment = StarredItemsFragment.newInstance()
-        mGroupsFragment = GroupsFragment.newInstance()
 
         addFragments(mChannelsFragment,
                 mImsFragment,
-                mGroupsFragment,
                 mDirectoryFragment,
                 mStarredItemsFragment)
 
         ChannelsPresenter(mChannelsFragment)
         IMsPresenter(mImsFragment)
-        GroupsPresenter(mGroupsFragment)
         DirectoryPresenter(mDirectoryFragment)
         StarredItemsPresenter(mStarredItemsFragment)
 

@@ -30,8 +30,6 @@ VERIFICATION_TOKEN=<YOUR VERIFICATION TOKEN>
 As for *Callback URL*, you need to define your own url and then modify relative constants in [Api.kt](./mobile/src/main/java/io/github/tonnyl/latticify/retrofit/Api.kt).
 
 ### Open the Project in Android Studio
-Latticify requires **Android Studio 3.0 (or newer).**
-
 Open the `Latticify/` directory in Android Studio.
 
 ### Get Started

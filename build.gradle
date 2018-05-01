@@ -39,7 +39,7 @@ ext {
     // App dependencies
     libraries = [
             roomVersion                  : '1.0.0',
-            lottieVersion                : '2.5.1',
+            lottieVersion                : '2.5.4',
             supportLibraryVersion        : '27.1.1',
             constraintLayoutVersion      : '1.1.0',
             rxKotlinVersion              : '2.2.0',
@@ -52,7 +52,6 @@ ext {
             okhttpLoggingInterceptor     : '3.10.0',
             glideVersion                 : '4.7.1',
             matisseVersion               : '0.4.3',
-            flexBoxVersion               : '0.3.2',
             wearableVersion              : '2.3.0',
             gmsWearableVersion           : '15.0.0',
             junitVersion                 : '4.12',

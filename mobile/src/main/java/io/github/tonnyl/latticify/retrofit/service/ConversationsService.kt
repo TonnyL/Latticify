@@ -191,7 +191,7 @@ interface ConversationsService {
     @FormUrlEncoded
     fun members(@Field("token") token: String,
                 @Field("channel") channelId: String,
-                @Field("cursor") cursor: String,
+                @Field("cursor") cursor: String = "",
                 @Field("limit") limit: Int = Api.LIMIT): Observable<MembersWrapper>
 
     /**

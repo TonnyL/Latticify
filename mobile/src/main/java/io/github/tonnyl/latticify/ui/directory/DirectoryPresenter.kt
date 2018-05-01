@@ -60,6 +60,8 @@ class DirectoryPresenter(mView: ListContract.View) : ListPresenter(mView) {
 
     override fun fetchDataOfNextPage() {
         if (mCursor.isNotEmpty()) {
+            mView.showLoadingMore(true)
+
             val disposable = UsersRepository.list(mCursor)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -84,16 +86,17 @@ class DirectoryPresenter(mView: ListContract.View) : ListPresenter(mView) {
     }
 
     override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> =
-            dataList.filter { it is User }
-                    .map { user ->
-                        UserModel_()
-                                .user(user as User)
-                                .itemOnClickListener { _, _, clickedView, _ ->
-                                    mView.gotoActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
-                                        putExtra(ProfilePresenter.KEY_EXTRA_USER, user)
-                                    })
-                                }
+            dataList.filter {
+                it is User && !it.deleted
+            }.map { user ->
+                UserModel_()
+                        .user(user as User)
+                        .itemOnClickListener { _, _, clickedView, _ ->
+                            mView.gotoActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
+                                putExtra(ProfilePresenter.KEY_EXTRA_USER, user)
+                            })
+                        }
 
-                    }
+            }
 
 }

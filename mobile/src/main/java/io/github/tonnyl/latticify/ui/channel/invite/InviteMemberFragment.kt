@@ -1,27 +1,29 @@
-package io.github.tonnyl.latticify.mvp
+package io.github.tonnyl.latticify.ui.channel.invite
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.airbnb.epoxy.EpoxyModel
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.epoxy.LatticifyEpoxyAdapter
 import kotlinx.android.synthetic.main.fragment_list.*
 
-/**
- * Created by lizhaotailang on 19/09/2017.
- */
-abstract class ListFragment : Fragment(), ListContract.View {
+class InviteMemberFragment : Fragment(), InviteMemberContract.View {
 
-    private lateinit var mPresenter: ListContract.Presenter
+    private lateinit var mPresenter: InviteMemberContract.Presenter
     private val mAdapter = LatticifyEpoxyAdapter()
 
     private var mIsLoading = false
+
+    private var mMenu: Menu? = null
+
+    companion object {
+        fun newInstance() = InviteMemberFragment()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
@@ -61,6 +63,8 @@ abstract class ListFragment : Fragment(), ListContract.View {
         }
 
         mPresenter.subscribe()
+
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroyView() {
@@ -69,8 +73,25 @@ abstract class ListFragment : Fragment(), ListContract.View {
         mPresenter.unsubscribe()
     }
 
-    override fun setPresenter(presenter: ListContract.Presenter) {
-        mPresenter = presenter
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        mMenu = menu
+        inflater?.inflate(R.menu.menu_done_with_progress, menu)
+
+        mMenu?.getItem(0)?.title = getString(R.string.menu_done_with_progress).format(0)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+            }
+            R.id.action_done -> {
+                (mPresenter as InviteMemberPresenter).inviteMember()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showData(epoxyModels: Collection<EpoxyModel<*>>) {
@@ -114,10 +135,21 @@ abstract class ListFragment : Fragment(), ListContract.View {
         recyclerView.visibility = View.GONE
     }
 
-    override fun gotoActivity(intent: Intent) {
-        activity?.let {
-            startActivity(intent)
+    override fun setPresenter(presenter: InviteMemberContract.Presenter) {
+        mPresenter = presenter
+    }
+
+    override fun updateProgress(currentSelected: Int) {
+        mMenu?.getItem(0)?.title = getString(R.string.menu_done_with_progress).format(currentSelected)
+    }
+
+    override fun finish() {
+        val intent = Intent().apply {
+            putExtra(InviteMemberActivity.EXTRA_RESULT_INVITE_MEMBER, true)
         }
+        activity?.setResult(Activity.RESULT_OK, intent)
+
+        activity?.finish()
     }
 
 }

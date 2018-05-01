@@ -68,8 +68,6 @@ androidExtensions {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    wearApp project(':wear')
-
     // Kotlin stdlib
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
@@ -105,8 +103,6 @@ dependencies {
     kapt "com.airbnb.android:epoxy-processor:${libraries.epoxyVersion}"
     // Matisse
     implementation "com.zhihu.android:matisse:${libraries.matisseVersion}"
-    // FlexBox layout
-    implementation "com.google.android:flexbox:${libraries.flexBoxVersion}"
     // Lottie
     implementation "com.airbnb.android:lottie:${libraries.lottieVersion}"
     // Charles

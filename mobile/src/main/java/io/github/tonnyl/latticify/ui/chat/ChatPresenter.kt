@@ -19,6 +19,8 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by lizhaotailang on 06/10/2017.
@@ -366,6 +368,39 @@ class ChatPresenter(
                     }
                 }, {
                     it.printStackTrace()
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun inviteMember() {
+        val disposable = ConversationsRepository.members(mChannelId)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.ok) {
+                        it.members
+                    } else {
+                        Collections.emptyList<String>()
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    mView.gotoInviteMember(ArrayList(it))
+                }, {
+                    it.printStackTrace()
+                })
+        mCompositeDisposable.add(disposable)
+    }
+
+    override fun updateChannel() {
+        val disposable = ChannelsRepository.info(mChannelId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.ok) {
+                        mChannel = it.channel
+                    }
+                }, {
+
                 })
         mCompositeDisposable.add(disposable)
     }

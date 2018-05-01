@@ -71,8 +71,8 @@
             android:theme="@style/AppTheme.DarkStatusBar" />
 
         <activity
-            android:name=".ui.channels.add.AddChannelActivity"
-            android:label="@string/add_channel"
+            android:name=".ui.channels.create.CreateChannelActivity"
+            android:label="@string/create_channel"
             android:theme="@style/AppTheme.DarkStatusBar" />
 
         <activity
@@ -88,6 +88,16 @@
         <activity
             android:name=".ui.file.FileActivity"
             android:label="@string/file"
+            android:theme="@style/AppTheme.DarkStatusBar" />
+
+        <activity
+            android:name=".ui.channel.invite.InviteMemberActivity"
+            android:label="@string/menu_invite_members_to_channel"
+            android:theme="@style/AppTheme.DarkStatusBar" />
+
+        <activity
+            android:name=".ui.channel.members.ChannelMembersActivity"
+            android:label="@string/member_list"
             android:theme="@style/AppTheme.DarkStatusBar" />
 
         <service android:name=".service.WebSocketService" />

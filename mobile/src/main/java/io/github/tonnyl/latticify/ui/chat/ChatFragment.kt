@@ -33,6 +33,8 @@ import io.github.tonnyl.latticify.data.event.UserTyping
 import io.github.tonnyl.latticify.epoxy.LoadingModel_
 import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
+import io.github.tonnyl.latticify.ui.channel.invite.InviteMemberActivity
+import io.github.tonnyl.latticify.ui.channel.invite.InviteMemberPresenter
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfileActivity
 import io.github.tonnyl.latticify.ui.channel.profile.ChannelProfilePresenter
 import io.github.tonnyl.latticify.ui.file.FileActivity
@@ -119,7 +121,7 @@ class ChatFragment : Fragment(), ChatContract.View {
         val REQUEST_TAKE_PHOTO = 103
 
         val REQUEST_CHANNEL_DETAILS = 110
-
+        val REQUEST_INVITE_MEMBER = 111
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -234,10 +236,10 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun onPrepareOptionsMenu(menu: Menu?) {
         super.onPrepareOptionsMenu(menu)
 
-        listOf(menu?.getItem(0), menu?.getItem(1), menu?.getItem(2)).forEach {
+        listOf(menu?.getItem(0), menu?.getItem(1)).forEach {
             it?.isVisible = mIsIM != true
         }
-        listOf(menu?.getItem(3), menu?.getItem(4)).forEach {
+        listOf(menu?.getItem(2), menu?.getItem(3)).forEach {
             it?.isVisible = mIsIM == true
         }
 
@@ -255,10 +257,7 @@ class ChatFragment : Fragment(), ChatContract.View {
                 mPresenter.viewDetails()
             }
             R.id.action_invite_members_to_channel -> {
-
-            }
-            R.id.action_directory -> {
-
+                mPresenter.inviteMember()
             }
 
         // IM
@@ -303,6 +302,11 @@ class ChatFragment : Fragment(), ChatContract.View {
                     val exitBecauseChannelArchived = data?.getBooleanExtra(ChannelProfileActivity.EXTRA_RESULT_ARCHIVE, false)
                     if (exitBecauseChannelArchived == true || exitBecauseLeftChannel == true) {
                         activity?.finish()
+                    }
+                }
+                REQUEST_INVITE_MEMBER -> {
+                    if (data?.getBooleanExtra(InviteMemberActivity.EXTRA_RESULT_INVITE_MEMBER, false) == true) {
+                        mPresenter.updateChannel()
                     }
                 }
             }
@@ -373,7 +377,7 @@ class ChatFragment : Fragment(), ChatContract.View {
         val intent = Intent(activity, ChannelProfileActivity::class.java).apply {
             putExtra(ChannelProfilePresenter.KEY_EXTRA_CHANNEL, channel)
         }
-        activity?.startActivityForResult(intent, REQUEST_CHANNEL_DETAILS)
+        startActivityForResult(intent, REQUEST_CHANNEL_DETAILS)
     }
 
     override fun insertNewMessage(epoxyModel: EpoxyModel<*>, position: Int) {
@@ -523,6 +527,12 @@ class ChatFragment : Fragment(), ChatContract.View {
         })
     }
 
+    override fun gotoInviteMember(list: ArrayList<String>) {
+        startActivityForResult(Intent(context, InviteMemberActivity::class.java).apply {
+            putExtra(InviteMemberPresenter.KEY_EXTRA_CHANNEL_ID, mChannel?.id)
+        }, REQUEST_INVITE_MEMBER)
+    }
+
     @SuppressLint("InflateParams")
     private fun showBottomSheetDialog() {
         context?.let {
@@ -628,8 +638,9 @@ class ChatFragment : Fragment(), ChatContract.View {
             context?.let {
                 val photoURI = FileProvider.getUriForFile(it, "${it.packageName}.provider", photoFile)
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO)
             }
+            startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO)
+
         }
     }
 

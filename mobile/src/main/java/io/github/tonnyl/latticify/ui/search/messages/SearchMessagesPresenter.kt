@@ -42,6 +42,7 @@ class SearchMessagesPresenter(mView: ListContract.View) : ListPresenter(mView) {
         if (mPagination == null || mPagination?.page == mPagination?.pageCount) {
             return
         }
+        mView.showLoadingMore(true)
 
         val disposable = mSearchRepository.messages(query = mQueryWords, page = mPagination!!.page + 1)
                 .subscribeOn(Schedulers.io())

@@ -1,6 +1,5 @@
 package io.github.tonnyl.latticify.ui.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.github.tonnyl.latticify.R
@@ -32,11 +31,6 @@ class ChatActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, mChannelFragment, ChatFragment::class.java.simpleName)
                 .commit()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        mChannelFragment.onActivityResult(requestCode, resultCode, data)
     }
 
 }

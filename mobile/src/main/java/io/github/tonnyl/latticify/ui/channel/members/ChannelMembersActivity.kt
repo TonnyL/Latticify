@@ -1,16 +1,13 @@
-package io.github.tonnyl.latticify.ui.channels.add
+package io.github.tonnyl.latticify.ui.channel.members
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.github.tonnyl.latticify.R
 import kotlinx.android.synthetic.main.activity_common.*
 
-/**
- * Created by lizhaotailang on 11/10/2017.
- */
-class AddChannelActivity : AppCompatActivity() {
+class ChannelMembersActivity : AppCompatActivity() {
 
-    private lateinit var mAddChannelFragment: AddChannelFragment
+    private lateinit var mChannelMembersFragment: ChannelMembersFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,14 +16,13 @@ class AddChannelActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        mAddChannelFragment = AddChannelFragment.newInstance()
+        mChannelMembersFragment = ChannelMembersFragment.newInstance()
 
-        AddChannelPresenter(mAddChannelFragment)
+        ChannelMembersPresenter(mChannelMembersFragment, intent.getStringExtra(ChannelMembersPresenter.KEY_EXTRA_CHANNEL_ID))
 
         supportFragmentManager.beginTransaction()
-                .add(R.id.container, mAddChannelFragment, AddChannelFragment::class.java.simpleName)
+                .add(R.id.container, mChannelMembersFragment, ChannelMembersFragment::class.java.simpleName)
                 .commit()
-
     }
 
 }

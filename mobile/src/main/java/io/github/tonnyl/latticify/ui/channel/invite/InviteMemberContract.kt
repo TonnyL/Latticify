@@ -1,12 +1,10 @@
-package io.github.tonnyl.latticify.mvp
+package io.github.tonnyl.latticify.ui.channel.invite
 
-import android.content.Intent
 import com.airbnb.epoxy.EpoxyModel
+import io.github.tonnyl.latticify.mvp.BasePresenter
+import io.github.tonnyl.latticify.mvp.BaseView
 
-/**
- * Created by lizhaotailang on 24/09/2017.
- */
-interface ListContract {
+interface InviteMemberContract {
 
     interface View : BaseView<Presenter> {
 
@@ -24,7 +22,9 @@ interface ListContract {
 
         fun showErrorView()
 
-        fun gotoActivity(intent: Intent)
+        fun updateProgress(currentSelected: Int)
+
+        fun finish()
 
     }
 
@@ -37,6 +37,8 @@ interface ListContract {
         fun fetchDataOfNextPage()
 
         fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>>
+
+        fun inviteMember()
 
     }
 

@@ -24,10 +24,6 @@
             android:icon="@drawable/ic_channel_black_24dp"
             android:title="@string/nav_channels" />
         <item
-            android:id="@+id/nav_groups"
-            android:icon="@drawable/ic_group_black_24dp"
-            android:title="@string/nav_groups" />
-        <item
             android:id="@+id/nav_directory"
             android:icon="@drawable/ic_contacts_black_24dp"
             android:title="@string/directory" />

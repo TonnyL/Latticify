@@ -7,8 +7,6 @@ import io.github.tonnyl.latticify.mvp.ListFragment
  */
 class SearchMessagesFragment : ListFragment() {
 
-    override var ignoreScrollChange: Boolean = true
-
     companion object {
         @JvmStatic
         fun newInstance() = SearchMessagesFragment()

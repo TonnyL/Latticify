@@ -47,6 +47,7 @@ class SearchFilesPresenter(mView: ListContract.View) : ListPresenter(mView) {
                 || mQueryWords.isEmpty()) {
             return
         }
+        mView.showLoadingMore(true)
 
         val disposable = mSearchRepository.files(query = mQueryWords, page = mPagination!!.page + 1)
                 .subscribeOn(Schedulers.io())

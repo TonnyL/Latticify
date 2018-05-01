@@ -11,9 +11,12 @@ data class MembersWrapper(
         val ok: Boolean,
 
         @SerializedName("members")
-        val members: List<String>,
+        val members: List<String>?,
 
         @SerializedName("response_metadata")
-        val responseMetaData: ResponseMetaData
+        val responseMetaData: ResponseMetaData?,
+
+        @SerializedName("error")
+        val error: String?
 
 )

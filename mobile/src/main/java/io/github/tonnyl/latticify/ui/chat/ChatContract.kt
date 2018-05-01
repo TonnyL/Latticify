@@ -58,6 +58,8 @@ interface ChatContract {
 
         fun gotoFileDetails(fileId: String)
 
+        fun gotoInviteMember(list: ArrayList<String>)
+
     }
 
     interface Presenter : BasePresenter {
@@ -93,6 +95,10 @@ interface ChatContract {
         fun closeIM()
 
         fun uploadFile(path: String)
+
+        fun inviteMember()
+
+        fun updateChannel()
 
     }
 
