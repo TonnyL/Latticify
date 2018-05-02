@@ -2,6 +2,7 @@ package io.github.tonnyl.latticify.ui.starred
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
+import io.github.tonnyl.latticify.data.Paging
 import io.github.tonnyl.latticify.data.StarredPinnedItem
 import io.github.tonnyl.latticify.data.repository.StarredItemsRepository
 import io.github.tonnyl.latticify.epoxy.StarredItemModel_
@@ -18,11 +19,10 @@ class StarredItemsPresenter(mView: ListContract.View) : ListPresenter(mView) {
 
     override var mCursor: String = ""
 
-    private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
-    private var mPage = 1
+    private val mCompositeDisposable = CompositeDisposable()
+    private var mPaging: Paging? = null
 
     override fun subscribe() {
-        mView.setLoadingIndicator(true)
         fetchData()
     }
 
@@ -31,6 +31,8 @@ class StarredItemsPresenter(mView: ListContract.View) : ListPresenter(mView) {
     }
 
     override fun fetchData() {
+        mView.setLoadingIndicator(true)
+
         val disposable = StarredItemsRepository.list(page = 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -42,7 +44,7 @@ class StarredItemsPresenter(mView: ListContract.View) : ListPresenter(mView) {
                         } else {
                             mView.showEmptyView()
                         }
-                        mPage = it.paging.page
+                        mPaging = it.paging
                     } else {
                         mView.showErrorView()
                     }
@@ -55,22 +57,24 @@ class StarredItemsPresenter(mView: ListContract.View) : ListPresenter(mView) {
     }
 
     override fun fetchDataOfNextPage() {
-        mView.showLoadingMore(true)
+        if (mPaging != null && mPaging?.page != mPaging?.total) {
+            mView.showLoadingMore(true)
 
-        val disposable = StarredItemsRepository.list(page = mPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    mView.setLoadingIndicator(false)
-                    if (it.ok && it.items.isNotEmpty()) {
-                        mView.showData(generateEpoxyModels(it.items))
-                    }
-                    mPage = it.paging.page
-                }, {
-                    it.printStackTrace()
-                    mView.setLoadingIndicator(false)
-                })
-        mCompositeDisposable.add(disposable)
+            val disposable = StarredItemsRepository.list(page = mPaging?.page!!)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        mView.setLoadingIndicator(false)
+                        if (it.ok && it.items.isNotEmpty()) {
+                            mView.showData(generateEpoxyModels(it.items))
+                        }
+                        mPaging = it.paging
+                    }, {
+                        it.printStackTrace()
+                        mView.setLoadingIndicator(false)
+                    })
+            mCompositeDisposable.add(disposable)
+        }
     }
 
     override fun generateEpoxyModels(dataList: List<*>): Collection<EpoxyModel<*>> =

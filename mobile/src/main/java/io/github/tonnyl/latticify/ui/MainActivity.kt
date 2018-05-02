@@ -86,9 +86,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         getToken()
 
         navView.getHeaderView(0).accountActionImageView.setOnClickListener {
-            startActivity(Intent(this, AuthActivity::class.java))
+            startActivity(Intent(android.provider.Settings.ACTION_SYNC_SETTINGS))
         }
 
+        fab.hide()
         fab.setOnClickListener {
             when (mCheckedItemId) {
                 R.id.nav_direct_messages -> {
@@ -165,7 +166,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toolbar.title = getString(R.string.nav_messages)
                 mCheckedItemId = R.id.nav_direct_messages
 
-                fab.show()
+                fab.hide()
             }
             R.id.nav_channels -> {
                 showFragmentAndHideRest(mChannelsFragment)

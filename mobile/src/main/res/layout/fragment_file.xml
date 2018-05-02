@@ -116,6 +116,13 @@
                     app:lottie_fileName="material_wave_loading.json"
                     app:lottie_loop="true" />
 
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/fileImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
             </FrameLayout>
 
             <TextView

@@ -14,7 +14,6 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.glide.GlideLoader
-import io.github.tonnyl.latticify.util.isImage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -52,15 +51,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                 msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_0, time)
             } else {
                 msgExtraTextView?.text = msgExtraTextView?.context?.getString(R.string.message_extra_info_1, time)
-            }
-
-            message.file?.let { file ->
-                if (isImage(file.mimeType)) {
-                    imageMessageImageView?.let {
-                        it.visibility = View.VISIBLE
-                        GlideLoader.loadNormal(it, file.urlPrivate)
-                    }
-                }
             }
 
             message.icons?.let { icons ->
@@ -107,7 +97,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
         var messageContentLayout: LinearLayout? = null
         var messageContentTextView: AppCompatTextView? = null
         var msgExtraTextView: AppCompatTextView? = null
-        var imageMessageImageView: ImageView? = null
         var botBadgeTextView: TextView? = null
 
         override fun bindView(itemView: View?) {
@@ -119,7 +108,6 @@ abstract class MessageModel : EpoxyModelWithHolder<MessageModel.MessageHolder>()
                     messageContentLayout = findViewById(R.id.messageContentLayout)
                     messageContentTextView = findViewById(R.id.messageContentTextView)
                     msgExtraTextView = findViewById(R.id.msgExtraTextView)
-                    imageMessageImageView = findViewById(R.id.imageMessageImageView)
                     botBadgeTextView = findViewById(R.id.botBadgeTextView)
                 }
             }

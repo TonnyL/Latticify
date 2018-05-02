@@ -63,8 +63,8 @@
             app:tabBackground="@color/colorPrimary"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorAccent"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextColor="@color/textColorSecondary" />
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@color/textColorPrimary" />
 
     </android.support.design.widget.AppBarLayout>
 

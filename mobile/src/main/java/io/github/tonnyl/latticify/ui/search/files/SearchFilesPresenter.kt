@@ -77,8 +77,9 @@ class SearchFilesPresenter(mView: ListContract.View) : ListPresenter(mView) {
                             .file(file as File)
                             .itemClickListener(View.OnClickListener {
                                 (mView as SearchFilesFragment).context?.let {
-                                    it.startActivity(Intent(it, FileActivity::class.java)
-                                            .apply { putExtra(FilePresenter.KEY_EXTRA_FILE, file) })
+                                    it.startActivity(Intent(it, FileActivity::class.java).apply {
+                                        putExtra(FilePresenter.KEY_EXTRA_FILE_ID, file.id)
+                                    })
                                 }
                             })
                 }

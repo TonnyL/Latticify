@@ -21,10 +21,8 @@ class FilePresenter(
     private val mFilesRepository = FilesRepository()
 
     companion object {
-        @JvmField
-        val KEY_EXTRA_FILE = "KEY_EXTRA_FILE"
-        @JvmField
-        val KEY_EXTRA_FILE_ID = "KEY_EXTRA_FILE_ID"
+        const val KEY_EXTRA_FILE = "KEY_EXTRA_FILE"
+        const val KEY_EXTRA_FILE_ID = "KEY_EXTRA_FILE_ID"
     }
 
     init {

@@ -1,5 +1,6 @@
 package io.github.tonnyl.latticify.epoxy
 
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,6 +10,10 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.SearchedMessageMatch
+import io.github.tonnyl.latticify.data.repository.UserPoolRepository
+import io.github.tonnyl.latticify.glide.GlideLoader
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by lizhaotailang on 14/10/2017.
@@ -29,11 +34,26 @@ abstract class SearchedMessageModel : EpoxyModelWithHolder<SearchedMessageModel.
         with(holder) {
             itemLayout?.setOnClickListener(itemClickListener)
 
-            messageToTextView?.text = message.channel.name
-            timeTextView?.text = android.text.format.DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong(), java.lang.System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
-            usernameTextView?.text = message.username
+            timeTextView?.text = DateUtils.getRelativeTimeSpanString(message.ts.substringBefore(".").toLong() * 1000, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
             messageContentTextView?.text = message.text
 
+            UserPoolRepository.getUser(message.user)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ user ->
+                        avatarImageView?.let {
+                            GlideLoader.loadAvatar(it, user.profile.image192)
+                        }
+
+                        if (message.channel.name.startsWith("U")) {
+                            messageToTextView?.text = if (user.profile.displayName.isNotEmpty()) user.profile.displayName else user.name
+                        }
+
+                        usernameTextView?.text = if (user.profile.displayName.isNotEmpty()) user.profile.displayName else user.name
+
+                    }, {
+
+                    })
         }
     }
 

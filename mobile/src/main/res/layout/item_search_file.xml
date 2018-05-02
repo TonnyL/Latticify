@@ -12,10 +12,7 @@
         android:id="@+id/avatar_image_view"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
-        android:background="@drawable/bg_avatar"
-        android:padding="@dimen/avatar_padding"
-        android:src="@drawable/ic_folder_black_24dp"
-        android:tint="@android:color/white" />
+        android:contentDescription="@string/avatar" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -222,6 +222,7 @@
     <string name="private_channel">Private</string>
     <string name="public_channel">Public</string>
     <string name="member_list">Member list</string>
+    <string name="status_updated">Status updated</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 minutes</item>

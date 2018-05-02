@@ -219,6 +219,7 @@
     <string name="private_channel">私密</string>
     <string name="public_channel">公开</string>
     <string name="member_list">成员列表</string>
+    <string name="status_updated">状态已更新</string>
 
     <string-array name="snooze_notifications_entries">
         <item>20 分钟</item>

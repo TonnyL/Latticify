@@ -19,7 +19,7 @@ class UsersProfileRepository : UsersProfileDataSource {
     }
 
 
-    override fun setUsersProfile(name: String, profile: String, userId: String, value: String): Observable<UsersProfileWrapper> {
+    override fun setUsersProfile(name: String?, profile: String?, userId: String?, value: String?): Observable<UsersProfileWrapper> {
         return mUsersProfileService.setUsersProfile(mToken, name, profile, userId, value)
     }
 

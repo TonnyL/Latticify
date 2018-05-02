@@ -5,9 +5,13 @@ import android.support.v7.graphics.Palette
 import android.widget.ImageView
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
+import io.github.tonnyl.latticify.R
+import io.github.tonnyl.latticify.retrofit.RetrofitClient
 
 /**
  * Created by lizhaotailang on 23/09/2017.
@@ -18,14 +22,19 @@ object GlideLoader {
         GlideApp.with(imageView.context)
                 .asBitmap()
                 .load(url)
+                .placeholder(R.drawable.bg_avatar)
                 .circleCrop()
                 .into(imageView)
     }
 
     fun loadNormal(imageView: ImageView, url: String?) {
+        val headers = LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer ${RetrofitClient.mToken}")
+                .build()
+
         GlideApp.with(imageView.context)
                 .asBitmap()
-                .load(url)
+                .load(GlideUrl(url, headers))
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView)

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.Toast
 import io.github.tonnyl.latticify.R
 import kotlinx.android.synthetic.main.fragment_set_status.*
 
@@ -47,23 +48,23 @@ class SetStatusFragment : Fragment(), SetStatusContract.View {
         })
 
         meetingTextView.setOnClickListener {
-
+            statusEditText.setText(R.string.in_a_meeting)
         }
 
         commutingTextView.setOnClickListener {
-
+            statusEditText.setText(R.string.commuting)
         }
 
         outSickTextView.setOnClickListener {
-
+            statusEditText.setText(R.string.out_sick)
         }
 
         vacationingTextView.setOnClickListener {
-
+            statusEditText.setText(R.string.vacationing)
         }
 
         workingRemotelyTextView.setOnClickListener {
-
+            statusEditText.setText(R.string.working_remotely)
         }
 
         mPresenter.subscribe()
@@ -85,10 +86,10 @@ class SetStatusFragment : Fragment(), SetStatusContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-
+                activity?.onBackPressed()
             }
             R.id.action_done -> {
-
+                mPresenter.updateStatus("", statusEditText.text.toString())
             }
         }
         return true
@@ -96,6 +97,20 @@ class SetStatusFragment : Fragment(), SetStatusContract.View {
 
     override fun setPresenter(presenter: SetStatusContract.Presenter) {
         mPresenter = presenter
+    }
+
+    override fun setStatus(statusEmoji: String, status: String) {
+        statusEditText.setText(status)
+    }
+
+    override fun showStatusUpdated() {
+        Toast.makeText(context, getString(R.string.status_updated), Toast.LENGTH_SHORT).show()
+
+        activity?.onBackPressed()
+    }
+
+    override fun showUpdateStatusFailed(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -13,7 +13,7 @@
         android:id="@+id/avatar_image_view"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
-        android:contentDescription="avatar"
+        android:contentDescription="@string/avatar"
         tools:src="@mipmap/ic_launcher" />
 
     <LinearLayout
@@ -64,15 +64,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/textColorPrimary"
             tools:text="Hello World" />
-
-        <ImageView
-            android:id="@+id/imageMessageImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="Image"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/msgExtraTextView"

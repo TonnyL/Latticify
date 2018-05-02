@@ -59,11 +59,11 @@ data class UsersProfile(
 
         @ColumnInfo(name = "status_text")
         @SerializedName("status_text")
-        val statusText: String?,
+        var statusText: String?,
 
         @ColumnInfo(name = "status_emoji")
         @SerializedName("status_emoji")
-        val statusEmoji: String?,
+        var statusEmoji: String?,
 
         @ColumnInfo(name = "title")
         @SerializedName("title")

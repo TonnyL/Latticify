@@ -24,7 +24,7 @@ interface UsersProfileService {
     @FormUrlEncoded
     fun getUsersProfile(@Field("token") token: String,
                         @Field("include_labels") includeLabels: Boolean = true,
-                        @Field("user") userId: String = ""): Observable<UsersProfileWrapper>
+                        @Field("user") userId: String): Observable<UsersProfileWrapper>
 
     /**
      * Set the profile information for a user, including name, email, current status, and other attributes.
@@ -40,9 +40,9 @@ interface UsersProfileService {
     @POST("users.profile.set")
     @FormUrlEncoded
     fun setUsersProfile(@Field("token") token: String,
-                        @Field("name") name: String,
-                        @Field("profile") profile: String,
-                        @Field("user") userId: String,
-                        @Field("value") value: String): Observable<UsersProfileWrapper>
+                        @Field("name") name: String? = null,
+                        @Field("profile") profile: String? = null,
+                        @Field("user") userId: String? = null,
+                        @Field("value") value: String? = null): Observable<UsersProfileWrapper>
 
 }

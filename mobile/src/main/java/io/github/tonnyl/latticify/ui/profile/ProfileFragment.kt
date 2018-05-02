@@ -64,15 +64,6 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             android.R.id.home -> {
                 activity?.onBackPressed()
             }
-            R.id.action_edit -> {
-
-            }
-            R.id.action_view_files -> {
-
-            }
-            R.id.action_invite_to_channel -> {
-
-            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -85,8 +76,8 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         with(user) {
             GlideLoader.loadAvatar(avatar_image_view, user.profile.image192)
 
-            name_text_view.text = user.name
-            username_text_view.text = user.realName
+            name_text_view.text = user.profile.displayName
+            username_text_view.text = user.name
 
             real_name_text_view.text = realName
 
@@ -114,9 +105,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
                 }
                 else -> {
                     if (hours == -1L)
-                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), tzLabel)
+                        context?.resources?.getQuantityString(R.plurals.timezone_behind, hours.toInt(), tzLabel)
                     else
-                        context?.resources?.getQuantityString(R.plurals.timezone_ahead, hours.toInt(), -hours.toInt(), tzLabel)
+                        context?.resources?.getQuantityString(R.plurals.timezone_behind, hours.toInt(), -hours.toInt(), tzLabel)
                 }
             }
         }

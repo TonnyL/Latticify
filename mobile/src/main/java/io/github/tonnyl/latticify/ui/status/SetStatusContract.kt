@@ -10,9 +10,17 @@ interface SetStatusContract {
 
     interface View : BaseView<Presenter> {
 
+        fun setStatus(statusEmoji: String, status: String)
+
+        fun showStatusUpdated()
+
+        fun showUpdateStatusFailed(msg: String)
+
     }
 
     interface Presenter : BasePresenter {
+
+        fun updateStatus(statusEmoji: String, status: String)
 
     }
 

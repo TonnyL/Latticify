@@ -46,6 +46,9 @@ data class UsersProfileWrapper(
         val userProfile: UsersProfile,
 
         @SerializedName("username")
-        val username: String?
+        val username: String?,
+
+        @SerializedName("error")
+        val error: String?
 
 )

@@ -180,6 +180,18 @@ class FileFragment : Fragment(), FileContract.View {
             content_web_view.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
         }
 
+        if (wrapper.file.mimeType == "image/jpeg"
+                || wrapper.file.mimeType == "image/png"
+                || wrapper.file.mimeType == "image/gif"
+                || wrapper.file.mimeType == "image/bmp"
+                || wrapper.file.mimeType == "image/webp") {
+            fileImageView.visibility = View.VISIBLE
+
+            GlideLoader.loadNormal(fileImageView, wrapper.file.urlPrivate)
+        } else {
+            fileImageView.visibility = View.GONE
+        }
+
         val disposable = UserPoolRepository.getUser(wrapper.file.user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
