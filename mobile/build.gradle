@@ -69,7 +69,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin stdlib
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Android support library
     implementation "com.android.support:appcompat-v7:${libraries.supportLibraryVersion}"
@@ -108,9 +108,6 @@ dependencies {
     // Charles
     implementation "io.github.tonnyl:charles:${libraries.charlesVersion}"
 
-    // GMS
-    implementation "com.google.android.gms:play-services-wearable:${libraries.gmsWearableVersion}"
-
     // Database
     // Room
     implementation "android.arch.persistence.room:runtime:${libraries.roomVersion}"
@@ -118,9 +115,6 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:${libraries.roomVersion}"
 
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:${libraries.rxpermissionsVersion}"
-
-    // FCM
-//    implementation "com.google.firebase:firebase-messaging:15.0.0"
 
     // Test
     // JUnit

@@ -49,6 +49,7 @@
                     android:paddingStart="@dimen/activity_horizontal_margin_half"
                     android:paddingTop="@dimen/activity_vertical_margin_half"
                     android:src="@drawable/ic_clear_black_24dp"
+                    android:tint="@android:color/white"
                     android:visibility="gone"
                     tools:visibility="visible" />
 

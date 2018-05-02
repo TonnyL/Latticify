@@ -47,13 +47,10 @@ ext {
             retrofitVersion              : '2.4.0',
             epoxyVersion                 : '2.10.0',
             rxpermissionsVersion         : '0.9.5@aar',
-            fcmVersion                   : '15.0.0',
             charlesVersion               : '0.1.0-alpha5',
             okhttpLoggingInterceptor     : '3.10.0',
             glideVersion                 : '4.7.1',
             matisseVersion               : '0.4.3',
-            wearableVersion              : '2.3.0',
-            gmsWearableVersion           : '15.0.0',
             junitVersion                 : '4.12',
             espressoVersion              : '3.0.1',
             androidTestRunnerRulesVersion: '0.5'

@@ -39,33 +39,21 @@ class ChannelMembersPresenter(
         mView.setLoadingIndicator(true)
 
         val disposable = ConversationsRepository.members(mChannelId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe({
-                    if (it.ok && it.members != null) {
-                        it.members.forEach {
-                            val tmp = UserPoolRepository.getUser(it)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({ user ->
-                                        mView.setLoadingIndicator(false)
-
-                                        mView.addModel(UserModel_()
-                                                .user(user).itemOnClickListener { model, parentView, clickedView, position ->
-                                                    mView.gotoActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
-                                                        putExtra(ProfilePresenter.KEY_EXTRA_USER, user)
-                                                    })
-                                                })
-                                    }, {
-
-                                    })
-                            mCompositeDisposable.add(tmp)
-                        }
-                    }
-
+                .flatMapIterable {
                     it.responseMetaData?.let {
                         mCursor = it.nextCursor
                     }
+                    it.members ?: emptyList()
+                }
+                .concatMap { UserPoolRepository.getUser(it) }
+                .toList()
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                    mView.setLoadingIndicator(false)
+
+                    mView.showData(generateEpoxyModels(list))
                 }, {
 
                 })
@@ -77,32 +65,21 @@ class ChannelMembersPresenter(
             mView.showLoadingMore(true)
 
             val disposable = ConversationsRepository.members(mChannelId, cursor = mCursor)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe({
-                        if (it.ok && it.members != null) {
-                            it.members.forEach {
-                                val tmp = UserPoolRepository.getUser(it)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe({ user ->
-
-                                            mView.addModel(UserModel_()
-                                                    .user(user).itemOnClickListener { model, parentView, clickedView, position ->
-                                                        mView.gotoActivity(Intent(clickedView.context, ProfileActivity::class.java).apply {
-                                                            putExtra(ProfilePresenter.KEY_EXTRA_USER, user)
-                                                        })
-                                                    })
-                                        }, {
-
-                                        })
-                                mCompositeDisposable.add(tmp)
-                            }
-                        }
-
+                    .flatMapIterable {
                         it.responseMetaData?.let {
                             mCursor = it.nextCursor
                         }
+                        it.members ?: emptyList()
+                    }
+                    .concatMap { UserPoolRepository.getUser(it) }
+                    .toList()
+                    .toObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ list ->
+                        mView.setLoadingIndicator(false)
+
+                        mView.showData(generateEpoxyModels(list))
                     }, {
 
                     })
