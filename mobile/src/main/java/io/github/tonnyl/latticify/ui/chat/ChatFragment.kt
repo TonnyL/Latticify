@@ -30,6 +30,7 @@ import io.github.tonnyl.latticify.R
 import io.github.tonnyl.latticify.data.Channel
 import io.github.tonnyl.latticify.data.Message
 import io.github.tonnyl.latticify.data.event.UserTyping
+import io.github.tonnyl.latticify.data.repository.UserPoolRepository
 import io.github.tonnyl.latticify.epoxy.LoadingModel_
 import io.github.tonnyl.latticify.glide.CharlesGlideV4Engine
 import io.github.tonnyl.latticify.glide.MatisseGlideV4Engine
@@ -43,6 +44,7 @@ import io.github.tonnyl.latticify.util.Constants
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.layout_input.*
 import kotlinx.android.synthetic.main.layout_message_action.*
@@ -85,13 +87,23 @@ class ChatFragment : Fragment(), ChatContract.View {
                 val userTyping = it.getParcelableExtra<UserTyping>(Constants.BROADCAST_EXTRA)
 
                 activity?.let {
-                    (it as ChatActivity).supportActionBar?.subtitle = "${userTyping.user} is typing…"
+                    val disposable = UserPoolRepository.getUser(userTyping.user)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({ user ->
+                                mSubTitle = context?.resources?.getQuantityString(R.plurals.user_typing, 1, if (user.profile.displayName.isNotEmpty()) user.profile.displayName else user.name) ?: ""
+                                (it as ChatActivity).supportActionBar?.subtitle = mSubTitle
+                            }, {
+
+                            })
+                    mCompositeDisposable.add(disposable)
+
                 }
                 val disposable = Observable.timer(2000L, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             activity?.let {
-                                (it as ChatActivity).supportActionBar?.subtitle = mSubTitle
+                                (it as ChatActivity).supportActionBar?.subtitle = ""
                             }
                         }, {
 
